@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Velocity笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Velocity笔记参考：http://velocity.apache.org/engine/devel/user-guide.html 1.变量(1)变量的定义：1#set($name = &amp;quot;hello&amp;quot;)     说明：velocity中变量是弱类型的。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Velocity笔记">
+<meta property="og:url" content="http://yoursite.com/2016/11/10/Java/Velocity笔记/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Velocity笔记参考：http://velocity.apache.org/engine/devel/user-guide.html 1.变量(1)变量的定义：1#set($name = &amp;quot;hello&amp;quot;)     说明：velocity中变量是弱类型的。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Velocity笔记">
+<meta name="twitter:description" content="Velocity笔记参考：http://velocity.apache.org/engine/devel/user-guide.html 1.变量(1)变量的定义：1#set($name = &amp;quot;hello&amp;quot;)     说明：velocity中变量是弱类型的。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java/Velocity笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/10/Java/Velocity笔记/" class="article-date">
+  <time datetime="2016-11-10T08:06:13.000Z" itemprop="datePublished">2016-11-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Velocity笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Velocity笔记"><a href="#Velocity笔记" class="headerlink" title="Velocity笔记"></a>Velocity笔记</h1><p>参考：<a href="http://velocity.apache.org/engine/devel/user-guide.html" target="_blank" rel="noopener">http://velocity.apache.org/engine/devel/user-guide.html</a></p>
+<h2 id="1-变量"><a href="#1-变量" class="headerlink" title="1.变量"></a>1.变量</h2><h3 id="1-变量的定义："><a href="#1-变量的定义：" class="headerlink" title="(1)变量的定义："></a>(1)变量的定义：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#set($name = &quot;hello&quot;)     说明：velocity中变量是弱类型的。</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>当使用#set 指令时，括在双引号中的字面字符串将解析和重新解释，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#set($directoryRoot = &quot;www&quot; )</span><br><span class="line"></span><br><span class="line">#set($templateName = &quot;index.vm&quot; )</span><br><span class="line"></span><br><span class="line">#set($template = &quot;$directoryRoot/$templateName&quot; )</span><br><span class="line"></span><br><span class="line">$template</span><br></pre></td></tr></table></figure>
+<p>输出将会是：www/index.vm</p>
+<p>注：在velocity中使用$2.5这样的货币标识是没有问题得的，因为velocity中的变量总是以一个大写或者小写的字母开始的。</p>
+<h3 id="2-变量规范的写法"><a href="#2-变量规范的写法" class="headerlink" title="(2)变量规范的写法"></a>(2)变量规范的写法</h3><p><code>${name}</code> ，也可以写成：<code>$name</code>。提倡用前面的写法。</p>
+<p>例如：你希望通过一个变量$vice来动态的组织一个字符串。</p>
+<p> <code>Jack is a $vicemaniac.</code></p>
+<p>本来变量是<code>$vice</code>现在却变成了<code>$vicemaniac</code>，这样Veloctiy就不知道您到底要什么了。所以，应该使用规范的格式书写 ：<br><code>Jack is a ${vice}maniac</code><br>现在Velocity知道变量是<code>$vice</code>而不是<code>$vicemaniac</code>。</p>
+<p>注意：当引用属性的时候不能加{}</p>
+<h3 id="3-变量的赋值"><a href="#3-变量的赋值" class="headerlink" title="(3)变量的赋值:"></a>(3)变量的赋值:</h3><p><code>$name=&quot;hello&quot;</code></p>
+<p>赋值的左边必须是一个变量或者是属性引用。右边可以是下面六种类型之一：</p>
+<p>变量引用,字面字符串,属性引用,方法引用,字面数字,数组列表。</p>
+<p>下面的例子演示了上述的每种类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#set( $monkey = $bill ) ## variable reference</span><br><span class="line"></span><br><span class="line">#set( $monkey.Friend = &quot;monica&quot; ) ## string</span><br><span class="line"></span><br><span class="line">#set( $monkey.Blame = $whitehouse.Leak ) ## property reference</span><br><span class="line"></span><br><span class="line">#set( $monkey.Plan = $spindoctor.weave($web) ) ## method reference</span><br><span class="line"></span><br><span class="line">#set( $monkey.Number = 123 ) ##number</span><br><span class="line"></span><br><span class="line">#set( $monkey.Say = [&quot;Not&quot;, $my, &quot;fault&quot;] ) ## ArrayList</span><br></pre></td></tr></table></figure>
+<p>注意：①如果上述例子中的右值是null, 则左值不会被赋值，也就是说会保留以前的值。</p>
+<p>②velocity模板中未被定义的变量将被认为是一个字符串。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#set($foo = &quot;gibbous&quot;) </span><br><span class="line">$moon = $foo</span><br></pre></td></tr></table></figure>
+<p>输出结果为：<br><code>$moon = gibbous</code></p>
+<p>③velocity模板中不会将reference解释为对象的实例变量。例如：<code>$foo.Name</code>将被解释为Foo对象的<code>getName（）</code>方法，而不是Foo对象的Name实例变量。例如：</p>
+<p><code>$foo.getBar()</code>  等同于<code>$foo.Bar</code> ；</p>
+<p><code>$data.getUser(&quot;jon&quot;)</code> 等同于<code>$data.User(&quot;jon&quot;)</code> ；</p>
+<p><code>data.getRequest().getServerName()</code>等同于</p>
+<p><code>$data.Request.ServerName</code>等同于<code>${data.Request.ServerName}</code></p>
+<h2 id="2-循环"><a href="#2-循环" class="headerlink" title="2.循环"></a>2.循环</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#foreach ($element in $list)</span><br><span class="line">     This is $element.</span><br><span class="line">     $velocityCount </span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#set( $list = [&quot;pine&quot;, &quot;oak&quot;, &quot;maple&quot;])</span><br><span class="line"></span><br><span class="line">#foreach ($element in $list)</span><br><span class="line"></span><br><span class="line">$velocityCount</span><br><span class="line"></span><br><span class="line">This is $element.&lt;br&gt;</span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>输出的结果为：</p>
+<p>1 This is pine.<br>2 This is oak.<br>3 This is maple.</p>
+<p>每次循环<code>$list</code>中的一个值都会赋给<code>$element</code>变量。<br><code>$list</code>可以是一个Vector、Hashtable或者Array。分配给<code>$element</code>的值是一个java对象，并且可以通过变量被引用。例如：如果<code>$element</code> t是一个java的Product类，并且这个产品的名字可以通过调用他的getName（）方法得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#foreach ( $key in $list.keySet())</span><br><span class="line">Key: $key -&gt; Value: $list.get($key) &lt;br&gt;</span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>提示：velocity中大小写敏感。</p>
+<p>Velocity还特别提供了得到循环次数的方法，$velocityCount变量的名字是Velocity默认的名字。</p>
+<p>例子：</p>
+<p>First example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#foreach ( $foo in [1..5] )</span><br><span class="line">  $foo</span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>  Second example:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#foreach ( $bar in [2..-2] )</span><br><span class="line">  $bar</span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>  Third example:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#set ( $arr = [0..1] )</span><br><span class="line">#foreach ( $i in $arr )</span><br><span class="line">  $i</span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>上面三个例子的输出结果为：<br>  First example：<br>  1 2 3 4 5</p>
+<p>  Second example：<br>  2 1 0 -1 -2</p>
+<p>  Third example：<br>  0 1</p>
+<h2 id="3-条件语句"><a href="#3-条件语句" class="headerlink" title="3.条件语句"></a>3.条件语句</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#if (condition)</span><br><span class="line"></span><br><span class="line">#elseif (condition)</span><br><span class="line"></span><br><span class="line">#else</span><br><span class="line"></span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<h2 id="4-语句的嵌套"><a href="#4-语句的嵌套" class="headerlink" title="4.语句的嵌套"></a>4.语句的嵌套</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#foreach ($element in $list)</span><br><span class="line"></span><br><span class="line">   ## inner foreach 内循环</span><br><span class="line"></span><br><span class="line">   #foreach ($element in $list)</span><br><span class="line"></span><br><span class="line">   This is $element. $velocityCount &lt;br&gt;inner&lt;br&gt;</span><br><span class="line"></span><br><span class="line">   #end</span><br><span class="line"></span><br><span class="line">   ## inner foreach 内循环结束</span><br><span class="line"></span><br><span class="line">## outer foreach</span><br><span class="line"></span><br><span class="line">This is $element.</span><br><span class="line"></span><br><span class="line">$velocityCount &lt;br&gt;outer&lt;br&gt;</span><br><span class="line"></span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>语句中也可以嵌套其他的语句，如#if…#else…#end等。</p>
+<h2 id="5-注释"><a href="#5-注释" class="headerlink" title="5.注释"></a>5.注释</h2><h3 id="1-单行注释："><a href="#1-单行注释：" class="headerlink" title="(1)单行注释："></a>(1)单行注释：</h3><p> <code>## This is a single line comment.</code></p>
+<h3 id="2-多行注释："><a href="#2-多行注释：" class="headerlink" title="(2)多行注释："></a>(2)多行注释：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#*</span><br><span class="line"> Thus begins a multi-line comment. Online visitors won’t</span><br><span class="line"> see this text because the Velocity Templating Engine will</span><br><span class="line">ignore it.</span><br><span class="line">*#</span><br></pre></td></tr></table></figure>
+<h3 id="3-文档格式："><a href="#3-文档格式：" class="headerlink" title="(3)文档格式："></a>(3)文档格式：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#**</span><br><span class="line"> This is a VTL comment block and</span><br><span class="line"> may be used to store such information</span><br><span class="line">as the document author and versioning</span><br><span class="line"> information:</span><br><span class="line"> @version 1.1</span><br><span class="line"></span><br><span class="line"> @author  xiao</span><br><span class="line">   *#</span><br></pre></td></tr></table></figure>
+<h2 id="6-关系和逻辑操作符"><a href="#6-关系和逻辑操作符" class="headerlink" title="6.关系和逻辑操作符"></a>6.关系和逻辑操作符</h2><p>Velocity 也具有逻辑AND, OR 和 NOT 操作符。</p>
+<p>如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## example for AND</span><br><span class="line"></span><br><span class="line">#if($foo &amp;&amp; $bar)</span><br><span class="line"></span><br><span class="line">   &lt;strong&gt; This AND that&lt;/strong&gt;</span><br><span class="line"></span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<p>例子中#if() 指令仅在<code>$foo</code> 和<code>$bar</code> 都为真的时候才为真。如果<code>$foo</code> 为假，则表达式也为假；并且 <code>$bar</code>将不被求值。如果 <code>$foo</code> 为真，Velocity 模板引擎将继续检查<code>$bar</code>的值，如果 <code>$bar</code> 为真，则整个表达式为真。并且输出This AND that 。如果 <code>$bar</code> 为假，将没有输出因为整个表达式为假。</p>
+<h2 id="7-Velocity-中的宏"><a href="#7-Velocity-中的宏" class="headerlink" title="7.Velocity 中的宏"></a>7.Velocity 中的宏</h2><p>Velocity中的宏我们可以理解为函数。</p>
+<h3 id="1-宏的定义"><a href="#1-宏的定义" class="headerlink" title="(1)宏的定义"></a>(1)宏的定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#macro(宏的名称 $参数1 $参数2 …)</span><br><span class="line"></span><br><span class="line">   语句体(即函数体)</span><br><span class="line"></span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<h3 id="2-宏的调用"><a href="#2-宏的调用" class="headerlink" title="(2)宏的调用"></a>(2)宏的调用</h3><p><code>#宏的名称($参数1 $参数2 …)</code><br>       说明：参数之间用空格隔开。</p>
+<h2 id="8．-stop"><a href="#8．-stop" class="headerlink" title="8．#stop"></a>8．<code>#stop</code></h2><p>   停止执行模板引擎并返回,把它应用于debug是很有帮助的。</p>
+<h2 id="9．-include与-parse"><a href="#9．-include与-parse" class="headerlink" title="9．#include与#parse"></a>9．<code>#include</code>与<code>#parse</code></h2><p> <code>#include</code>和<code>#parse</code>的作用都是引入本地文件, 为了安全的原因，被引入的本地文件只能在TEMPLATE_ROOT目录下。</p>
+<p>区别：</p>
+<p>(1) 与<code>#include</code>不同的是，<code>#parse</code>只能指定单个对象。而<code>#include</code>可以有多个</p>
+<p>如果您需要引入多个文件，可以用逗号分隔就行：<br><code>#include (&quot;one.gif&quot;, &quot;two.txt&quot;, &quot;three.htm&quot; )</code><br>在括号内可以是文件名，但是更多的时候是使用变量的：<br><code>#include ( “greetings.txt”, $seasonalstock )</code></p>
+<p>(2) <code>#include</code>被引入文件的内容将不会通过模板引擎解析；</p>
+<p>而<code>#parse</code>引入的文件内容Velocity将解析其中的velocity语法并移交给模板，意思就是说相当与把引入的文件copy到文件中。<br> <code>#parse</code>是可以递归调用的，例如：如果dofoo.vm包含如下行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Count down.&lt;br&gt;</span><br><span class="line"></span><br><span class="line">#set ($count = 8)</span><br><span class="line"></span><br><span class="line">#parse (&quot;parsefoo.vm&quot;)</span><br><span class="line"></span><br><span class="line">&lt;br&gt;All done with dofoo.vm!</span><br></pre></td></tr></table></figure>
+<p>那么在parsefoo.vm模板中，你可以包含如下VTL：velocity tag laugane</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$count</span><br><span class="line"></span><br><span class="line">#set($count = $count - 1)</span><br><span class="line"></span><br><span class="line">#if ( $count &gt; 0 )&lt;br&gt;</span><br><span class="line"></span><br><span class="line">#parse( &quot;parsefoo.vm&quot; )</span><br><span class="line"></span><br><span class="line">#else</span><br><span class="line"></span><br><span class="line">&lt;br&gt;All done with parsefoo.vm!</span><br><span class="line"></span><br><span class="line">#end的显示结果为：</span><br></pre></td></tr></table></figure>
+<p>Count down.</p>
+<p>8</p>
+<p>7</p>
+<p>6</p>
+<p>5</p>
+<p>4</p>
+<p>3</p>
+<p>2</p>
+<p>1</p>
+<p>0</p>
+<p>All done with parsefoo.vm!</p>
+<p>All done with dofoo.vm!</p>
+<p>注意：在vm中使用<code>#parse</code>来嵌套另外一个vm时的变量共享问题。如：<br>-&gt;a.vm 里嵌套 b.vm；<br>-&gt;a.vm 里定义了变量 <code>$param</code>；<br>-&gt;b.vm 里可以直接使用<code>$param</code>，无任何限制。<br>但需要特别注意的是，如果b.vm里同时定义有变量<code>$param</code>，则b.vm里将使用b.vm里定义的值。</p>
+<h2 id="10．转义字符’-’的使用"><a href="#10．转义字符’-’的使用" class="headerlink" title="10．转义字符’\’的使用"></a>10．转义字符’\’的使用</h2><p>如果reference被定义，两个’\’意味着输出一个’\’，如果未被定义，刚按原样输出。如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#set($email = &quot;foo&quot; )</span><br><span class="line"></span><br><span class="line">$email</span><br><span class="line"></span><br><span class="line">\$email</span><br><span class="line"></span><br><span class="line">\\$email</span><br><span class="line"></span><br><span class="line">\\\$email</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<p>foo<br>$email<br>\foo<br>\$email</p>
+<p>如果$email 未定义</p>
+<p>$email</p>
+<p>\$email</p>
+<p>\$email</p>
+<p>\\$email</p>
+<p>输出：</p>
+<p>$email<br>\$email<br>\$email<br>\$email            (前面三个斜线,这里两个)</p>
+<h2 id="11．内置对象"><a href="#11．内置对象" class="headerlink" title="11．内置对象"></a>11．内置对象</h2><p>Velocity内置了一些对象，在vm模版里可以直接调用，列举如下：<br><code>$request</code>、<code>$response</code>、<code>$session</code>，另外，模板内还可以使用 <code>$msg</code>内的消息工具访问 Struts 的国际化资源，达到简便实现国际化的方法。</p>
+<h2 id="12．数组访问"><a href="#12．数组访问" class="headerlink" title="12．数组访问"></a>12．数组访问</h2><p>对数组的访问在Velocity中存在问题，因为Velocity只能访问对象的方法，而数组又是一个特殊的Array，所以虽然数组可以进行循环列举，但却不能定位访问特定位置的元素，如 strs[2]，数组对固定位置元素的访问调用了Array的反射方法get(Object array, int index)，而Velocity没能提供这样的访问，所以数组要么改成List等其他类容器的方式来包装，要么就通过公用Util类的方式来提供，传入数组对象和要访问的位置参数，从而达到返回所需值的目的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/10/Java/Velocity笔记/" data-id="cjtf6o94m00a70fc5armufdf4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/15/项目/问答网/SpringMVC + MyBatis 实现仿知乎问答项目笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SpringMVC + MyBatis 实现仿知乎问答项目笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/08/Algorithm/2017-04-01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">判断单链表里面有没有环系列</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

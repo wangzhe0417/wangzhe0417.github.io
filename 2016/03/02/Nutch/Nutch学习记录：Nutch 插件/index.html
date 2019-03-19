@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nutch学习记录：Nutch 插件 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Nutch学习记录：Nutch 插件 Nutch 采用基于插件的体系结构，这也使得 Nutch 具有较好的可扩展性。Nutch 的主要功能基本都是通过插件实现，我们也可以加入新的插件修改和扩展 Nutch 的能力。">
+<meta name="keywords" content="Nutch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nutch学习记录：Nutch 插件">
+<meta property="og:url" content="http://yoursite.com/2016/03/02/Nutch/Nutch学习记录：Nutch 插件/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Nutch学习记录：Nutch 插件 Nutch 采用基于插件的体系结构，这也使得 Nutch 具有较好的可扩展性。Nutch 的主要功能基本都是通过插件实现，我们也可以加入新的插件修改和扩展 Nutch 的能力。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B61.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B62.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B63.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B64.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B65.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B66.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B67.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B68.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B69.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nutch学习记录：Nutch 插件">
+<meta name="twitter:description" content="#Nutch学习记录：Nutch 插件 Nutch 采用基于插件的体系结构，这也使得 Nutch 具有较好的可扩展性。Nutch 的主要功能基本都是通过插件实现，我们也可以加入新的插件修改和扩展 Nutch 的能力。">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B61.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nutch/Nutch学习记录：Nutch 插件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/02/Nutch/Nutch学习记录：Nutch 插件/" class="article-date">
+  <time datetime="2016-03-02T10:12:14.000Z" itemprop="datePublished">2016-03-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nutch/">Nutch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nutch学习记录：Nutch 插件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Nutch学习记录：Nutch 插件</p>
+<p>Nutch 采用基于插件的体系结构，这也使得 Nutch 具有较好的可扩展性。Nutch 的主要功能基本都是通过插件实现，我们也可以加入新的插件修改和扩展 Nutch 的能力。<br><a id="more"></a></p>
+<h2 id="1、插件的基础结构"><a href="#1、插件的基础结构" class="headerlink" title="1、插件的基础结构"></a>1、插件的基础结构</h2><p>插件类加载器 PluginClassLoader 负责加载插件运行时库和依赖插件的导出库。每 个插件都有自己的类加载器。参数 urls 包括插件自己的导出库、非导出库、属性资 源文件、依赖插件的导出库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PluginClassLoader</span> <span class="keyword">extends</span> <span class="title">URLClassLoader</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">PluginClassLoader</span><span class="params">(URL[] urls, ClassLoader parent)</span> </span>&#123; <span class="keyword">super</span>(urls, parent);</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>扩展点 ExtensionPoint 表示系统可以扩展的功能点。例如,链接过滤是一个可以 扩展的功能点。</p>
+<p>Nutch1.10 共提供了 9个扩展点。插件 nutch-extensionpoints 给出这 9 个扩展点的名字(扩展点名字)和全称接口名作为的 ID(扩展点 ID)。其他所有插件都依 赖插件 nutch-extensionpoints,除了给出所有扩展点外(通过 plugin.xml),插 件 nutch-extensionpoints 没有做其他的事情。扩展点在代码一级通过接口定义, 如链接过滤扩展点对应的接口为 org.apache.nutch.net.URLFilter。</p>
+<p>扩展点越多,意味着系统扩展和配置的地方越多,系统也越灵活和易进行功能 扩展。</p>
+<p>一个 ExtensionPoint 包含多个扩展 Extension。扩展 Extension 表示对扩展点 ExtensionPoint 的具体实现。从设计模式的角度看，ExtensionPoint 相当于发布者 Extension 是监听者。一个发布者可以有多个监听者。</p>
+<p>一个插件可以包含多个扩展 Extension，这些扩展 Extension 可以实现不同的扩展点 ExtensionPoint。例如,语言识别插件(language-identifier)包括解析过滤器 和索引过滤器扩展点的实现。每个扩展都有 ID 和扩展实现类(实现扩展点对应 的接口)，此外，扩展还可以包含多个特定的属性，例如 Nutch 分析器扩展一般会包括自己处理的语言 lang 这一属性(即声明自己负责什么语言的文本分析)。</p>
+<p>类 PluginManifestParser 负责对插件目录列表中的每个插件的描述文件 plugin.xml 进行解析。在每个插件的根目录下都有个 plugin.xml 文件 。 PluginManifestParser 对每个插件的解析的结果保存在 PluginDescriptor 中。</p>
+<p>类 PluginDescriptor 表示和 plugin.xml 文件对应的插件信息,包括插件 ID、名字、 版本、提供者、支持的扩展点列表、实现的扩展列表、依赖的插件、字符串资源、导 出库、非导出库和类装载器等。</p>
+<p>类 PluginRepository 负责对插件目录中的插件文件进行解析,缓存插件信息,延 迟加载插件,支持对插件各种信息的查询。该类是一个可执行类,可以执行插件 中带有 main 方法的类。</p>
+<blockquote>
+<p>有两个类的作用不太清晰,或者说它们并没有真正使用。其中一个 Plugable,这 是一个标记接口,另一个是 Plugin,表示插件。</p>
+</blockquote>
+<h2 id="2、插件构件"><a href="#2、插件构件" class="headerlink" title="2、插件构件"></a>2、插件构件</h2><p><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B61.png" alt><br><strong>插件构建的基本步骤:</strong></p>
+<ol>
+<li>主 build.xml 是项目根目录下的构建文件，其中的 compile-plugins 目标完成所有<br>插件的构建。</li>
+<li><p>主build.xml中的compile-plugins目标调用src/plugin/build.xml中的deploy目标 。 src/plugin/build.xml 中的 deploy 目标依次调用所有插件目录下的 build.xml 中的 deploy 目标。</p>
+<blockquote>
+<p>若添加新的插件,需要在 src/plugin/build.xml 中的 deploy 目标中加入如下一行:<br>&lt; ant dir=”插件名” target=”deploy”/&gt;<br>插件名是一般是插件子目录名。</p>
+</blockquote>
+</li>
+<li><p>插件目录下的 build.xml 利用 src/plugin/build-plugin.xml 完成插件的基本构建。每<br>个插件的定制构建可以在插件目录下的 build.xml 中完成。<br>构建文件 src/plugin/build-plugin.xml 提供了插件构建的基本框架,它还定义了一<br>些可以覆盖的目标,例如插件初始化、插件依赖等。</p>
+</li>
+</ol>
+<p><strong>每个插件的基本构建过程</strong>：(位于 src/plugin/build-plugin.xml 中)</p>
+<ol>
+<li>(init 目标)创建目录 build/&lt;插件名&gt;、build/&lt;插件名&gt;/classes、build/&lt;插件名 &gt;/test。</li>
+<li>(init-plugin 目标)完成插件构建的其他初始化工作,这个目标可以在插件目 录下的 build.xml 中修改覆盖,缺省为空。</li>
+<li>(deps-jar 目标)构建插件编译依赖(对该插件依赖的其他插件进行先编译, 产生的 jar 路径放到 plugin.deps 路径属性中),这个目标可以在插件目录下 的 build.xml 中修改覆盖,缺省为空。</li>
+<li>(compile 目标)对插件源代码编译。编译使用的类路径包括:build/&lt;插件名 &gt;/classes、build/classes、nutch 根目录 lib 子目录下的 JAR、插件目录 lib 子目录下 的 JAR 包、路径 plugin.deps(插件额外类路径,缺省为空)。路径 plugin.deps 可以在插件目录下的 build.xml 中重定义。</li>
+<li>(jar 目标)对 build/&lt;插件名&gt;/classes 中类文件打包,JAR 放在 build/&lt;插件名 &gt;目录下。</li>
+<li>(deps-test)单元测试目标。</li>
+<li>(deploy 目标)创建目录 build/plugins/&lt;插件名&gt;;将插件描述文件 plugin.xml 拷贝到目录 build/plugins/&lt;插件名&gt;;如果第 5 步生成插件包,将插件包拷贝 到 build/plugins/&lt;插件名&gt;,这步目标为 copy-generated-lib;将插件目录 lib 子 目录下的 JAR 包拷贝到 build/plugins/&lt;插件名&gt;。</li>
+</ol>
+<blockquote>
+<p>下图是nutch-extensionpoints 扩展点插件 build.xml 例子<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B62.png" alt><br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B63.png" alt></p>
+</blockquote>
+<h2 id="3、插件异常"><a href="#3、插件异常" class="headerlink" title="3、插件异常"></a>3、插件异常</h2><ul>
+<li>一个插件可以依赖其他插件,但是,若产生循环依赖,则插件加载时抛出 CircularDependencyException。</li>
+<li>若一个插件依赖的插件不存在或无效,则插件加载时抛出 MissingDependencyException。</li>
+</ul>
+<h2 id="4、插件主要配置属性"><a href="#4、插件主要配置属性" class="headerlink" title="4、插件主要配置属性"></a>4、插件主要配置属性</h2><ul>
+<li><p>plugin.folders：插件所在的目录列表,缺省位置在 plugins 目录下。该目录可以是 相对目录或绝对目录。若是绝对目录,则直接使用。若是相对目录,则从类路径中 解析。</p>
+</li>
+<li><p>plugin.auto-activation：当被配置为排除(plugin.excludes 中包括,不加载),但是 又被其他插件依赖的时候,是否自动启动,缺省为 true。</p>
+</li>
+<li><p>plugin.includes：要包含的插件名称列表,支持正则表达式方式定义。多个插件间 用|隔开。</p>
+<blockquote>
+<p><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B64.png" alt></p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>plugin.excludes：要排除的插件名称列表,支持正则表达式方式定义。</li>
+</ul>
+<p>以上这些属性可以在 nutch-site.xml 中重新定义。</p>
+<h2 id="5、插件描述文件"><a href="#5、插件描述文件" class="headerlink" title="5、插件描述文件"></a>5、插件描述文件</h2><p>插件描述文件 plugin.xml 位于插件根目录下,插件加载时被<br>PluginManifestParser 解析产生插件、扩展点和扩展等信息。</p>
+<p><strong>典型插件文件 plugin.xml 中包括 5 部分信息：</strong></p>
+<ol>
+<li>提供插件发布的扩展点。这部分可选。只有插件 nutch-extensionpoints 使 用。</li>
+<li>提供插件基本信息,包括 ID、名字、版本、提供者、插件类(好像没有使 用),这部分必须。</li>
+<li>提供插件运行时信息,包括插件导出 Jar 包和插件 lib 子目录下的 JAR 包,这部分可选;</li>
+<li>提供插件依赖插件信息,这部分可选;</li>
+<li>可以包括多个插件实现的扩展,每个扩展包括扩展 ID、扩展名字、扩展 实现的扩展点 ID、实现 ID、实现类名和实现相关属性,这部分可选。</li>
+</ol>
+<blockquote>
+<p>插件描述文件如图：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B65.png" alt></p>
+</blockquote>
+<blockquote>
+<p>库插件 lib-regex-filter 的插件描述文件如下：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B66.png" alt></p>
+</blockquote>
+<blockquote>
+<p>该插件没有扩展和实现,更没有扩展点,它提供基于模式匹配链接过滤插件 (urlfilter-regex 和 urlfilter-automation)的基础实现。</p>
+</blockquote>
+<h2 id="6、扩展点"><a href="#6、扩展点" class="headerlink" title="6、扩展点"></a>6、扩展点</h2><p>插件 nutch-extensionpoints 发布 nutch 插件系统支持的扩展点,其他插件不发布 扩展点。因此,nutch-extensionpoints 插件只包括插件基本信息和多个扩展点信息, 扩展点信息包括以类名标识的扩展点 ID 和扩展点名字。<br>Nutch1.2 有 15 个扩展点。可以对 nutch 支持的扩展点进行修改,添加新的扩展点。<br>nutch-extensionpoints 的插件文件 plugin.xml(Nutch1.2)如下。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin</span><br><span class="line">	id=<span class="string">"nutch-extensionpoints"</span></span><br><span class="line">	name=<span class="string">"the nutch core extension points"</span> </span><br><span class="line">	version=<span class="string">"0.8.0"</span> </span><br><span class="line">	provider-name=<span class="string">"nutch.org"</span>&gt;</span><br><span class="line">	</span><br><span class="line">&lt;extension-point</span><br><span class="line">	id=<span class="string">"org.apache.nutch.clustering.OnlineClusterer"</span> 扩展点 ID,类名,一般是接口 </span><br><span class="line">	name=<span class="string">"Nutch Online Search Results Clustering Plugin"</span>/&gt; 扩展点名字</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.indexer.field.FieldFilter"</span></span><br><span class="line">	name=<span class="string">"Nutch Field Filter"</span>/&gt;</span><br><span class="line">	</span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.indexer.IndexingFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Indexing Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.ontology.Ontology"</span> </span><br><span class="line">	name=<span class="string">"Ontology Model Loader"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.parse.Parser"</span> </span><br><span class="line">	name=<span class="string">"Nutch Content Parser"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.parse.HtmlParseFilter"</span> </span><br><span class="line">	name=<span class="string">"HTML Parse Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.protocol.Protocol"</span> </span><br><span class="line">	name=<span class="string">"Nutch Protocol"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.searcher.QueryFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Query Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.net.URLFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch URL Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.net.URLNormalizer"</span> </span><br><span class="line">	name=<span class="string">"Nutch URL Normalizer"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.analysis.NutchAnalyzer"</span> </span><br><span class="line">	name=<span class="string">"Nutch Analysis"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.searcher.response.ResponseWriter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Search Results Response Writer"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.searcher.Summarizer"</span></span><br><span class="line">	name=<span class="string">"Nutch Summarizer"</span>/&gt;</span><br><span class="line">	</span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.scoring.ScoringFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Scoring"</span>/&gt;</span><br><span class="line">	</span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.segment.SegmentMergeFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Segment Merge Filter"</span>/&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+<p>由于查询处理 Nutch1.9 采用 Solr 进行处理,因此 Nutch1.9 只有 9 个扩展点,如下<br>所示:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin</span><br><span class="line">	id=<span class="string">"nutch-extensionpoints"</span></span><br><span class="line">	name=<span class="string">"the nutch core extension points"</span> </span><br><span class="line">	version=<span class="string">"2.0.0"</span> </span><br><span class="line">	provider-name=<span class="string">"nutch.org"</span>&gt;</span><br><span class="line">	&lt;!-- <span class="keyword">this</span> file hosts all extension points nutch core code offers.</span><br><span class="line">	Please not that plugins can define extension points as well to be extendable.--&gt;</span><br><span class="line">&lt;extension-point id=<span class="string">"org.apache.nutch.indexer.IndexingFilter"</span> name=<span class="string">"Nutch Indexing Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.indexer.IndexWriter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Index Writer"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.parse.Parser"</span> </span><br><span class="line">	name=<span class="string">"Nutch Content Parser"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.parse.HtmlParseFilter"</span> </span><br><span class="line">	name=<span class="string">"HTML Parse Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.protocol.Protocol"</span> </span><br><span class="line">	name=<span class="string">"Nutch Protocol"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.net.URLFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch URL Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.net.URLNormalizer"</span> </span><br><span class="line">	name=<span class="string">"Nutch URL Normalizer"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.scoring.ScoringFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Scoring"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;extension-point </span><br><span class="line">	id=<span class="string">"org.apache.nutch.segment.SegmentMergeFilter"</span> </span><br><span class="line">	name=<span class="string">"Nutch Segment Merge Filter"</span>/&gt;</span><br><span class="line"></span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p>
+<p>Nutch1.9 扩展点和插件列如图：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B67.png" alt><br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B68.png" alt></p>
+<h2 id="7、新增扩展点"><a href="#7、新增扩展点" class="headerlink" title="7、新增扩展点"></a>7、新增扩展点</h2><p>如果需要对系统中某个功能特性一般化,并需要通过插件的形式进行灵活配<br> 置和扩展,可以将该功能特性抽象为扩展点。<br> 新增扩展点首先是向系统中加入表达功能特性的接口类型定义。<br>然后,向插件 nutch-extensionpoints 的 plugin.xml 中加入扩展点描述:<br>&lt; extension-point id=”扩展点接口全称名” name=”扩展点名称”/&gt;</p>
+<h2 id="8、新增插件"><a href="#8、新增插件" class="headerlink" title="8、新增插件"></a>8、新增插件</h2><p>新增插件(对系统中某种功能需要进行另外一种实现)除了需要实现现有扩<br> 展点接口,还需要建立插件配置和构建环境。主要内容包括:</p>
+<ol>
+<li>在 src/plugin 下建立插件目录结构。假设插件名为 p,则 src/plugin/p/src/java 目录存放插件源代码,src/plugin/p/src/test 存放插件单元测试代码 。 src/plugin/p/build.xml 为插件构建文件,src/plugin/p/plugin.xml 为插件描述文 件,src/plugin/p/ivy.xml 为插件 ivy 依赖文件。</li>
+<li>编码实现特定扩展点接口。</li>
+<li>编写插件描述文件 src/plugin/p/plugin.xml。简单的方法是拷贝现有同扩展点<br>插件的描述文件,再进行修改。共有以下几种类型的插件描述文件:<br>(1)插件 nutch-extensionpoints 的描述文件只声明扩展点,这种插件描述文 件我们新增插件用不到,要增加扩展点时向 nutch-extensionpoints 插件描述文件中加入即可。<br>(2)基础实现插件,如 lib-urlfilter-regex,该类插件作为其他插件实现的基础,插件描述文件中没有 requires 和 extension 部分。插件描述文件如下:<img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch%E6%8F%92%E4%BB%B69.png" alt><br>(3)一般插件。</li>
+<li>建立构建环境。<br>(1)首先编写构建文件 src/plugin/p/build.xml,和 plugin.xml 类似,可以对现有类 似文件进行少量修改完成;<br>  (2)修改 src/plugin/build.xml 文件,在 deploy 目标中加入对 src/plugin/p/build.xml 的调用,一般为&lt; ant dir=”p” target=”deploy”/&gt;;<br> (3)添加 ivy.xml 文件,可能需要加入对 jar 包的依赖。 </li>
+<li>需要时再 nutch-site.xml 中 plugin.include 属性中激活新增插件。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/02/Nutch/Nutch学习记录：Nutch 插件/" data-id="cjtf6o94v00af0fc5dpjk202w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nutch/">Nutch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/07/Geek/分享个很有逼格的软件－－－翻页钟/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          分享个很有逼格的软件－－－翻页钟
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/01/MapReduce/MapReduce的框架详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MapReduce的框架详解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

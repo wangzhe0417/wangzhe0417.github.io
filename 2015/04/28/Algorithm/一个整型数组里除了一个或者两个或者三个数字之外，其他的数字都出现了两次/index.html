@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。 题目中包括三个小的问题，由简单到复杂：1，如果只有一个出现一次，考察到异或的性质，就是如果同一个数字和自己异或的活结果为零，那么循环遍历一遍数组，将数组中的元素全部做异或运算，那么出现两次的数字全部异或掉了，得到的结果就是只出现一次的那个数字。">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。">
+<meta property="og:url" content="http://yoursite.com/2015/04/28/Algorithm/一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。 题目中包括三个小的问题，由简单到复杂：1，如果只有一个出现一次，考察到异或的性质，就是如果同一个数字和自己异或的活结果为零，那么循环遍历一遍数组，将数组中的元素全部做异或运算，那么出现两次的数字全部异或掉了，得到的结果就是只出现一次的那个数字。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。">
+<meta name="twitter:description" content="#一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。 题目中包括三个小的问题，由简单到复杂：1，如果只有一个出现一次，考察到异或的性质，就是如果同一个数字和自己异或的活结果为零，那么循环遍历一遍数组，将数组中的元素全部做异或运算，那么出现两次的数字全部异或掉了，得到的结果就是只出现一次的那个数字。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm/一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/28/Algorithm/一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次/" class="article-date">
+  <time datetime="2015-04-27T17:13:00.000Z" itemprop="datePublished">2015-04-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次。</p>
+<p>题目中包括三个小的问题，由简单到复杂：<br>1，如果只有一个出现一次，考察到异或的性质，就是如果同一个数字和自己异或的活结果为零，那么循环遍历一遍数组，将数组中的元素全部做异或运算，那么出现两次的数字全部异或掉了，得到的结果就是只出现一次的那个数字。</p>
+<a id="more"></a>
+<p>下面首先给这部分的程序和实例分析：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argv,<span class="keyword">char</span>* argc[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> arr[<span class="number">11</span>]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span>(index=<span class="number">0</span>;index&lt;<span class="number">11</span>;index++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(\<span class="string">"%d\",&amp;arr[index]);</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    for(index=0;index&lt;11;index++)</span></span><br><span class="line"><span class="string">    &#123;</span></span><br><span class="line"><span class="string">        res^=arr[index];</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    printf(\"这个数是%dn\",res);</span></span><br><span class="line"><span class="string">    system(\"pause\");</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>2，如果有两个只出现一次的数字，设定为a,b。也是应用异或，但是数组元素全部异或的结果x=a^b，因为a,b是不相同的数字，因此x肯定不为0。对于x，从低位到高位开始，找到第一个bit位为1的位置设定为第m位，这个第m位的bit肯定来自a或者来自b，不可能同时a,b的第m位（从低到高位）都为1。这样，就可以根据这个第m位就可以把数组分为两个部分，一组为第m位为0，一组为第m位为1.这样，就把问题分解成了求两个数组中只出现一次的数字了。</p>
+<p>下面首先给这部分的程序和实例分析：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>  </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_first_position</span><span class="params">(<span class="keyword">int</span> num)</span> <span class="comment">//从低位开始找到第一个位1的bit位 </span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> index=<span class="number">1</span>;  </span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">while</span>(i&lt;<span class="number">32</span>)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>((num&amp;(<span class="number">1</span>&lt;&lt;i))==(<span class="number">1</span>&lt;&lt;i))  </span><br><span class="line">            <span class="keyword">break</span>;  </span><br><span class="line">        <span class="keyword">else</span>  </span><br><span class="line">        &#123;  </span><br><span class="line">            index++;  </span><br><span class="line">            i++;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> index;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_bit_one</span><span class="params">(<span class="keyword">int</span> num,<span class="keyword">int</span> index)</span>  <span class="comment">//判断给定的索引位置的bit位是否为1</span></span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    num=(num&gt;&gt;index);  </span><br><span class="line">    <span class="keyword">return</span> num&amp;<span class="number">1</span>;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_two_unique_num</span><span class="params">(<span class="keyword">int</span> *a,<span class="keyword">int</span> n,<span class="keyword">int</span> *num1,<span class="keyword">int</span> *num2)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> exclusive_or_result=<span class="number">0</span>;  </span><br><span class="line">    *num1=<span class="number">0</span>;  </span><br><span class="line">    *num2=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        exclusive_or_result^=a[i];  </span><br><span class="line">    <span class="keyword">int</span> index=get_first_position(exclusive_or_result);  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        <span class="keyword">if</span>(is_bit_one(a[i],index))  </span><br><span class="line">            (*num1)^=a[i];  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        <span class="keyword">if</span>(!is_bit_one(a[i],index))  </span><br><span class="line">            (*num2)^=a[i];  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> a[]=&#123;<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">5</span>&#125;;  </span><br><span class="line">    <span class="keyword">int</span> num1,num2;  </span><br><span class="line">    get_two_unique_num(a,<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>),&amp;num1,&amp;num2);  </span><br><span class="line">    <span class="built_in">printf</span>(\<span class="string">"%dt%dn\",num1,num2);  </span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>3，考虑给定数组中有三个单独出现一次的数字，这个会比有两个的稍微复杂。分步分析，设定这三个数为a,b,c:</p>
+<ol>
+<li>将数组中的数字全部异或，得到的结果x=a^b^c，但是x不是a，b，c中的其中一个，假设x=a，那么b^c=0说明b=c，与题目给定的条件矛盾。</li>
+<li>设定f(n)可以像2中的那样，从低位开始，找到第一个bit为1的位置，f(x^a),f(x^b),f(x^c)得到的值肯定都不为0，因为x^a,x^b,x^c本身就不为0。f(x^a)^f(x^b)^f(x^c)结果不为0。因为f(x^a)^f(x^b)的结果中可能为0，也可能有两个bit为1。如果假设f(x^c)的结果bit为1的位置与f(x^a)^f(x^b)的其中一个重合，则f(x^a)^f(x^b)^f(x^c)结果中只有1个bit为1，如果不重合的话那么有3个bit位为1。</li>
+<li>这便可以推断出f(x^a)^f(x^b)^f(x^c)中至少有一个bit位为1。假设从低位到高位的第mbit位为1.那么可以得出结论x^a,x^b,x^c中有一个或者三个的第m位为1（不可能有两个，因为有两个的话，异或的结果就为0了）。</li>
+<li>证明，x^a,x^b,x^c中只有一个第m-bit位为1.假设他们的第m位都为1，那么x的第m位为0，但是x=a^b^c其第m位肯定为1，所以假设不成立。那么相反，假设x的第m位为1，a,b,c的第m位都为0，也不成立，因为x=a^b^c。所以综上所述x^a,x^b,x^c中只有一个第m位为1。那么这个问题就好办了。根据这个第m位找到第一个只出现一次的数字。然后剩下两个就是问题2所描述的问题。</li>
+</ol>
+<p>下面给出代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span>  </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_first_bit</span><span class="params">(<span class="keyword">int</span> num)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">return</span> num&amp;~(num<span class="number">-1</span>);  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_two_unique_num</span><span class="params">(<span class="keyword">int</span> *a,<span class="keyword">int</span> n,<span class="keyword">int</span> *num1,<span class="keyword">int</span> *num2)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> result_code=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        result_code^=a[i];  </span><br><span class="line">    <span class="keyword">int</span> diff=get_first_bit(result_code);  </span><br><span class="line">    *num1=<span class="number">0</span>;  </span><br><span class="line">    *num2=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(a[i]&amp;diff)  </span><br><span class="line">        &#123;  </span><br><span class="line">            (*num1)^=a[i];  </span><br><span class="line">        &#125;  </span><br><span class="line">        <span class="keyword">else</span>  </span><br><span class="line">        &#123;  </span><br><span class="line">            (*num2)^=a[i];  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_three_unique_num</span><span class="params">(<span class="keyword">int</span> *a,<span class="keyword">int</span> n,<span class="keyword">int</span> *num1,<span class="keyword">int</span> *num2,<span class="keyword">int</span> *num3)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> result_code=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        result_code^=a[i];  </span><br><span class="line">    <span class="keyword">int</span> flag=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">        flag^=get_first_bit(result_code^a[i]);  </span><br><span class="line">    flag=get_first_bit(flag);  </span><br><span class="line">    *num1=<span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(get_first_bit(result_code^a[i])==flag)  </span><br><span class="line">        &#123;  </span><br><span class="line">            (*num1)^=a[i];  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)  </span><br><span class="line">    &#123;  </span><br><span class="line">        <span class="keyword">if</span>(a[i]==(*num1))  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="keyword">int</span> temp=a[i];  </span><br><span class="line">            a[i]=a[n<span class="number">-1</span>];  </span><br><span class="line">            a[n<span class="number">-1</span>]=temp;  </span><br><span class="line">            <span class="keyword">break</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    get_two_unique_num(a,n<span class="number">-1</span>,num2,num3);  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span>  </span></span><br><span class="line"><span class="function"></span>&#123;  </span><br><span class="line">    <span class="keyword">int</span> a[]=&#123;<span class="number">2</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">6</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">7</span>&#125;;  </span><br><span class="line">    <span class="keyword">int</span> num1,num2,num3;  </span><br><span class="line">    get_three_unique_num(a,<span class="keyword">sizeof</span>(a)/<span class="keyword">sizeof</span>(<span class="keyword">int</span>),&amp;num1,&amp;num2,&amp;num3);  </span><br><span class="line">    <span class="built_in">printf</span>(\<span class="string">"%dt%dt%dn\",num1,num2,num3);  </span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/04/28/Algorithm/一个整型数组里除了一个或者两个或者三个数字之外，其他的数字都出现了两次/" data-id="cjtf6o91b00130fc5oeyq7a76" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/04/30/Algorithm/不用任何操作符(包括位运算符)计算两个数的加法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          不用任何操作符(包括位运算符)计算两个数的加法
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

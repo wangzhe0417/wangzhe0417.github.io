@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nutch学习记录：Fetch | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Nutch学习记录：Fetch 一、Fetch过程 Generate阶段产生了待爬行队列，并保存在segment/crawl_generate目录下。在Generate结束后，进入Fethch阶段，该阶段同Generate一样处于循环中，只要未达到指定的爬行深度，就继续。这一阶段是实际抓取网页的过程，它采用1个生产者（QueueFeeder）-多个消费者（FetchThread）的模型。Queu">
+<meta name="keywords" content="Nutch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nutch学习记录：Fetch">
+<meta property="og:url" content="http://yoursite.com/2015/12/23/Nutch/Nutch学习记录：Fetch/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Nutch学习记录：Fetch 一、Fetch过程 Generate阶段产生了待爬行队列，并保存在segment/crawl_generate目录下。在Generate结束后，进入Fethch阶段，该阶段同Generate一样处于循环中，只要未达到指定的爬行深度，就继续。这一阶段是实际抓取网页的过程，它采用1个生产者（QueueFeeder）-多个消费者（FetchThread）的模型。Queu">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch1.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch2.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch3.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nutch学习记录：Fetch">
+<meta name="twitter:description" content="#Nutch学习记录：Fetch 一、Fetch过程 Generate阶段产生了待爬行队列，并保存在segment/crawl_generate目录下。在Generate结束后，进入Fethch阶段，该阶段同Generate一样处于循环中，只要未达到指定的爬行深度，就继续。这一阶段是实际抓取网页的过程，它采用1个生产者（QueueFeeder）-多个消费者（FetchThread）的模型。Queu">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nutch/Nutch学习记录：Fetch" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/23/Nutch/Nutch学习记录：Fetch/" class="article-date">
+  <time datetime="2015-12-23T08:57:05.000Z" itemprop="datePublished">2015-12-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nutch/">Nutch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nutch学习记录：Fetch
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Nutch学习记录：Fetch</p>
+<h2 id="一、Fetch过程"><a href="#一、Fetch过程" class="headerlink" title="一、Fetch过程"></a>一、Fetch过程</h2><p> Generate阶段产生了待爬行队列，并保存在segment/crawl_generate目录下。在Generate结束后，进入Fethch阶段，该阶段同Generate一样处于循环中，只要未达到指定的爬行深度，就继续。这一阶段是实际抓取网页的过程，它采用1个生产者（QueueFeeder）-多个消费者（FetchThread）的模型。QueueFeeder从输入中读取fetchlist并产生FetchItemQueue队列，该队列中包含了描述将要爬行的项目的FetchItem。这个队列是以要爬行的主机划分的，每个主机对应一个队列。但是在同一时刻，爬行FetchItem的数量受并发线程数的限制。<br><a id="more"></a><br>FetchThread从队列中不断地取出FetchItem，QueueFeeder向其中添加，这样就保持了一个动态平衡，直到FetchItemQueue中的FetchItem都被消耗完了。当队列中FetchItem的数量达到0，爬行结束。 </p>
+<p>爬行过程中，爬虫会考虑到对待爬行主机的礼貌（politeness），每个主机的爬行礼貌设置可以不同，比如最大并发请求和爬行间隔等。每个FetchItemQueue对象还维护着一个名为inProgress的队列，用于保存正在抓取的FetchItem，当FetchItemQueue返回一个FetchItem后，便从这个队列中移出并放入inProgress队列中。FetchItemQueue还保存FetchItem最后向主机请求的时间。 </p>
+<p>当FetchThread从FetchItemQueue中请求新的将要抓取的项，队列返回一个项给FetchItem，或者如果由于礼貌性的原因项没有准备好，则返回null。如果队列中还有待爬行项，且所有的项都没有准备好，那么FetchThread就等待，直到有项目准备好或到达timeout时间。 </p>
+<p>Fetch阶段以org.apache.nutch.crawl.Fetcher类中的fetch(Path segment, int threads, boolean parsing)方法作为入口</p>
+<p><strong>该方法的参数如下：</strong> </p>
+<ul>
+<li>Path segment ：segment的路径，这里是segment/crawl_generate  </li>
+<li>int threads ：用户指定的线程数 </li>
+<li>Boolean  ：是否进行解析 </li>
+</ul>
+<p>fetch方法中主要是对一个MapReduce任务进行配置，并运行这个任务。这个任务中只有Map而没有Reduce。出于礼貌规则，Fetcher创建的MapReduce任务关闭了Speculative Execution，并通过定制的InputFormat类保证每个fetchlist不会再被分成多个splits，防止多个线程对同一个站点过度访问。该任务从segments/time/crawl_generate目录下读取数据，由QueueFeeder线程负责将&lt;url, crawldatum&gt;队列中，FetcherTread负责从队列中获取url，并抓取页面。</p>
+<blockquote>
+<p><strong>Speculative Execution:</strong> 由于各种原因（负载或资源分布不均、程序bug等），可能会出现一个Job的多个任务的进度不协调，如其它任务都已完成，而某个任务才完成10%。当某个任务满足一定条件时，Hadoop将为该任务启动Speculative task，并和该任务一起执行，哪个任务先完成就使用哪个的结果。</p>
+</blockquote>
+<p>输出格式是FetcherOutputFormat，它是定义在org.apache.nutch.fetcher中，有三种不同的输出，分别根据value类型，对5个目录进行写操作：</p>
+<ol>
+<li>CrawlDatum类型：segments/crawl_fetch</li>
+<li>Content类型：segments/content</li>
+<li>Parse类型 ：segments/parse_text，segments/parse_data，segments/crawl_parse</li>
+</ol>
+<p>现在再来看一下segments下的每个目录是干什么的：</p>
+<ol>
+<li>crawl_generate：需要抓取的url列表（fetchlist），由&lt;url, crawldatum&gt;组成的sequence文件。</li>
+<li>crawl_fetch：每个抓取页面的状态报告，比如是否抓取是否成功，reponse code是多少，由&lt;url, crawldatum&gt;组成的map文件。</li>
+<li>content：包含下载下来的原数据（raw data），由&lt;url, content&gt;组成的map文件。</li>
+<li>parse_text：页面的解析文本，用于建立索引，由&lt;url, ParseText&gt;组成的map文件。</li>
+<li>parse_data：包含页面解析后的元数据和outlinks。</li>
+<li>crawl_parse：每个被成功抓取和解析的页面的outlinks列表，用于更新crawldb。<br>的实例输出到不同的目录中。在最后，runJob(job)调用Fetcher类中的run方法启动任务<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fetcher中的run方法   </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(RecordReader&lt;Text, CrawlDatum&gt; input, OutputCollector&lt;Text, NutchWritable&gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">    <span class="keyword">this</span>.output = output;   </span><br><span class="line">    <span class="keyword">this</span>.reporter = reporter;   </span><br><span class="line">    <span class="keyword">this</span>.fetchQueues = <span class="keyword">new</span> FetchItemQueues(getConf());   </span><br><span class="line">    <span class="keyword">int</span> threadCount = getConf().getInt(<span class="string">"fetcher.threads.fetch"</span>, <span class="number">10</span>);   </span><br><span class="line">    ... ...   </span><br><span class="line">    feeder = <span class="keyword">new</span> QueueFeeder(input, fetchQueues, threadCount * <span class="number">50</span>);   </span><br><span class="line">    <span class="comment">// feeder.setPriority((Thread.MAX_PRIORITY + Thread.NORM_PRIORITY) / 2);   </span></span><br><span class="line">    feeder.start();    <span class="comment">// 调用QueueFeeder的run方法</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="QueueFeeder"><a href="#QueueFeeder" class="headerlink" title="QueueFeeder"></a>QueueFeeder</h3><p>方法的前半部分初始化了一个QueueFeeder，QueueFeeder维护着一个FetchItemQueues类型的名为queues的队列，这个队列是主机名和它对应FetchItemQueue的映射，所有相同主机名的抓取项（FetchItem）放入相同主机名对应的FetchItemQueue中。 </p>
+<p>接着，feeder调用start方法启动QueueFeeder的线程：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// QueueFeeder中的run方法   </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">boolean</span> hasMore = <span class="keyword">true</span>;   <span class="comment">// reader中是否还有数据   </span></span><br><span class="line">    <span class="keyword">int</span> cnt = <span class="number">0</span>;   </span><br><span class="line">    <span class="keyword">while</span> (hasMore) &#123;   </span><br><span class="line">    <span class="keyword">int</span> feed = size - queues.getTotalSize();   <span class="comment">// 队列还有多少剩余空间   </span></span><br><span class="line">    <span class="keyword">if</span> (feed &lt;= <span class="number">0</span>) &#123;   </span><br><span class="line">    <span class="comment">// queues are full - spin-wait until they have some free space   </span></span><br><span class="line">    <span class="comment">// 队列满，等待   </span></span><br><span class="line">    <span class="keyword">try</span> &#123;   </span><br><span class="line">        Thread.sleep(<span class="number">1000</span>);   </span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;   </span><br><span class="line">    &#125;    </span><br><span class="line">    <span class="keyword">continue</span>;   </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  <span class="comment">// 队列有剩余空间，向其中添加FetchItem         LOG.debug("-feeding " + feed + " input urls ...");   </span></span><br><span class="line">        <span class="keyword">while</span> (feed &gt; <span class="number">0</span> &amp;&amp; hasMore) &#123;   </span><br><span class="line">            <span class="keyword">try</span> &#123;   </span><br><span class="line">                Text url = <span class="keyword">new</span> Text();   </span><br><span class="line">                CrawlDatum datum = <span class="keyword">new</span> CrawlDatum();                 hasMore = reader.next(url, datum);   <span class="comment">// next方法，如果成功读取了下一个&lt;url, datum&gt;，返回true，如果读到末尾，返回false   </span></span><br><span class="line">                <span class="keyword">if</span> (hasMore) &#123;   </span><br><span class="line">                    queues.addFetchItem(url, datum);                     cnt++;   </span><br><span class="line">                    feed--;   </span><br><span class="line">                &#125;   </span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;   </span><br><span class="line">                ... ...   </span><br><span class="line">                <span class="keyword">return</span>;   </span><br><span class="line">            &#125;   </span><br><span class="line">        ......   </span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>该线程的工作比较简单，就是检查队列是否未满，如果未满且输入中还有数据，则将数据添加到FetchItemQueue中。添加到队列的过程分两部进行，先添加到FetchItemQueues，再添加到FetchItemQueue中。 </p>
+<p>这里在说明一下根据主机进行映射的概念。如果传入fetch方法的parsing参数是true，则以ip + protocol作为queueId存入队列映射，否则以hostname + protocol作为queueId作为queueId存入映射。上面代码中的getTotalSize方法返回totalSize，这个变量是当前FetchItemQueue中队列的FetchItem的个数。 </p>
+<p>FetchItemQueues和FetchItemQueue中包含的内容和对应关系如下：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch1.png" alt></p>
+<p>QueueFeeder的run对应的流程图如下：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch2.png" alt></p>
+<h3 id="FetcherThread"><a href="#FetcherThread" class="headerlink" title="FetcherThread"></a>FetcherThread</h3><p>在启动了QueueFeeder的线程后，Fetcher类run方法的主线程继续执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; threadCount; i++) &#123; <span class="comment">// spawn threads   </span></span><br><span class="line">    <span class="keyword">new</span> FetcherThread(getConf()).start();   </span><br><span class="line">&#125;   </span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<p>它根据用户指定的爬行线程数，开启了threadCount个爬行线程抓取网页。其后，当当前活动线程数&gt;0时，就报告线程的状态。直到当前线程数为0时，run方法的主线程也退出。活跃线程数activeThreads是当前活跃的FetchThread的线程的个数。<br>      接下来就分析用于抓取网页的类FetcherThread，该类同样是Fetcher类的一个内部类，继承了Thread，继而可以使用多线程。Fetcher类的run方法中启动了FetchThread的线程，调用其中的run方法，下面对其进行分析。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;   </span><br><span class="line">    activeThreads.incrementAndGet(); <span class="comment">// count threads   </span></span><br><span class="line">    FetchItem fit = <span class="keyword">null</span>;   </span><br><span class="line">    <span class="keyword">try</span> &#123;   </span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;   </span><br><span class="line">            fit = fetchQueues.getFetchItem();  <span class="comment">// 使用Iterator从queues中取出第一个FetchItemQueue，再从queue中取出第一个FetchItem   </span></span><br><span class="line">            <span class="keyword">if</span> (fit == <span class="keyword">null</span>) &#123;   </span><br><span class="line">                <span class="keyword">if</span> (feeder.isAlive() ||fetchQueues.getTotalSize() &gt; <span class="number">0</span>) &#123;  <span class="comment">// queue没有准备好返回fetchitem，等待   </span></span><br><span class="line">                    LOG.debug(getName() + <span class="string">" spin-waiting ..."</span>);   </span><br><span class="line">                    <span class="comment">// spin-wait.   </span></span><br><span class="line">                    spinWaiting.incrementAndGet();</span><br><span class="line">                    <span class="keyword">try</span> &#123;   </span><br><span class="line">                        Thread.sleep(<span class="number">500</span>); <span class="comment">// 阻塞500ms后重新调度   </span></span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception e) &#123;   </span><br><span class="line">                    &#125;   </span><br><span class="line">                    spinWaiting.decrementAndGet();                      <span class="keyword">continue</span>;   </span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;<span class="comment">// 该线程的所有工作都已完成，退出   </span></span><br><span class="line">                           <span class="comment">// all done, finish this thread   </span></span><br><span class="line">                    <span class="keyword">return</span>;   </span><br><span class="line">                    &#125;   </span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<p>进入run方法后，首先为当前活跃线程数activeThreads加1，接下来进入一个死循环，进行网页的抓取。它首先调用getFetchItem方法，如果当前inProgress队列的大小&gt;=每台主机允许的并发爬行线程数，则返回null，否则从所有FetchItemQueue中取出一个已经准备好（已经超过爬行间隔时间）的FetchItem，并加入到inProgress队列中。如果该值为空，则有两种可能，一种是出于礼貌性，队列不能返回FetchItem，则线程阻塞500毫秒后继续请求。另外一种可能是当前线程要的所有工作都已完成，则线程退出。 </p>
+<p>注意，同一主机对应的FetchItemQueue拥有相同的爬行间隔时间时间（得到爬行间隔时间的方法见后面的分析），在该queue中的一个FetchItem被爬行后，会设置这个队列的下一次请求时间，只有超过这个时间的队列才能返回新的FetchItem。这样便实现了对同一个主机的礼貌性访问控制。 </p>
+<p>接下来又进入一个循环，循环的终止条件是达到最大重定向次数或者不允许重定向。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span> &#123;   </span><br><span class="line">    redirecting = <span class="keyword">false</span>;   </span><br><span class="line">    Protocol protocol = <span class="keyword">this</span>.protocolFactory.getProtocol(fit.url.toString());      </span><br><span class="line">    RobotRules rules = protocol.getRobotRules(fit.url, fit.datum);         <span class="comment">// 获取爬行规则    </span></span><br><span class="line"><span class="comment">// rules实际上是RobotRuleSet类的实例，该类实现了RobotRules接口   </span></span><br><span class="line">    <span class="keyword">if</span> (!rules.isAllowed(fit.u)) &#123;  <span class="comment">// unblock   </span></span><br><span class="line">        fetchQueues.finishFetchItem(fit, <span class="keyword">true</span>);   </span><br><span class="line">        <span class="keyword">if</span> (LOG.isDebugEnabled()) &#123;   </span><br><span class="line">            LOG.debug(<span class="string">"Denied by robots.txt: "</span>  + fit.url);   </span><br><span class="line">        &#125;   </span><br><span class="line">        output(fit.url, fit.datum, <span class="keyword">null</span>, ProtocolStatus.STATUS_ROBOTS_DENIED, CrawlDatum.STATUS_FETCH_GONE);   </span><br><span class="line">        <span class="keyword">continue</span>;   </span><br><span class="line">    &#125;   </span><br><span class="line">    <span class="keyword">if</span> (rules.getCrawlDelay() &gt; <span class="number">0</span>) &#123;   </span><br><span class="line">        <span class="keyword">if</span> (rules.getCrawlDelay() &gt; maxCrawlDelay) &#123;<span class="comment">// unblock   </span></span><br><span class="line">            fetchQueues.finishFetchItem(fit, <span class="keyword">true</span>);             output(fit.url, fit.datum, <span class="keyword">null</span>, ProtocolStatus.STATUS_ROBOTS_DENIED, CrawlDatum.STATUS_FETCH_GONE);   </span><br><span class="line">            <span class="keyword">continue</span>;   </span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;   </span><br><span class="line">            FetchItemQueue fiq = fetchQueues.getFetchItemQueue(fit.queueID);   </span><br><span class="line">            fiq.crawlDelay = rules.getCrawlDelay();         &#125;   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>首先根据要爬行的url确定其协议类型并初始化一个对应的Protocol对象，以下以http协议举例，则protocol初始化为org.apache.nutch.protocol包中的http类，其基类org.apache.nutch.protocol.http.api包中的HttpBase类。接着，生成一个RobotRule类型的对象，得到该url对应的站点的robot.txt文件，该文件中规定了爬虫的爬行限制。 </p>
+<p>如果不允许爬行，则调用finishFetchItem方法从inProgress集合中删除该fit。并设置该url对应datum的status为STATUS_FETCH_GONE，设置下一次爬行时间nextFetchTime。收集&lt;url, datum&gt;。 </p>
+<p>如果允许，则获取robot.txt中的规定的爬行间隔，如果大于配置文件中规定的最大爬行间隔，则跳过这个网页，调用finishFetchItem方法将这个FetchItem从inProgress队列中移出并报告一个错误，否则将这个FetchItem所在的主机队列FetchItemQueue的爬行间隔设为robot.txt中规定的值。 </p>
+<p>run方法继续执行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ProtocolOutput output = protocol.getProtocolOutput(fit.url, fit.datum);   </span><br><span class="line">ProtocolStatus status = output.getStatus();   </span><br><span class="line">Content content = output.getContent();   </span><br><span class="line">ParseStatus pstatus = <span class="keyword">null</span>;    </span><br><span class="line">fetchQueues.finishFetchItem(fit);</span><br></pre></td></tr></table></figure></p>
+<p>protocol对象调用HttpBase类中的getProtocolOutput方法，该方法再调用Http类中的getResponse方法使用socket获取所请求文件的内容。返回一个ProtocolOutput类的对象。这个类中包含了对应协议请求的输出，包括Content类的内容和ProtocolStatus类的协议状态。然后调用finishFetchItem方法将fit从inProgress队列中移出，解除对该主机队列的阻塞。 </p>
+<p>接着，通过协议状态码来进行下一步的工作。协议状态码是前面进行http请求获得响应后根据响应的内容填写的，包括WOULDBLOCK，SUCCESS等状态，每种状态处理的方式不同，以下介绍请求后成功获得一个网页的response之后的处理过程 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (status.getCode()) &#123;</span><br><span class="line">	<span class="keyword">case</span> ProtocolStatus.WOULDBLOCK:</span><br><span class="line">           ......</span><br><span class="line">	<span class="keyword">case</span> ProtocolStatus.SUCCESS: <span class="comment">// got a page</span></span><br><span class="line">	   pstatus = output(fit.url, fit.datum, content, status, CrawlDatum.STATUS_FETCH_SUCCESS);				        updateStatus(content.getContent().length);  <span class="comment">// 增加网页数量和字节数</span></span><br><span class="line">	    <span class="keyword">if</span> (pstatus != <span class="keyword">null</span> &amp;&amp; pstatus.isSuccess()&amp;&amp; pstatus.getMinorCode() == parseStatus.SUCCESS_REDIRECT) &#123;  </span><br><span class="line">		    String newUrl = pstatus.getMessage();</span><br><span class="line">		    <span class="keyword">int</span> refreshTime = Integer.valueOf(pstatus.getArgs()[<span class="number">1</span>]);</span><br><span class="line">			Text redirUrl = handleRedirect(	fit.url,fit.datum, urlString,	newUrl, refreshTime &lt; Fetcher.PERM_REFRESH_TIME,Fetcher.CONTENT_REDIR);</span><br><span class="line">			<span class="keyword">if</span> (redirUrl != <span class="keyword">null</span>) &#123;          </span><br><span class="line">			    CrawlDatum newDatum = <span class="keyword">new</span> CrawlDatum(CrawlDatum.STATUS_DB_UNFETCHED,	fit.datum.getFetchInterval(), fit.datum.getScore());</span><br><span class="line">				<span class="keyword">if</span> (reprUrl != <span class="keyword">null</span>) &#123;</span><br><span class="line">					newDatum.getMetaData().put(	Nutch.WRITABLE_REPR_URL_KEY, <span class="keyword">new</span> Text(reprUrl));	</span><br><span class="line">				&#125;</span><br><span class="line">				fit = FetchItem.create(redirUrl, newDatum, byIP);</span><br><span class="line">				<span class="keyword">if</span> (fit != <span class="keyword">null</span>) &#123;</span><br><span class="line">					FetchItemQueue fiq = fetchQueues.getFetchItemQueue(fit.queueID);	</span><br><span class="line">			        fiq.addInProgressFetchItem(fit);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;		<span class="comment">// stop redirecting</span></span><br><span class="line">					redirecting = <span class="keyword">false</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	    <span class="keyword">case</span>...:</span><br></pre></td></tr></table></figure>
+<p>首先，调用output方法，该方法做了以下几个工作：(1)向链接对应的datum写入STATUS_FETCH_SUCCESS状态和当前时间作为抓取时间。向content对应的metadata中写入segment_name_key，score_key，fetch_status_key各自对应的值，其中score_key对应的得分由ScoringFilter算得。(2) 如果配置了parse则进行解析，解析的结果返回为ParseResult类的对象。(3)收集&lt;url, crawldatum&gt;、&lt;url, content&gt;，其中content是未解析的内容以及收集&lt;url, 解析了的内容&gt;。(4) 从content的metadata中拷贝得分，并存入parseData的metadata中。 </p>
+<p>在output方法返回后，调用updateStatus增加当前爬行的网页数和字节数。如果经过解析，网页中有重定向链接，则将重定向的链接加入到FetchItemQueue中。<br>在当重定向次数大于规定次数或者不允许重定向时，退出循环。 </p>
+<p>最后，将当前活跃进程数减1。网页抓取线程结束。 </p>
+<h2 id="二、总结"><a href="#二、总结" class="headerlink" title="二、总结"></a>二、总结</h2><p>Fetcher采用了经典的生产者消费者模型，生产者是QueueFeeder，用于根据主机/协议对向FetchItemQueues中不断地添加待爬行的FetchItem，只要FetchItemQueues队列中还有空间并且有输入数据，就添加，否则阻塞。消费者自然是FetchThread，它负责抓取网页。爬虫总共的线程数由配置决定，默认值是10，还可以指定对于同一个主机队列最大的爬行线程数，它们之和不超过总共的线程数。每个主机队列的最大线程数决定了每个主机队列中inProgress队列的大小，出于礼貌性一般对于同一个主机，只采用一个线程爬行。当待爬行的全部网页被爬行完后，爬行线程退出。</p>
+<h4 id="Mapper的分析"><a href="#Mapper的分析" class="headerlink" title="Mapper的分析"></a>Mapper的分析</h4><p>在了结了Fetch阶段的整个流程后，我们不禁要问，在分布式的情况下，不同的task node是怎样实现避免爬行相同网站的呢？ </p>
+<p>这要从Generate阶段说起，回顾Generate的第2次MapReduce，在Mapper输出的时候是以相同主机名作为分发到Reducer的依据的，因此各个Reducer生成了若干个文件，每个文件对应自己处理的那个主机对应的&lt;url, crawldatum&gt;。在Fetcher的输入时，又不对文件进行分片，因此分到各个Mapper上的主机就不会重复，避免了重复爬行的情况。 </p>
+<p>Fetch阶段流程图<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-fetch3.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/12/23/Nutch/Nutch学习记录：Fetch/" data-id="cjtf6o95o00bg0fc5ofcimm5x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nutch/">Nutch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/29/Nutch/Nutch学习记录：Parse/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nutch学习记录：Parse
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/23/数据库/2017-04-02/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">数据库操作总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

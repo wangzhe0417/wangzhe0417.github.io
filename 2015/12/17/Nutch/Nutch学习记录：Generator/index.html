@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nutch学习记录：Generator | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Nutch学习记录：Generator 在Inject过后，程序返回到crawl的main方法中继续执行，接下来进入到一个循环，循环的终止条件是达到指定的爬行深度。在循环中依次进行generate和fetch两个操作，每次循环产生一个segment，位于crawl/segments下，以generate方法调用的时间作为这次循环产生目录的名称。首先分析Generate操作，generate操作有">
+<meta name="keywords" content="Nutch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nutch学习记录：Generator">
+<meta property="og:url" content="http://yoursite.com/2015/12/17/Nutch/Nutch学习记录：Generator/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Nutch学习记录：Generator 在Inject过后，程序返回到crawl的main方法中继续执行，接下来进入到一个循环，循环的终止条件是达到指定的爬行深度。在循环中依次进行generate和fetch两个操作，每次循环产生一个segment，位于crawl/segments下，以generate方法调用的时间作为这次循环产生目录的名称。首先分析Generate操作，generate操作有">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-Generator.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nutch学习记录：Generator">
+<meta name="twitter:description" content="#Nutch学习记录：Generator 在Inject过后，程序返回到crawl的main方法中继续执行，接下来进入到一个循环，循环的终止条件是达到指定的爬行深度。在循环中依次进行generate和fetch两个操作，每次循环产生一个segment，位于crawl/segments下，以generate方法调用的时间作为这次循环产生目录的名称。首先分析Generate操作，generate操作有">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-Generator.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nutch/Nutch学习记录：Generator" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/17/Nutch/Nutch学习记录：Generator/" class="article-date">
+  <time datetime="2015-12-17T13:02:49.000Z" itemprop="datePublished">2015-12-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nutch/">Nutch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nutch学习记录：Generator
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Nutch学习记录：Generator</p>
+<p>在Inject过后，程序返回到crawl的main方法中继续执行，接下来进入到一个循环，循环的终止条件是达到指定的爬行深度。在循环中依次进行generate和fetch两个操作，每次循环产生一个segment，位于crawl/segments下，以generate方法调用的时间作为这次循环产生目录的名称。首先分析Generate操作，generate操作有三步MapReduce过程<br><a id="more"></a><br>Generator类位于org.apache.nutch.crawl中，其中的核心方法是public Path generate(Path dbDir, Path segments, int numLists, long topN, long curTime)方法，作用是根据链接得分，产生包含topN个链接的待爬行队列fethclist，并更新网页数据库。crawl正是调用了这个方法进入Generate阶段。其中各个参数的含义是： </p>
+<p>Path dbDir  ： crawldb的路径    </p>
+<p>Path segments ： segments的路径   </p>
+<p>int numLists  ： Reduce任务的数量 </p>
+<p>long topN  ：用户指定的TopN数量，即每轮爬行选择前TopN个URL加入到fetchlist中</p>
+<p>long curTime  ： 调用generate方法的时间</p>
+<p>上述方法代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Path <span class="title">generate</span><span class="params">(Path dbDir, Path segments, <span class="keyword">int</span> numLists, <span class="keyword">long</span> topN, <span class="keyword">long</span> curTime)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">  </span><br><span class="line">    JobConf job = <span class="keyword">new</span> NutchJob(getConf());   </span><br><span class="line">    <span class="keyword">boolean</span> filter = job.getBoolean(CRAWL_GENERATE_FILTER, <span class="keyword">true</span>);   </span><br><span class="line">    <span class="keyword">return</span> generate(dbDir, segments, numLists, topN, curTime, filter, <span class="keyword">false</span>);   </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>它通过配置文件读取是否要进行URL过滤，默认为过滤。然后调用generate(dbDir, segments, numLists, topN, curTime, filter, false)方法，这个方法是真正进行generate的地方，它产生了一个位于系统临时目录下的目录，命名为tempDir。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Path <span class="title">generate</span><span class="params">(Path dbDir, Path segments, <span class="keyword">int</span> numLists, <span class="keyword">long</span> topN, <span class="keyword">long</span> curTime, <span class="keyword">boolean</span> filter, <span class="keyword">boolean</span> force)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">... ...   </span><br><span class="line">	JobConf job = <span class="keyword">new</span> NutchJob(getConf());   </span><br><span class="line">    job.setJobName(<span class="string">"generate: select "</span> + segment);   </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> (numLists == -<span class="number">1</span>) &#123; <span class="comment">// for politeness make   </span></span><br><span class="line">     numLists = job.getNumMapTasks();   <span class="comment">// a partition per fetch task   </span></span><br><span class="line">                                            <span class="comment">// 获取Reduce任务的数量，默认是1   </span></span><br><span class="line">    &#125;   </span><br><span class="line">	<span class="keyword">if</span> (<span class="string">"local"</span>.equals(job.get(<span class="string">"mapred.job.tracker"</span>)) &amp;&amp; numLists != <span class="number">1</span>) &#123; <span class="comment">// 如果是local模式，则将reduce的数量置1   </span></span><br><span class="line">      <span class="comment">// override   </span></span><br><span class="line">      LOG.info(<span class="string">"Generator: jobtracker is 'local', generating exactly one partition."</span>);   </span><br><span class="line">     numLists = <span class="number">1</span>;   </span><br><span class="line">   &#125;   </span><br><span class="line">  ... ...   </span><br><span class="line">   FileInputFormat.addInputPath(job, <span class="keyword">new</span> Path(dbDir, CrawlDb.CURRENT_NAME));  <span class="comment">// crawl/crawldb/current   </span></span><br><span class="line">   job.setInputFormat(SequenceFileInputFormat.class);   </span><br><span class="line"> </span><br><span class="line">   job.setMapperClass(Selector.class);   </span><br><span class="line">   job.setPartitionerClass(Selector.class);   </span><br><span class="line">   job.setReducerClass(Selector.class);   </span><br><span class="line">  </span><br><span class="line">   FileOutputFormat.setOutputPath(job, tempDir);   </span><br><span class="line">   job.setOutputFormat(SequenceFileOutputFormat.class);   </span><br><span class="line">   job.setOutputKeyClass(FloatWritable.class);   </span><br><span class="line">   job.setOutputKeyComparatorClass(DecreasingFloatComparator.class);   </span><br><span class="line">   job.setOutputValueClass(SelectorEntry.class);   </span><br><span class="line">   <span class="keyword">try</span> &#123;   </span><br><span class="line">     JobClient.runJob(job);   </span><br><span class="line">   &#125; <span class="keyword">catch</span> (IOException e) &#123;   </span><br><span class="line">	 LockUtil.removeLockFile(fs, lock);   </span><br><span class="line">     <span class="keyword">throw</span> e;   </span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p> 程序首先对几个路径进行配置，然后获取Reducer的数量，如果hadoop当前的模式为local，则将Reducer的数量numLists设为1。</p>
+<h2 id="第1次MapReduce"><a href="#第1次MapReduce" class="headerlink" title="第1次MapReduce"></a>第1次MapReduce</h2><p>程序接下来将对第1个MapReduce任务进行配置。输入路径InputPath为当前的网页数据库（crawl/crawldb/current），输出路径为临时目录tempDir。Mapper、Partitioner、Reducer类都是Selector类。</p>
+<h3 id="Mapper阶段"><a href="#Mapper阶段" class="headerlink" title="Mapper阶段"></a>Mapper阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(Text key, CrawlDatum value, OutputCollector&lt;FloatWritable, SelectorEntry&gt; output, Reporter reporter)</span>   </span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">      Text url = key;   </span><br><span class="line">      <span class="keyword">if</span> (filter) &#123;   </span><br><span class="line">        <span class="comment">// If filtering is on don't generate URLs that don't pass URLFilters   </span></span><br><span class="line">        <span class="keyword">try</span> &#123;   </span><br><span class="line">           <span class="keyword">if</span> (filters.filter(url.toString()) == <span class="keyword">null</span>)   <span class="comment">// 过滤URL   </span></span><br><span class="line">           <span class="keyword">return</span>;   </span><br><span class="line">        &#125; <span class="keyword">catch</span> (URLFilterException e) &#123;   </span><br><span class="line">          <span class="keyword">if</span> (LOG.isWarnEnabled()) &#123;   </span><br><span class="line">            LOG.warn(<span class="string">"Couldn't filter url: "</span> + url + <span class="string">" ("</span> + e.getMessage() + <span class="string">")"</span>);   </span><br><span class="line">        &#125;   </span><br><span class="line">       &#125;   </span><br><span class="line">     &#125;   </span><br><span class="line">     CrawlDatum crawlDatum = value;   </span><br><span class="line">  </span><br><span class="line">     <span class="comment">// check fetch schedule   </span></span><br><span class="line">     <span class="keyword">if</span> (!schedule.shouldFetch(url, crawlDatum, curTime)) &#123;  <span class="comment">// 默认情况下调用DefaultFetchSchedule继承的shouldFetch方法，   </span></span><br><span class="line">         <span class="comment">// 根据crawlDatum的时间和当前时间相比，如果比当前时间更新，则   </span></span><br><span class="line">         <span class="comment">// 可以考虑加入fetch list   </span></span><br><span class="line">         <span class="comment">// "当前时间"可以进行配置，不一定就是实际中的当前时间   </span></span><br><span class="line">        LOG.debug(<span class="string">"-shouldFetch rejected '"</span> + url+ <span class="string">"', fetchTime="</span> + crawlDatum.getFetchTime() + <span class="string">", curTime="</span> + curTime);   </span><br><span class="line">        <span class="keyword">return</span>;   </span><br><span class="line">     &#125;   </span><br><span class="line">  </span><br><span class="line">     LongWritable oldGenTime = (LongWritable)crawlDatum.getMetaData().get(Nutch.WRITABLE_GENERATE_TIME_KEY);   </span><br><span class="line">     <span class="keyword">if</span> (oldGenTime != <span class="keyword">null</span>) &#123; <span class="comment">// awaiting fetch &amp; update   </span></span><br><span class="line">       <span class="keyword">if</span> (oldGenTime.get() + genDelay &gt; curTime) <span class="comment">// still wait for update   </span></span><br><span class="line">         <span class="keyword">return</span>;   </span><br><span class="line">     &#125;   </span><br><span class="line">     <span class="keyword">float</span> sort = <span class="number">1.0f</span>;   </span><br><span class="line">     <span class="keyword">try</span> &#123;   </span><br><span class="line">       sort = scfilters.generatorSortValue((Text)key, crawlDatum, sort);  <span class="comment">// 根据当前使用的ScoringFilter计算该URL在Generate阶段的得分   </span></span><br><span class="line">     &#125; <span class="keyword">catch</span> (ScoringFilterException sfe) &#123;   </span><br><span class="line">       <span class="keyword">if</span> (LOG.isWarnEnabled()) &#123;   </span><br><span class="line">         LOG.warn(<span class="string">"Couldn't filter generatorSortValue for "</span> + key + <span class="string">": "</span> + sfe);   </span><br><span class="line">       &#125;   </span><br><span class="line">     &#125;   </span><br><span class="line">     <span class="comment">// sort by decreasing score, using DecreasingFloatComparator   </span></span><br><span class="line">     sortValue.set(sort);   </span><br><span class="line">     <span class="comment">// record generation time   </span></span><br><span class="line">     crawlDatum.getMetaData().put(Nutch.WRITABLE_GENERATE_TIME_KEY, genTime);   </span><br><span class="line">     entry.datum = crawlDatum;   </span><br><span class="line">     entry.url = (Text)key;   </span><br><span class="line">     output.collect(sortValue, entry);          <span class="comment">// invert for sort by score   </span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>map首先对输入的URL进行过滤，如果被过滤掉则返回，否则继续执行。接下来，调用shouldFetch方法通过对比当前时间和数据库中该链接的fetchtime属性的间隔来判断是否考虑抓取该链接，如果不到应该的时间间隔则不怕，但是如果到了，也不一定就抓取，还要看后面的处理。接下来通过调用ScoringFilter的generatorSortValue方法判断在Generate阶段的得分。并将这个得分作为键收集将datum和url封装进SelectorEntry类型的entry对象中，并将entry作为值收集。第1次Map后的结果就是&lt;sortValue, entry&gt;链接得分和它的信息对应的键值对。</p>
+<h3 id="Partitioner阶段"><a href="#Partitioner阶段" class="headerlink" title="Partitioner阶段"></a>Partitioner阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPartition</span><span class="params">(FloatWritable key, Writable value, <span class="keyword">int</span> numReduceTasks)</span> </span>&#123;   </span><br><span class="line">      <span class="keyword">return</span> hostPartitioner.getPartition(((SelectorEntry)value).url, key, numReduceTasks);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它根据url代表的主机名进行分区，将同一个主机上的URL交给同一个Reducer处理，这样体现了对该站点的礼貌性（politeness）。</p>
+<h3 id="Reducer阶段"><a href="#Reducer阶段" class="headerlink" title="Reducer阶段"></a>Reducer阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(FloatWritable key, Iterator&lt;SelectorEntry&gt; values, OutputCollector&lt;FloatWritable, SelectorEntry&gt; output, Reporter reporter)</span>   <span class="comment">// key是每个链接的得分，values是SelectorEntry类型的得分对应的所有链接   </span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">  </span><br><span class="line">      <span class="keyword">while</span> (values.hasNext() &amp;&amp; count &lt; limit) &#123;   </span><br><span class="line">        SelectorEntry entry = values.next();   </span><br><span class="line">        Text url = entry.url;           </span><br><span class="line">        String urlString = url.toString();           </span><br><span class="line">        URL u = <span class="keyword">null</span>;   </span><br><span class="line">           </span><br><span class="line">        <span class="comment">// skip bad urls, including empty and null urls   </span></span><br><span class="line">        <span class="keyword">try</span> &#123;   </span><br><span class="line">          u = <span class="keyword">new</span> URL(url.toString());   </span><br><span class="line">        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;   </span><br><span class="line">          LOG.info(<span class="string">"Bad protocol in url: "</span> + url.toString());   </span><br><span class="line">          <span class="keyword">continue</span>;   </span><br><span class="line">        &#125;   </span><br><span class="line">           </span><br><span class="line">        String host = u.getHost();   </span><br><span class="line">        host = host.toLowerCase();   </span><br><span class="line">        String hostname = host;   </span><br><span class="line">        ... ...   </span><br><span class="line">        <span class="keyword">try</span> &#123;   </span><br><span class="line">          urlString = normalizers.normalize(urlString, URLNormalizers.SCOPE_GENERATE_HOST_COUNT);   </span><br><span class="line">          host = <span class="keyword">new</span> URL(urlString).getHost();   </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;   </span><br><span class="line">          LOG.warn(<span class="string">"Malformed URL: '"</span> + urlString + <span class="string">"', skipping ("</span> + StringUtils.stringifyException(e) + <span class="string">")"</span>);   </span><br><span class="line">          <span class="keyword">continue</span>;   </span><br><span class="line">        &#125;   </span><br><span class="line">           </span><br><span class="line">        <span class="comment">// only filter if we are counting hosts   </span></span><br><span class="line"><span class="comment">// 对同一个host，产生url的最大个数，通过配置文件获得，如果为-1，则没有限// 制   </span></span><br><span class="line">        <span class="keyword">if</span> (maxPerHost &gt; <span class="number">0</span>) &#123;    </span><br><span class="line">             </span><br><span class="line">          IntWritable hostCount = hostCounts.get(host);   </span><br><span class="line">          <span class="keyword">if</span> (hostCount == <span class="keyword">null</span>) &#123;   </span><br><span class="line">            hostCount = <span class="keyword">new</span> IntWritable();   </span><br><span class="line">            hostCounts.put(host, hostCount);   </span><br><span class="line">          &#125;     </span><br><span class="line">          <span class="comment">// increment hostCount   </span></span><br><span class="line">          hostCount.set(hostCount.get() + <span class="number">1</span>);     </span><br><span class="line">          <span class="comment">// skip URL if above the limit per host.   </span></span><br><span class="line">          <span class="keyword">if</span> (hostCount.get() &gt; maxPerHost) &#123;   </span><br><span class="line">            <span class="keyword">if</span> (hostCount.get() == maxPerHost + <span class="number">1</span>) &#123;   </span><br><span class="line">              <span class="comment">// remember the raw hostname that is maxed out   </span></span><br><span class="line">              maxedHosts.add(hostname);   </span><br><span class="line">              <span class="keyword">if</span> (LOG.isInfoEnabled()) &#123;   </span><br><span class="line">                LOG.info(<span class="string">"Host "</span> + host + <span class="string">" has more than "</span> + maxPerHost + <span class="string">" URLs."</span> + <span class="string">" Skipping additional."</span>);   </span><br><span class="line">              &#125;   </span><br><span class="line">            &#125;   </span><br><span class="line">            <span class="keyword">continue</span>;   </span><br><span class="line">          &#125;   </span><br><span class="line">        &#125;   </span><br><span class="line">        output.collect(key, entry);   </span><br><span class="line">        <span class="comment">// Count is incremented only when we keep the URL   </span></span><br><span class="line">        <span class="comment">// maxPerHost may cause us to skip it.   </span></span><br><span class="line">        count++;   </span><br><span class="line">      &#125;   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>limit是每个Reducer最大需要处理的链接的数量，由limit = job.getLong(CRAWL_TOP_N,Long.MAX_VALUE)/job.getNumReduceTasks()得到，也就是说，是由topN/Reducer的数量决定的。只要每个Reducer没有达到这个最大限度，就从输入的value中取出链接。如果用户配置了generate.max.per.host属性并设置为正值，则会限制同一个host中产生的链接数。程序会过滤掉超过指定数目的属于同一主机的URL。reduce方法最终收集通过过滤，且符合数量要求的&lt;sortScore, selectorEntry&gt;键值对。<br>由于每次收集的键值对的数量是受limit限制的，而且reduce输入的value又是根据链接的得分值从高到低排序的，所以当达到limit的限制时，低分的url就被略掉了。</p>
+<p>第1次MapReduce任务的输出还是以&lt;得分，链接信息&gt;的形式保存的。</p>
+<h2 id="第2次MapReduce"><a href="#第2次MapReduce" class="headerlink" title="第2次MapReduce"></a>第2次MapReduce</h2><p>在进行第1次MapReduce后，程序返回generate方法中，并进行第2次MapReduce：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">... ...   </span><br><span class="line">job = <span class="keyword">new</span> NutchJob(getConf());   </span><br><span class="line">   job.setJobName(<span class="string">"generate: partition "</span> + segment);          </span><br><span class="line">   job.setInt(<span class="string">"partition.url.by.host.seed"</span>, <span class="keyword">new</span> Random().nextInt());   </span><br><span class="line"> </span><br><span class="line">   FileInputFormat.addInputPath(job, tempDir);   </span><br><span class="line">   job.setInputFormat(SequenceFileInputFormat.class);   </span><br><span class="line"> </span><br><span class="line">   job.setMapperClass(SelectorInverseMapper.class);   </span><br><span class="line">   job.setMapOutputKeyClass(Text.class);   </span><br><span class="line">   job.setMapOutputValueClass(SelectorEntry.class);   </span><br><span class="line">   job.setPartitionerClass(PartitionUrlByHost.class);   </span><br><span class="line">   job.setReducerClass(PartitionReducer.class);   </span><br><span class="line">   job.setNumReduceTasks(numLists);   </span><br><span class="line">      </span><br><span class="line"><span class="comment">// output是crawl/segments/yyyyMMddHHmmss/crawl_generate   </span></span><br><span class="line">FileOutputFormat.setOutputPath(job, output);</span><br><span class="line">job.setOutputFormat(SequenceFileOutputFormat.class);   </span><br><span class="line">   job.setOutputKeyClass(Text.class);   </span><br><span class="line">   job.setOutputValueClass(CrawlDatum.class);   </span><br><span class="line">   job.setOutputKeyComparatorClass(HashComparator.class);</span><br></pre></td></tr></table></figure>
+<p>此次MapReduce的输入是第一次MapReduce输出到的临时文件，输出路径是segment/目录下的crawl_generate。</p>
+<h3 id="Mapper阶段-1"><a href="#Mapper阶段-1" class="headerlink" title="Mapper阶段"></a>Mapper阶段</h3><p>Mapper类是SelectorInverseMapper<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SelectorInverseMapper</span> <span class="keyword">extends</span> <span class="title">MapReduceBase</span> <span class="keyword">implements</span> <span class="title">Mapper</span>&lt;<span class="title">FloatWritable</span>, <span class="title">SelectorEntry</span>, <span class="title">Text</span>, <span class="title">SelectorEntry</span>&gt; </span>&#123;   </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(FloatWritable key, SelectorEntry value, OutputCollector&lt;Text, SelectorEntry&gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">      SelectorEntry entry = (SelectorEntry)value;   </span><br><span class="line">      output.collect(entry.url, entry);   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> map方法的作用是将第一次MapReduce输出的以&lt;链接得分，链接信息&gt;为形式的文件转变为&lt;url, 链接信息&gt;形式的文件，以URL作为键值，以便Reducer进行处理。</p>
+<p>Partitioner以url对应主机名的哈希值作为分发到Reducer的依据</p>
+<h3 id="Reducer阶段-1"><a href="#Reducer阶段-1" class="headerlink" title="Reducer阶段"></a>Reducer阶段</h3><p>Reducer采用PartitionReducer类<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">PartitionReducer</span> <span class="keyword">extends</span> <span class="title">MapReduceBase</span>   </span></span><br><span class="line"><span class="class">      <span class="keyword">implements</span> <span class="title">Reducer</span>&lt;<span class="title">Text</span>, <span class="title">SelectorEntry</span>, <span class="title">Text</span>, <span class="title">CrawlDatum</span>&gt; </span>&#123;   </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterator&lt;SelectorEntry&gt; values, OutputCollector&lt;Text, CrawlDatum&gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">      <span class="keyword">while</span> (values.hasNext()) &#123;   </span><br><span class="line">        SelectorEntry entry = values.next();   </span><br><span class="line">        output.collect(entry.url, entry.datum);   </span><br><span class="line">      &#125;   </span><br><span class="line">    &#125;       </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Reducer的作用也十分简单，就是将Mapper的输出进一步转化，形成crawlDb中数据的保存形式&lt;url, crawldatum&gt;。之所以将&lt;sortScore, selectorEntry&gt;到&lt;url, crawldatum&gt;的转换分两步进行而不全都放在Map阶段是因为转化需要将同一个主机上的链接交给同一个Reducer进行处理。</p>
+<p>crawl_generate中包含的链接就是待爬行队列fetch list。</p>
+<h2 id="第3次MapReduce"><a href="#第3次MapReduce" class="headerlink" title="第3次MapReduce"></a>第3次MapReduce</h2><p>在第二次MapReduce执行后，紧接着进行第三次MapReduce任务，这次的目的是更新tempDir中的generate时间信息，并输出到tempDir2中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Path tempDir2 = <span class="keyword">new</span> Path(getConf().get(<span class="string">"mapred.temp.dir"</span>, <span class="string">"."</span>) + <span class="string">"/generate-temp-"</span>+ System.currentTimeMillis());   </span><br><span class="line">   job = <span class="keyword">new</span> NutchJob(getConf());   </span><br><span class="line">   job.setJobName(<span class="string">"generate: updatedb "</span> + dbDir);   </span><br><span class="line">   job.setLong(Nutch.GENERATE_TIME_KEY, generateTime);   </span><br><span class="line">   FileInputFormat.addInputPath(job, tempDir);   </span><br><span class="line">   FileInputFormat.addInputPath(job, <span class="keyword">new</span> Path(dbDir, CrawlDb.CURRENT_NAME));  <span class="comment">// 两个InputPath   </span></span><br><span class="line">   job.setInputFormat(SequenceFileInputFormat.class);   </span><br><span class="line">   job.setMapperClass(CrawlDbUpdater.class);   </span><br><span class="line">   job.setReducerClass(CrawlDbUpdater.class);   </span><br><span class="line">   job.setOutputFormat(MapFileOutputFormat.class);   </span><br><span class="line">   job.setOutputKeyClass(Text.class);   </span><br><span class="line">   job.setOutputValueClass(CrawlDatum.class);   </span><br><span class="line">   FileOutputFormat.setOutputPath(job, tempDir2);</span><br></pre></td></tr></table></figure>
+<p>此次MapReduce以第一次MapReduce的输出tmpDir（里面存放着&lt;sortScore，selectorEntry&gt;形式的信息）和当前的网页数据库crawl/crawldb/current两个路径为输入，Mapper和Reducer都在CrawlDbUpdater中。 </p>
+<h3 id="Mapper阶段-2"><a href="#Mapper阶段-2" class="headerlink" title="Mapper阶段"></a>Mapper阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(WritableComparable key, Writable value, OutputCollector&lt;Text, CrawlDatum&gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">      <span class="keyword">if</span> (key <span class="keyword">instanceof</span> FloatWritable) &#123; <span class="comment">// tempDir source  key是得分，value是该得分对应的所有selector entry   </span></span><br><span class="line">        SelectorEntry se = (SelectorEntry)value;   </span><br><span class="line">        output.collect(se.url, se.datum);   </span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;   </span><br><span class="line">        output.collect((Text)key, (CrawlDatum)value);   <span class="comment">// key是URL，value是datum   </span></span><br><span class="line">      &#125;   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>它将两个输入路径中的不同数据形式统一为&lt;url, crawldatum&gt;的形式。</p>
+<h3 id="Reducer阶段-2"><a href="#Reducer阶段-2" class="headerlink" title="Reducer阶段"></a>Reducer阶段</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterator&lt;CrawlDatum&gt; values, OutputCollector&lt;Text, CrawlDatum&gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;   </span><br><span class="line">      <span class="keyword">while</span> (values.hasNext()) &#123;   </span><br><span class="line">        CrawlDatum val = values.next();   </span><br><span class="line">        <span class="keyword">if</span> (val.getMetaData().containsKey(Nutch.WRITABLE_GENERATE_TIME_KEY)) &#123;   </span><br><span class="line">          LongWritable gt = (LongWritable)val.getMetaData().get(Nutch.WRITABLE_GENERATE_TIME_KEY);   </span><br><span class="line">          genTime.set(gt.get());   </span><br><span class="line">          <span class="keyword">if</span> (genTime.get() != generateTime) &#123;   </span><br><span class="line">            orig.set(val);   </span><br><span class="line">            genTime.set(<span class="number">0L</span>);   </span><br><span class="line">            <span class="keyword">continue</span>;   </span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;   </span><br><span class="line">            orig.set(val);   </span><br><span class="line">          &#125;   </span><br><span class="line">       &#125;   </span><br><span class="line">      <span class="keyword">if</span> (genTime.get() != <span class="number">0L</span>) &#123;   </span><br><span class="line">         orig.getMetaData().put(Nutch.WRITABLE_GENERATE_TIME_KEY, genTime);   </span><br><span class="line">      &#125;   </span><br><span class="line">      output.collect(key, orig);   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p> Reduce任务的功能是将输入的&lt;url, datum&gt;中的datum的generate时间进行更新后，输出&lt;url, datum&gt;，此时的输出目录tempDir2就是最新的网页数据库。 </p>
+<p>在第三次MapReduce执行后，generate方法将tempDir2命名为当前的网页数据库，删除旧的crawlDb，返回segment对象。Generate阶段执行完毕。 </p>
+<p>这一阶段的数据流程图如下：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/Nutch-Generator.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/12/17/Nutch/Nutch学习记录：Generator/" data-id="cjtf6o95n00bc0fc59dt1h39h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nutch/">Nutch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/23/数据库/数据库操作总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数据库操作总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/11/Nutch/Nutch学习记录：Injector/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nutch学习记录：Injector</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

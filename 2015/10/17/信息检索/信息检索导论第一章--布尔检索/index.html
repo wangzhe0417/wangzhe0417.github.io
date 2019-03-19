@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>信息检索导论第一章－－布尔检索 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="信息检索导论第一章–布尔检索一、信息检索概述信息检索信息检索是从大规模非结构化数据（通常是文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。">
+<meta name="keywords" content="信息检索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息检索导论第一章－－布尔检索">
+<meta property="og:url" content="http://yoursite.com/2015/10/17/信息检索/信息检索导论第一章--布尔检索/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="信息检索导论第一章–布尔检索一、信息检索概述信息检索信息检索是从大规模非结构化数据（通常是文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A01.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A02.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A03.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A04.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A05.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信息检索导论第一章－－布尔检索">
+<meta name="twitter:description" content="信息检索导论第一章–布尔检索一、信息检索概述信息检索信息检索是从大规模非结构化数据（通常是文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-信息检索/信息检索导论第一章--布尔检索" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/17/信息检索/信息检索导论第一章--布尔检索/" class="article-date">
+  <time datetime="2015-10-17T08:06:16.000Z" itemprop="datePublished">2015-10-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/信息检索/">信息检索</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      信息检索导论第一章－－布尔检索
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="信息检索导论第一章–布尔检索"><a href="#信息检索导论第一章–布尔检索" class="headerlink" title="信息检索导论第一章–布尔检索"></a>信息检索导论第一章–布尔检索</h1><h2 id="一、信息检索概述"><a href="#一、信息检索概述" class="headerlink" title="一、信息检索概述"></a>一、信息检索概述</h2><p><strong>信息检索</strong><br><em>信息检索</em>是从大规模非结构化数据（通常是文本）的集合（通常保存在计算机上）中找出满足用户信息需求的资料（通常是文档）的过程。</p>
+<a id="more"></a>
+<p><strong>数据的类型</strong></p>
+<ul>
+<li>结构化数据：指具有固定格式或有限长度的数据,如数据库,元数据等。</li>
+<li>非结构化数据(全文数据)：指不定长或无固定格式的数据,如邮件,word 文档等自有文本。</li>
+<li>半结构化数据：如 XML,HTML 等,当根据需要可按结构化 数据来处理,也可抽取出纯文本按非结构化数据来处理。</li>
+</ul>
+<p><strong>传统信息检索</strong>与<strong>现代信息检索</strong><br><em>传统信息检索</em>主要关注非结构化、半结构化数据。<br><em>现代信息检索</em>关注非结构和半结构化数据的同时也处理结构化数据。</p>
+<h2 id="二、倒排索引"><a href="#二、倒排索引" class="headerlink" title="二、倒排索引"></a>二、倒排索引</h2><p><strong>顺序扫描：</strong>这种现行扫描是一种最简单的计算机文档检索方式。这个过程通常称为 grepping，它来自于Unix下的一个文本扫描命令grep。<br>顺序扫描的不足：</p>
+<ul>
+<li>速度慢(特别是大型文档集)</li>
+<li>有时我们需要更灵活的匹配方式。比如，在 grep 命令下不能支持诸如 Romans NEAR countrymen之类的查询，这里的 NEAR操作符的定义可能为“5个词之内” 或者“同一句子中”。</li>
+<li>不支持检索结果的排序(即只返回较好的结果) </li>
+</ul>
+<p>词项－文档关联矩阵<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A01.png" alt><br>词项—文档关联矩阵，其中每行表示一个词，每列表示一个剧本。当词t在剧本d中存在时，矩阵元素（t，d）的值为 1，否则为 0</p>
+<blockquote>
+<p>为响应查询 Brutus AND Caesar AND NOT Calpurnia，我们分别取出 Brutus、Caesar 及Calpumia对应的行向量，并对 Calpumia 对应的向量求反，然后进行基于位的与操作，得到： 110100 AND 110111 AND 101111 = 100100 </p>
+</blockquote>
+<p>词项－文档关联矩阵是一种高度稀疏的矩阵，因此仅仅保存其非零位置更好。因此引入<br><code>倒排索引</code>的概念。</p>
+<h3 id="1、倒排索引的构建"><a href="#1、倒排索引的构建" class="headerlink" title="1、倒排索引的构建"></a>1、倒排索引的构建</h3><ol>
+<li>对每个词项t, 记录所有包含t的文档，建立词条序列&lt;词条，docID&gt;二元组<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A02.png" alt></li>
+<li>对词项、文档排序。按词项排序，然后每个词项按docID排序<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A03.png" alt></li>
+<li>合并词项，并常记录文档频率df（对每个词项t, 记录所有包含t的文档数目）<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A04.png" alt></li>
+</ol>
+<h2 id="三、布尔查询处理"><a href="#三、布尔查询处理" class="headerlink" title="三、布尔查询处理"></a>三、布尔查询处理</h2><h3 id="1、AND查询"><a href="#1、AND查询" class="headerlink" title="1、AND查询"></a>1、AND查询</h3><p>考虑查询Brutus AND Caesar：</p>
+<ul>
+<li>在词典中定位 Brutus<ul>
+<li>返回对应倒排记录表(对应的docID)</li>
+</ul>
+</li>
+<li>在词典中定位Caesar<ul>
+<li>再返回对应倒排记录表</li>
+</ul>
+</li>
+<li>合并(Merge)两个倒排记录表，即求交集 <img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%B8%80%E7%AB%A05.png" alt><blockquote>
+<p><strong>合并过程：</strong><br>每个倒排记录表都有一个定位指针，两个指针同时从前往后扫描, 每次比较当前指针对应倒排记录，然后移动某个或两个指针。合并时间为两个表长之和的线性时间<br>假定表长分别为x 和y, 那么上述合并算法的复杂度为 O(x+y)</p>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(operator.equals(<span class="string">"AND"</span>))&#123;</span><br><span class="line">	<span class="keyword">if</span>(tokenList1.size() == <span class="number">0</span> || tokenList2.size() == <span class="number">0</span>)&#123;</span><br><span class="line">		System.out.println(<span class="string">"There is no Document both contain "</span> + token1 +<span class="string">" and "</span> + token2);</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(i &lt; tokenList1.size() &amp;&amp; j &lt; tokenList2.size())&#123;</span><br><span class="line">		<span class="keyword">if</span>(tokenList1.get(i) == tokenList2.get(j))&#123;</span><br><span class="line">			result.add(tokenList1.get(i));</span><br><span class="line">			i ++;</span><br><span class="line">			j ++;</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &lt; tokenList2.get(j))&#123;</span><br><span class="line">			i ++;</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &gt; tokenList2.get(j))&#123;</span><br><span class="line">			j ++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	System.out.print(<span class="string">"The Document both contain "</span> + token1 + <span class="string">" and "</span> + token2 +<span class="string">": "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2、OR查询"><a href="#2、OR查询" class="headerlink" title="2、OR查询"></a>2、OR查询</h3><p>考虑查询Brutus OR Caesar：</p>
+<ul>
+<li>在词典中定位 Brutus<ul>
+<li>返回对应倒排记录表(对应的docID)</li>
+</ul>
+</li>
+<li>在词典中定位Caesar<ul>
+<li>再返回对应倒排记录表</li>
+</ul>
+</li>
+<li>对两个倒排记录表求并集</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(operator.equals(<span class="string">"OR"</span>))&#123;</span><br><span class="line">	<span class="keyword">if</span>((tokenList1.size() == <span class="number">0</span> ) &amp;&amp; (tokenList2.size() == <span class="number">0</span>))&#123;</span><br><span class="line">		System.out.println(<span class="string">"There is no Document contain "</span> + token1 + <span class="string">" or "</span> + token2);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() == <span class="number">0</span>) &amp;&amp;(tokenList2.size() != <span class="number">0</span>))&#123;</span><br><span class="line">		result.addAll(tokenList2);</span><br><span class="line">		System.out.println(<span class="string">"The Document contain "</span> + token1 + <span class="string">" or "</span> + token2 + <span class="string">": "</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() != <span class="number">0</span>) &amp;&amp;(tokenList2.size() == <span class="number">0</span>))&#123;</span><br><span class="line">		result.addAll(tokenList1);</span><br><span class="line">		System.out.println(<span class="string">"The Document contain "</span> + token1 + <span class="string">" or "</span> + token2 + <span class="string">": "</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() != <span class="number">0</span>) &amp;&amp;(tokenList2.size() != <span class="number">0</span>))&#123;</span><br><span class="line">		<span class="keyword">while</span>(i &lt; tokenList1.get(i) &amp;&amp; j &lt; tokenList2.size())&#123;</span><br><span class="line">		    <span class="keyword">if</span>(tokenList1.get(i) == tokenList2.get(j))&#123;</span><br><span class="line">				result.add(tokenList1.get(i));</span><br><span class="line">				i ++;</span><br><span class="line">				j ++;</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &lt; tokenList2.get(j))&#123;</span><br><span class="line">				result.add(tokenList1.get(i));</span><br><span class="line">				i ++;</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &gt; tokenList2.get(j))&#123;</span><br><span class="line">				result.add(tokenList1.get(j));</span><br><span class="line">				j ++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"The Document contain "</span> + token1 + <span class="string">" or "</span> + token2 + <span class="string">": "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3、NOT查询"><a href="#3、NOT查询" class="headerlink" title="3、NOT查询"></a>3、NOT查询</h3><p>考虑查询NOT Brutus：</p>
+<ul>
+<li>在词典中定位 Brutus<ul>
+<li>返回所有不包含Brutus的倒排记录表(对应的docID)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(operator.equals(<span class="string">"NOT"</span>))&#123;</span><br><span class="line">	<span class="keyword">if</span>((tokenList1.size() == <span class="number">0</span> ) &amp;&amp; (tokenList2.size() == <span class="number">0</span>))&#123;</span><br><span class="line">		System.out.println(<span class="string">"There is no Document contain "</span> + token1 + <span class="string">" not "</span> + token2);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() == <span class="number">0</span>) &amp;&amp;(tokenList2.size() != <span class="number">0</span>))&#123;</span><br><span class="line">		System.out.println(<span class="string">"There is no Document contain "</span> + token1 + <span class="string">" not "</span> + token2);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() != <span class="number">0</span>) &amp;&amp;(tokenList2.size() == <span class="number">0</span>))&#123;</span><br><span class="line">		result.addAll(tokenList1);</span><br><span class="line">		System.out.println(<span class="string">"The Document contain "</span> + token1 + <span class="string">" not "</span> + token2 + <span class="string">": "</span>);</span><br><span class="line">	&#125;<span class="keyword">else</span> <span class="keyword">if</span>((tokenList1.size() != <span class="number">0</span>) &amp;&amp;(tokenList2.size() != <span class="number">0</span>))&#123;</span><br><span class="line">		<span class="keyword">while</span>(i &lt; tokenList1.get(i) &amp;&amp; j &lt; tokenList2.size())&#123;</span><br><span class="line">			<span class="keyword">if</span>(tokenList1.get(i) == tokenList2.get(j))&#123;</span><br><span class="line">				i ++;</span><br><span class="line">				j ++;</span><br><span class="line">		    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &lt; tokenList2.get(j))&#123;</span><br><span class="line">				result.add(tokenList1.get(i));</span><br><span class="line">				i ++;</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span>(tokenList1.get(i) &gt; tokenList2.get(j))&#123;</span><br><span class="line">				j ++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"The Document contain "</span> + token1 + <span class="string">" not "</span> + token2 + <span class="string">": "</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4、布尔检索的优缺点"><a href="#4、布尔检索的优缺点" class="headerlink" title="4、布尔检索的优缺点"></a>4、布尔检索的优缺点</h3><p>优点：构建简单、常用</p>
+<p>缺点：</p>
+<ol>
+<li>布尔查询构建复杂，不适合普通用户。构建不当，检索结果过多或者过少</li>
+<li>没有充分利用词项在文档中的词项频率(term frequency, tf)信息</li>
+<li>不能对检索结果进行排序</li>
+</ol>
+<h3 id="5、通用的查询优化策略"><a href="#5、通用的查询优化策略" class="headerlink" title="5、通用的查询优化策略"></a>5、通用的查询优化策略</h3><p>每个布尔表达式都能转换成下述形式(合取范式)</p>
+<blockquote>
+<p>(madding OR crowd) AND (ignoble OR strife) AND (killed OR slain)</p>
+</blockquote>
+<p>通用的查询优化策略  （词典中保存文档频率df的一个充分理由）</p>
+<ul>
+<li>获得每个词项的df</li>
+<li>(保守)通过将词项的df相加，估计每个OR表达式对应的倒排记录表的大小</li>
+<li>按照上述估计从小到大依次处理每个OR表达式</li>
+</ul>
+<blockquote>
+<p>反例：[1,2,3,4] and [1,2,3,4] and [5,6,7,8,9]      4+4&gt;4</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/10/17/信息检索/信息检索导论第一章--布尔检索/" data-id="cjtf6o92z004t0fc5mmpqlwhe" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信息检索/">信息检索</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/26/信息检索/信息检索导论第二章--词项词典及倒排记录表/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          信息检索导论第二章－－词项词典及倒排记录表
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/09/26/Geek/ubuntu设置mentohust开机自动登录校园网/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ubuntu设置mentohust开机自动登录校园网</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

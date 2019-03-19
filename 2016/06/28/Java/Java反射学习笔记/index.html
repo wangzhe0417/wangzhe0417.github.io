@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Java反射学习笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Java反射学习笔记 Class类万事万物皆对象，但是在Java中有两样不是对象  静态的成员：静态成员不是属于对象，是属于类的。 普通的数据类型：普通的数据类型有封装类可以将普通数据类型封装为对象。  类是谁的对象？类是对象，是java.lang.Class类的实例对象。">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java反射学习笔记">
+<meta property="og:url" content="http://yoursite.com/2016/06/28/Java/Java反射学习笔记/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Java反射学习笔记 Class类万事万物皆对象，但是在Java中有两样不是对象  静态的成员：静态成员不是属于对象，是属于类的。 普通的数据类型：普通的数据类型有封装类可以将普通数据类型封装为对象。  类是谁的对象？类是对象，是java.lang.Class类的实例对象。">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java反射学习笔记">
+<meta name="twitter:description" content="#Java反射学习笔记 Class类万事万物皆对象，但是在Java中有两样不是对象  静态的成员：静态成员不是属于对象，是属于类的。 普通的数据类型：普通的数据类型有封装类可以将普通数据类型封装为对象。  类是谁的对象？类是对象，是java.lang.Class类的实例对象。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java/Java反射学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/28/Java/Java反射学习笔记/" class="article-date">
+  <time datetime="2016-06-28T08:06:13.000Z" itemprop="datePublished">2016-06-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java反射学习笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Java反射学习笔记</p>
+<h2 id="Class类"><a href="#Class类" class="headerlink" title="Class类"></a>Class类</h2><p>万事万物皆对象，但是在Java中有两样不是对象</p>
+<ol>
+<li>静态的成员：静态成员不是属于对象，是属于类的。</li>
+<li>普通的数据类型：普通的数据类型有封装类可以将普通数据类型封装为对象。</li>
+</ol>
+<p>类是谁的对象？<br>类是对象，是java.lang.Class类的实例对象。<br><a id="more"></a><br>任何一个类都是Class的实例对象，Class类的实例对象有三种表示方法：</p>
+<ol>
+<li>通过 类.class，可以获得该类的类类型，等价于任何一个类都有一个隐含的静态成员变量class<br>Class t1 = Test.class;</li>
+<li>已知该类的对象，通过 类对象.getClass() 可以获得该类的类类型。<br>Class t2 = test1.getClass();</li>
+<li>通过 Class.forname(“类的全称”) 可以获得该类的类类型<br>Class t3 = Class.forName(“com.reflect.test”)</li>
+</ol>
+<blockquote>
+<p>可以通过类的类类型创建该类的对象实例<br>Test test = (Test)t1.newInstance();</p>
+</blockquote>
+<h2 id="动态加载类"><a href="#动态加载类" class="headerlink" title="动态加载类"></a>动态加载类</h2><p>编译时刻加载类是静态加载类，运行时刻加载类是动态加载类</p>
+<ul>
+<li>new 创建对象是静态加载类，在编译时刻就需要加载所有的可能使用到的类</li>
+<li>Class.forName(“类的全称”)不仅表示了类类型，还代表了动态加载类，在运行时刻加载</li>
+</ul>
+<blockquote>
+<p>功能性的类一般使用动态加载，并统一功能性接口（标准），并让功能性的类统一implements该接口，这样就不用重新编译,就可以动态的加新的功能。 这种方法一般可应用于软件在线升级，不需要删除软件重新编译。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//动态加载类，在运行时刻加载</span><br><span class="line">Class c = Class.forName（arg[0]）；</span><br><span class="line">//通过类类型，创建该类对象</span><br><span class="line">OfficeAble oa = (OfficeAble)c.newInstance();</span><br><span class="line">oa.start();</span><br><span class="line"></span><br><span class="line">//编写一个标准接口</span><br><span class="line">interface OfficeAble</span><br><span class="line">&#123;</span><br><span class="line">    public void start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//让word和EXCEL类实现oa接口</span><br><span class="line">class Excel implements OfficeAble</span><br><span class="line">&#123;</span><br><span class="line">    ····</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获取方法信息"><a href="#获取方法信息" class="headerlink" title="获取方法信息"></a>获取方法信息</h2><p>基本的数据类型，void关键字等都存在类类型<br>Class c = 基类.class （int,String,double,void等）</p>
+<p>Class类的基本API操作的</p>
+<ol>
+<li>class.getName();可以获取类的名称</li>
+<li>class.getSimpleName();不包含包名的类的名称</li>
+<li>class.getMethods();获取类的<code>public方法</code>集合，<code>包括继承来的</code></li>
+<li>class.getDeclaredMethods();获取的是所有该类<code>自己声明</code>的方法，<code>不问访问权限</code></li>
+</ol>
+<p>Method类提供了一些操作方法的方法</p>
+<ol>
+<li>Method.getName()得到方法的名称</li>
+<li>Method.getReturnType()得到该方法的返回值类型的类类型（class），如int.class String.class</li>
+<li>Method.getParameterTypes()获得参数列表类型的类类型数组class[]，如参数为(int,int)则得到(int.class ,int class)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class ClassUtil &#123;</span><br><span class="line">/**</span><br><span class="line">* 打印类的信息，包括类的成员函数、成员变量(只获取成员函数)</span><br><span class="line">* @param obj 该对象所属类的信息</span><br><span class="line">*/</span><br><span class="line">    public static void printClassMethodMessage(Object obj)&#123;</span><br><span class="line">    //要获取类的信息 首先要获取类的类类型</span><br><span class="line">    Class c = obj.getClass();//传递的是哪个子类的对象c就是该子类的类类型</span><br><span class="line">    //获取类的名称</span><br><span class="line">    System.out.println(&quot;类的名称是:&quot;+c.getName());</span><br><span class="line">    /*</span><br><span class="line">    * Method类，方法对象</span><br><span class="line">    * 一个成员方法就是一个Method对象</span><br><span class="line">    * getMethods()方法获取的是所有的public的函数，包括父类继承而来的</span><br><span class="line">    * getDeclaredMethods()获取的是所有该类自己声明的方法，不问访问权限（继承的就没有了）</span><br><span class="line">    */</span><br><span class="line">    Method[] ms = c.getMethods();//c.getDeclaredMethods()</span><br><span class="line">    for(int i = 0; i &lt; ms.length;i++)&#123;</span><br><span class="line">        //得到方法的返回值类型的类类型</span><br><span class="line">        Class returnType = ms[i].getReturnType();</span><br><span class="line">        System.out.print(returnType.getName()+&quot; &quot;);</span><br><span class="line">        //得到方法的名称</span><br><span class="line">        System.out.print(ms[i].getName()+&quot;(&quot;);</span><br><span class="line">        //获取参数类型---&gt;得到的是参数列表的类型的类类型</span><br><span class="line">        Class[] paramTypes = ms[i].getParameterTypes();</span><br><span class="line">        for (Class class1 : paramTypes) &#123;</span><br><span class="line">            System.out.print(class1.getName()+&quot;,&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;)&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="获取成员变量构造函数信息"><a href="#获取成员变量构造函数信息" class="headerlink" title="获取成员变量构造函数信息"></a>获取成员变量构造函数信息</h2><p>Field类封装了关于成员变量的操作</p>
+<ol>
+<li>getFields()方法获取的是所有的public的成员变量的信息</li>
+<li>getDeclaredFields()方法获取的是该类自己声明的成员变量的信息<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 成员变量也是对象</span><br><span class="line"> * java.lang.reflect.Field</span><br><span class="line"> * Field类封装了关于成员变量的操作</span><br><span class="line"> * getFields()方法获取的是所有的public的成员变量的信息</span><br><span class="line"> * getDeclaredFields()方法获取的是该类自己声明的成员变量的信息</span><br><span class="line"> */</span><br><span class="line">Class c = obj.getClass();</span><br><span class="line">Field[] fs = c.getFields();</span><br><span class="line">Field[] fs = c.getDeclaredFields();</span><br><span class="line">for (Field field : fs)&#123;</span><br><span class="line">    //得到成员变量的类型的类类型</span><br><span class="line">    Class fieldType = field.getType();</span><br><span class="line">    String typeName = fieldType.getName();</span><br><span class="line">    //得到成员变量的名字</span><br><span class="line">    String fieldName = field.getName();</span><br><span class="line">    System.out.println(typeName + &quot; &quot; + fieldName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Constructor类封装了构造函数的信息</p>
+<ol>
+<li>getConstructors()获取所有的public的构造函数</li>
+<li>getDeclaredConstructors()获取所有自己声明的构造函数(构造函数都是自己声明的，所以即得到了所有构造函数)<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> * 构造函数也是对象</span><br><span class="line"> * java.lang.Constructor</span><br><span class="line"> * Constructor类封装了构造函数的信息</span><br><span class="line"> * getConstructors()获取所有的public的构造函数</span><br><span class="line"> * getDeclaredConstructors()获取所有的构造函数</span><br><span class="line"> */</span><br><span class="line"> Class c = obj.getClass();</span><br><span class="line"> //Constructor[] cs = c.getConstructors();</span><br><span class="line"> Constructor[] cs = c.getDeclaredConstructors();</span><br><span class="line"> for(Constructor constructor : cs)&#123;</span><br><span class="line">    //获取构造函数的参数列表---&gt;得到的是参数列表的类类型</span><br><span class="line">    System.out.println(constructor.getName() + &quot;(&quot;;</span><br><span class="line">    Class[] paramTypes = constructor.getParameterTypes();</span><br><span class="line">    for(Class class1 : paramTypes)&#123;</span><br><span class="line">        System.out.print(class1.getName()+ &quot;,&quot; );</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.print(&quot;)&quot;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>Class类还有很多获取类的信息的方法，总之，想要获取类的信息，就一定要先获取类的类类型</p>
+</blockquote>
+<h2 id="方法反射的基本操作"><a href="#方法反射的基本操作" class="headerlink" title="方法反射的基本操作"></a>方法反射的基本操作</h2><p>获取方法：方法的名称和方法的参数列表才能唯一决定某个方法。<br>方法反射的操作：method.invoke(对象,参数列表);<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//1.获取一个方法就是获取类的信息，获取类的信息首先要获取类的类类型</span><br><span class="line">Test test1 = new Test();</span><br><span class="line">Class c = test1.getClass();</span><br><span class="line">/*</span><br><span class="line"> *2.获取方法 通过名称和参数列表来决定</span><br><span class="line"> * getMethod 获取的是public的方法</span><br><span class="line"> * getDelcaredMethod 获取的是自己声明的方法</span><br><span class="line"> */</span><br><span class="line">//Method m = c.getMethod(&quot;print&quot;, new Class[]&#123;int.class, int.class&#125;);</span><br><span class="line">Method m = c.getMethod(&quot;print&quot;, int.class, int.class);</span><br><span class="line"></span><br><span class="line">//方法的反射操作:用m对象来进行方法调用 和 test1.print调用效果完全相同</span><br><span class="line">//方法如果没有返回值返回null，有返回值返回具体的返回值</span><br><span class="line">m.invoke(test1, new Object[]&#123;10, 20&#125;);</span><br><span class="line">m.invoke(test1, 10, 20)</span><br></pre></td></tr></table></figure></p>
+<h2 id="通过反射了解集合泛型的本质"><a href="#通过反射了解集合泛型的本质" class="headerlink" title="通过反射了解集合泛型的本质"></a>通过反射了解集合泛型的本质</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ArrayList list1 = new ArrayList();</span><br><span class="line">ArrayList&lt;String&gt; list2 = new ArrayList&lt;String&gt;()</span><br><span class="line"></span><br><span class="line">Class c1 = list1.getClass();</span><br><span class="line">Class c2 = list2.getClass();</span><br><span class="line">System.out.println(c1 == c2);//True</span><br><span class="line">//反射的操作都是编译之后的操作</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line"> * c1==c2结果返回true说明编译之后集合的泛型失去泛型化的</span><br><span class="line"> * Java中集合的泛型，是防止错误输入的，只在编译阶段有效，</span><br><span class="line"> * 绕过编译就无效了</span><br><span class="line"> * 验证：可以通过方法的反射来操作，绕过编译</span><br><span class="line"> */</span><br><span class="line">Method m = c2.getMethod(&quot;add&quot;， Object.class);</span><br><span class="line">m.invoke(list2, 20);//绕过编译操作就绕过了泛型</span><br><span class="line">System.out.println(list2.size());</span><br><span class="line">System.out.println(list2);//20</span><br><span class="line">//注意不能使用for-each来遍历，会有类型转换错误</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/28/Java/Java反射学习笔记/" data-id="cjtf6o90t00050fc5jy8euum7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/13/MapReduce/2017-03-27/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          map/reduce之间的shuffle，partition，combiner过程的详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/10/健身/健身计划(男生版)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">健身计划(男生版)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

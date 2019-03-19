@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>信息检索导论第八章–-信息检索的评价 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#信息检索导论第八章–信息检索的评价 一、信息检索系统的评价采用常规方式来度量信息检索系统的效果，需要一个测试集，测试集由以下3个部分构成：  一个文档集。 一组用于测试的信息需求集合，信息需求可以表示成查询。 一组相关性判定结果，对每个查询-文档对而言，通常会赋予一个二值判断结果—相关/不相关。">
+<meta name="keywords" content="信息检索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息检索导论第八章–-信息检索的评价">
+<meta property="og:url" content="http://yoursite.com/2016/04/01/信息检索/信息检索导论第八章--信息检索的评价/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#信息检索导论第八章–信息检索的评价 一、信息检索系统的评价采用常规方式来度量信息检索系统的效果，需要一个测试集，测试集由以下3个部分构成：  一个文档集。 一组用于测试的信息需求集合，信息需求可以表示成查询。 一组相关性判定结果，对每个查询-文档对而言，通常会赋予一个二值判断结果—相关/不相关。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A01.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A02.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A03.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A04.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A05.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信息检索导论第八章–-信息检索的评价">
+<meta name="twitter:description" content="#信息检索导论第八章–信息检索的评价 一、信息检索系统的评价采用常规方式来度量信息检索系统的效果，需要一个测试集，测试集由以下3个部分构成：  一个文档集。 一组用于测试的信息需求集合，信息需求可以表示成查询。 一组相关性判定结果，对每个查询-文档对而言，通常会赋予一个二值判断结果—相关/不相关。">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-信息检索/信息检索导论第八章--信息检索的评价" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/01/信息检索/信息检索导论第八章--信息检索的评价/" class="article-date">
+  <time datetime="2016-04-01T03:30:14.000Z" itemprop="datePublished">2016-04-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/信息检索/">信息检索</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      信息检索导论第八章–-信息检索的评价
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#信息检索导论第八章–信息检索的评价</p>
+<h2 id="一、信息检索系统的评价"><a href="#一、信息检索系统的评价" class="headerlink" title="一、信息检索系统的评价"></a>一、信息检索系统的评价</h2><p>采用常规方式来度量信息检索系统的效果，需要一个测试集，测试集由以下3个部分构成：</p>
+<ol>
+<li>一个文档集。</li>
+<li>一组用于测试的信息需求集合，信息需求可以表示成查询。</li>
+<li>一组相关性判定结果，对每个查询-文档对而言，通常会赋予一个二值判断结果—相关/不相关。</li>
+</ol>
+<a id="more"></a>
+<h2 id="二、无序检索结果集合的评价"><a href="#二、无序检索结果集合的评价" class="headerlink" title="二、无序检索结果集合的评价"></a>二、无序检索结果集合的评价</h2><p><strong>文档集合的划分</strong><br>| 分类 |     相关(relevant) |    不相关(nonrelevant) |<br>| :—-: | :——————-: | :————————:  |<br>|返回|    真正例(true positives,tp)|    伪正例(false positives,fp)|<br>|未返回|    伪反例(false negatives,fp)    |真反例(true negatives,tn)|</p>
+<p><strong>召回率</strong>(Recall):$R=tp/(tp+fn)$，返回的相关结果数占实际相关结果总数的比率，也称为查全率，R∈ [0,1]<br><strong>正确率</strong>(Precision):$P=tp/(tp+fp)$，返回的结果中真正相关结果的比率，也称为查准率， P∈ [0,1]<br><strong>精确率</strong>(Accuracy)：文档集中所有判断正确的文档所占的比例,计算公式为:$A=(tp+tn)/(tp+fp+fn+tn)$</p>
+<blockquote>
+<p>两个指标分别度量检索效果的某个方面，忽略任何一个方面都有失偏颇。两个极端情况：返回有把握的1篇，P=100%，但R极低；全部文档都返回，R＝1，但P极低</p>
+</blockquote>
+<p><strong>正确率和召回率的问题：</strong></p>
+<ol>
+<li><p>召回率难以计算<br>解决方法：Pooling方法，或者不考虑召回率</p>
+</li>
+<li><p>两个指标分别衡量了系统的某个方面，但是也为比较带来了难度，究竟哪个系统好？大学最终排名也只有一个指标。<br>解决方法：单一指标，将两个指标融成一个指标</p>
+</li>
+<li><p>两个指标都是基于(无序)集合进行计算，并没有考虑序的作用<br>举例：两个系统，对某个查询，返回的相关文档数目一样都是10，但是第一个系统是前10条结果，后一个系统是最后10条结果。显然，第一个系统优。但是根据上面基于集合的计算，显然两者指标一样。<br>解决方法：引入序的作用</p>
+</li>
+</ol>
+<p><strong>正确率与召回率的融合：</strong><br>F值(F-measure)：召回率R和正确率P的调和平均值，if P=0 or R=0, then F=0, else 采用下式计算:<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A01.png" alt><br>其中，$\alpha\in[0,1]$，$\beta ^{2}=\frac{1-\alpha }{\alpha }$</p>
+<p>当β = 1时，F的计算公式可以简化为$$F_{\beta =1}=\frac{2PR}{P+R}$$</p>
+<p>$F_{\beta}$表示召回率的重要程度是正确率的$\beta$(&gt;=0)倍， $\beta$&gt;1更重视召回率， $\beta$&lt;1更重视正确率</p>
+<blockquote>
+<p><strong>为什么使用调和平均计算F值？</strong><br>如果采用算术平均计算F值，那么一个返回全部文档的搜索引擎的F值就不低于50%，这有些过高。<br><strong>做法：</strong>不管是P还是R，如果十分低，那么结果应该表现出来，即这样的情形下最终的F值应该有所惩罚<br>采用P和R中的最小值可能达到上述目的<br>但是最小值方法不平滑而且不易加权<br>基于调和平均计算出的F 值可以看成是平滑的最小值函数</p>
+</blockquote>
+<h2 id="三、有序检索结果的评价方法"><a href="#三、有序检索结果的评价方法" class="headerlink" title="三、有序检索结果的评价方法"></a>三、有序检索结果的评价方法</h2><p><strong>正确率召回率曲线（ precision-recall curve）：</strong>将正确率和召回率分别作为纵坐标横坐标，可得到正确率-召回率曲线。</p>
+<p><strong>差值正确率（interpolated precision）：</strong>定义为对于任意不小于r的召回率水平r’所对应的最大正确率<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A02.png" alt></p>
+<blockquote>
+<p><strong>Break Point：</strong>P-R曲线上 P=R的那个点，这样可以直接进行单值比较</p>
+<p><strong>十一点差值平均正确率：</strong>整个正确率—召回率曲线具有非常丰富的信息，但是人们往往期望将这些信息浓缩成几个甚至一个数字。传统的做法是（比如在前八次TREC 的Ad hoc 任务中）定义一个11 点插值平均正确率（eleven-point interpolated average precision）。对每个信息需求，插值的正确率定义在0.0,0.1, 0.2, …, 1.0 等11 个召回率水平上。</p>
+</blockquote>
+<p><strong>AP（平均正确率）：</strong>对于单个信息需求，返回结果中在每篇相关文档位置上的正确率的平均值。<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A03.png" alt></p>
+<blockquote>
+<p>平均正确率的计算：某个查询Q共有6个相关结果，某系统排序返回了5篇相关文档，其位置分别是第1，第2，第5，第10，第20位，则<br>AP=(1/1+2/2+3/5+4/10+5/20+0)/6</p>
+</blockquote>
+<p><strong>MAP（平均正确率均值）：</strong>对所有信息需求的总AP求平均值<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A04.png" alt><br>其中Q是查询集合</p>
+<blockquote>
+<p>通常，单个系统在不同信息需求集上的MAP值往往相差较大，不同系统在同一信息需求上的MAP差异反而相对要小一些。这意味着：<code>用于测试的信息需求必须足够大，需求之间的差异也要足够大，这样的话系统在不同查询上体现出的效果才具有代表性。</code></p>
+</blockquote>
+<p>在许多重要应用特别是Web搜索，用户只看重第1页或者前3页中有多少号结果。于是需要在固定的较少数目的结果文档中计算正确率。该正确率为前k个结果的正确率(precision at k,简写为P@k)，但是该指标在通常所用的指标中是最不稳定的，因为相关文档的总数会对P@k有非常强的影响。<br>为了解决这个问题我们引入了R正确率。<br><strong>R正确率：</strong>先知道相关的文档集|Rel|，然后计算前|Rel|结果集的正确率，R正确性是正确率-召回率线上的一个点，而不是对整条曲线求概括值。</p>
+<p><strong>ROC：</strong>（ROC 是receiver operating characteristics 的缩写，但是知道这个对大多数人来说没什么用）曲线。ROC 曲线是基于假阳率（false positive rate）或1-特异度（specificity）画出真阳率（true positive rate）或者敏感度（sensitivity）而得到的曲线。</p>
+<p><strong>CG</strong> （cumulative gain，累积增益）基于机器学习的排序方法中的指标，一个具体的指标为<strong>NDCG</strong>（normalized discounted cumulative gain，归一化折损累积增益）。NDCG是针对非二值相关情况下的指标。<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AB%E7%AB%A05.png" alt><br>其中，$Z_{j,k}$是归一化因子，用于保证对于查询 j 最完美系统的NDCG at k 得分是1，m是返回文档的位置。</p>
+<h2 id="四、相关性判断"><a href="#四、相关性判断" class="headerlink" title="四、相关性判断"></a>四、相关性判断</h2><p><strong>缓冲池(Pooling)方法：</strong>对多个检索系统的Top N个结果组成的集合进行人工标注，标注出的相关文档集合作为整个相关文档集合。这种做法被验证是可行的(可以比较不同系统的相对效果)，在TREC会议中被广泛采用。</p>
+<blockquote>
+<p>人不是机器，他们给出的文档和查询的相关性判定结果并不完全可靠，会存在差异。</p>
+</blockquote>
+<p>用于度量这个一致性的常用指标是 <strong>kappa 统计量（kappa statistic）</strong>。它用于类别型判断结果（比如相关或不相关两类判断结果），是对随机一致性比率的一个简单校正。<br>$$kappa=\frac{P(A)-P(E)}{1-P(E)}$$<br>其中，P(A)是观察到的一致性判断比率，而P(E)是随机情况下所期望的一致性判断比率</p>
+<h2 id="五、更广的视角看评价：系统质量及用户效果"><a href="#五、更广的视角看评价：系统质量及用户效果" class="headerlink" title="五、更广的视角看评价：系统质量及用户效果"></a>五、更广的视角看评价：系统质量及用户效果</h2><p><strong>系统相关问题</strong><br>索引速度如何？对长度满足某种分布的文档集构建索引，每小时能对多少篇文档构建索引？<br>检索速度如何？基于不同索引大小的响应函数如何？<br>查询语言的表达能力如何？复杂查询的处理速度多快？<br>文档集有多大？可以基于文档的数目来计算或者基于文档集中所包含的多个话题的分布信息来计算<br>用户效用：回访率、用户生产驴。民族志式访谈</p>
+<h2 id="六、结果片段"><a href="#六、结果片段" class="headerlink" title="六、结果片段"></a>六、结果片段</h2><p>结果片段是结果的一个短摘要，能够帮助用户确定结果的相关性。结果片段包括文档的标题，以及一段自动抽取的摘要。<br>常用的摘要分为两类：静态摘要，基于查询的动态摘要</p>
+<ol>
+<li>静态摘要 永远保持不变，并不随查询变化而变化</li>
+<li>动态摘要或基于查询的摘要 根据查询锁推导出的信息需求来进行个性化生成，并试图解释在给定查询下返回当前文档的原因</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/01/信息检索/信息检索导论第八章--信息检索的评价/" data-id="cjtf6o95100ao0fc53ge1m3hh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信息检索/">信息检索</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/02/Nutch/Nutch--DNS 域名解析-增加ip本地缓存/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nutch--DNS 域名解析:增加ip本地缓存
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/23/信息检索/信息检索导论第七章--一个完整搜索系统中的评分计算/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">信息检索导论第七章－－一个完整搜索系统中的评分计算</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

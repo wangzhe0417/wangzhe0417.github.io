@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nutch学习记录：Nutch总体架构 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Nutch学习记录：Nutch总体架构 一、Nutch基本处理流程Nutch 总体上采用了流式处理过程,其基本处理流程如图 1.1 所示：">
+<meta name="keywords" content="Nutch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nutch学习记录：Nutch总体架构">
+<meta property="og:url" content="http://yoursite.com/2015/11/28/Nutch/Nutch学习记录：Nutch总体架构/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Nutch学习记录：Nutch总体架构 一、Nutch基本处理流程Nutch 总体上采用了流式处理过程,其基本处理流程如图 1.1 所示：">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nutch学习记录：Nutch总体架构">
+<meta name="twitter:description" content="#Nutch学习记录：Nutch总体架构 一、Nutch基本处理流程Nutch 总体上采用了流式处理过程,其基本处理流程如图 1.1 所示：">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nutch/Nutch学习记录：Nutch总体架构" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/11/28/Nutch/Nutch学习记录：Nutch总体架构/" class="article-date">
+  <time datetime="2015-11-28T01:58:28.000Z" itemprop="datePublished">2015-11-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nutch/">Nutch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nutch学习记录：Nutch总体架构
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Nutch学习记录：Nutch总体架构</p>
+<h2 id="一、Nutch基本处理流程"><a href="#一、Nutch基本处理流程" class="headerlink" title="一、Nutch基本处理流程"></a>一、Nutch基本处理流程</h2><p>Nutch 总体上采用了流式处理过程,其基本处理流程如图 1.1 所示：<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84.png" alt><br><a id="more"></a><br><strong> Nutch基本处理流程：</strong></p>
+<ol>
+<li>Injector：首先,将链接文件中的链接种子(一般位于 HDFS 中)注入到 CrawlDb。</li>
+<li>Generator：接着从 CrawlDb 中挑选链接,创建待抓取列表 crawl_generate。</li>
+<li>Fetcher：然后对待抓取列表中的链接进行抓取,并保存抓取内容 content 和结果 crawl_fetch。</li>
+<li>Parse：对抓取内容 content 进行解析,得到解析结果 crawl_parse、解析元数据 parse_data 和解析文本 parse_text。</li>
+<li>CrawDb：利用解析结果 crawl_parse 和抓取信息 crawl_fetch 更新 CrawlDb。</li>
+<li>LinkeDb：根据页面的出链信息 parse_data 倒排形成每个链接的入链信息,从而创建<br>LinkDb。</li>
+<li>对 CrawlDb 进行去重处理,即, 将页面签名相同应该在索引中忽略的链接标记为重复。重复的链接在构建索引时会被删除。</li>
+<li>Indexer：综合前面内容 CrawlDb、LinkDb、parse_text、parse_data、crawl_parse 和crawl_fetch 创建倒排索引 index。</li>
+<li>最后,基于索引 index 进行查询处理。将查询结果返回给用户。</li>
+</ol>
+<h2 id="二、存储结构"><a href="#二、存储结构" class="headerlink" title="二、存储结构"></a>二、存储结构</h2><p>Nutch 中所有数据都存储在分布式文件系统 HDFS 中。<br>以下假设抓取根目录为/web,所有数据存放在该目录下。典型的 Nutch 存储结构包括 链接数据库 CrawlDb，段信息，链接数据库 LinkDb，索引 index 四个部分。</p>
+<h3 id="1、链接数据库-CrawlDb"><a href="#1、链接数据库-CrawlDb" class="headerlink" title="1、链接数据库 CrawlDb"></a>1、链接数据库 CrawlDb</h3><p>格式为 MapFile&lt;Text, CrawlDatum&gt;,维护有系统中所 有链接(已抓取、未抓取、签名等)的信息,键为链接字符串。CrawlDb 所在目录 一般为/web/crawldb。注:MapFile 是 Hadoop 映射文件,由多条映射记录组成, 每个映射记录由一对&lt;键,值&gt;组成,所有映射记录按照键有序排列,因此, MapFile 可以给定一个键,随机访问具有该键的映射记录。</p>
+<h3 id="2、段信息"><a href="#2、段信息" class="headerlink" title="2、段信息"></a>2、段信息</h3><p>段信息所在目录一般为/web/segments,目录下可以有多个段存在。每个段对应一 个抓取处理。段的名字以段生成时间(抓取列表生成时创建)表示,如 20121116090616(以下将以该段为名字介绍其他数据所在目录)。每个段下包括 以下数据：</p>
+<ol>
+<li>抓取列表 crawl_generate：格式为 SequenceFile&lt;Text, CrawlDatum&gt;,键为链接字符串,存放所有待抓取的链接,也是抓取应用的输入。所在目录 为/web/segments/20121116090616/crawl_generate。注:SequenceFile 是 Hadoop 序 列文件,由多条序列记录组成,每个序列记录由一对 &lt;键,值&gt;组成,不同于 MapFile,记录没有按照键排序,因此对 SequenceFile 只能顺序访问,不能随机 定位。</li>
+<li>网页内容 contnet：格式为 MapFile&lt;Text,Content&gt;,键为链接字符串,存 放所有成功抓取网页的内容。所在目录为/web/segments/20121116090616/contnet。</li>
+<li>链接抓取信息 crawl_fetch：格式为 MapFile&lt;Text,CrawlDatum&gt;,键为链 接字符串,存放抓取链接的状态信息和重定向链接(抓取阶段不允许自动重定 向时)。所在目录为/web/segments/20121116090616/crawl_fetch。</li>
+<li>抓取解析信息 crawl_parse:格式为 MapFile&lt;Text,CrawlDatum&gt;,键为链 接字符串。存在抓取文档的解析链接信息,包括各种状态的 CrawlDatum,详细 内容参考解析章节。所在目录为/web/segments/20121116090616/crawl_parse。</li>
+<li>解析数据信息 pare_data:格式为 MapFile&lt;Text,ParseData&gt;,键为链接字 符串,存放解析的文档标题、解析元数据和内容元数据、解析状态、出链列表等。 所在目录为/web/segments/20121116090616/pare_data。</li>
+<li>解析文本信息 pare_text:格式为 MapFile&lt;Text,ParseText&gt;,键为链接字 符串,存放文档抽取的文本。所在目录 为/web/segments/20121116090616/pare_text。</li>
+</ol>
+<h3 id="3、链接数据库-LinkDb"><a href="#3、链接数据库-LinkDb" class="headerlink" title="3、链接数据库 LinkDb"></a>3、链接数据库 LinkDb</h3><p>格式为 MapFile&lt;Text, InLinks&gt;,键为链接字符串,维护有系统中所有链接的入链信息。LinkDb 所在目录一般为/web/linkdb。</p>
+<h3 id="4、索引-index"><a href="#4、索引-index" class="headerlink" title="4、索引 index"></a>4、索引 index</h3><p>未合并索引所在目录一般为/web/indexes,合并索引所在目录 为/web/index。具体索引格式为 Lucene 文件格式。在 1.9 中,索引使用 SOLR 等工 具维护,因此,索引一般单独存放在其他工具确定的位置。</p>
+<p>以上所有文件都以二进制形式保存,为了方便调试和诊断,Nutch 提供了工具 能够对以上除索引 index 外所有内容进行转储 dump,转换成文本文件。<br>简单的说,CrawlDb 通过类 CrawlDbReader,LinkDb 通过类 LinkDbReader,段 信息通过类 SegmentReader 进行转储和访问。</p>
+<p>索引 index 可以通过开源工具 Luka 进行调试访问。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/11/28/Nutch/Nutch学习记录：Nutch总体架构/" data-id="cjtf6o92a003b0fc5w5nmi099" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nutch/">Nutch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/12/11/Nutch/Nutch学习记录：Injector/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nutch学习记录：Injector
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/29/Geek/华科校园网通过极路由实现wifi共享/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">通过极路由实现华科校园网wifi共享</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

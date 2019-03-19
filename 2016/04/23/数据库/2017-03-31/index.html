@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>MySQL数据类型 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="MySQL数据类型MySQL数据类型，可以被分为3类：数值类型、日期和时间类型以及字符串(字符)类型 数据类型的修饰符： 方括号(“[”和“]”)指出可选的类型修饰符的部分 M ：指出最大的显示尺寸。最大的合法的显示尺寸是 255 。  D ：适用于浮点类型并且指出跟随在十进制小数点后的数码的数量。最大可能的值是30，但是应该不大于M-2。 ZEROFILL ：填零，即在数字长度不够的数据前面填充">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据类型">
+<meta property="og:url" content="http://yoursite.com/2016/04/23/数据库/2017-03-31/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MySQL数据类型MySQL数据类型，可以被分为3类：数值类型、日期和时间类型以及字符串(字符)类型 数据类型的修饰符： 方括号(“[”和“]”)指出可选的类型修饰符的部分 M ：指出最大的显示尺寸。最大的合法的显示尺寸是 255 。  D ：适用于浮点类型并且指出跟随在十进制小数点后的数码的数量。最大可能的值是30，但是应该不大于M-2。 ZEROFILL ：填零，即在数字长度不够的数据前面填充">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/media/1629270.jpg">
+<meta property="og:updated_time" content="2017-03-31T06:21:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL数据类型">
+<meta name="twitter:description" content="MySQL数据类型MySQL数据类型，可以被分为3类：数值类型、日期和时间类型以及字符串(字符)类型 数据类型的修饰符： 方括号(“[”和“]”)指出可选的类型修饰符的部分 M ：指出最大的显示尺寸。最大的合法的显示尺寸是 255 。  D ：适用于浮点类型并且指出跟随在十进制小数点后的数码的数量。最大可能的值是30，但是应该不大于M-2。 ZEROFILL ：填零，即在数字长度不够的数据前面填充">
+<meta name="twitter:image" content="http://yoursite.com/media/1629270.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-数据库/2017-03-31" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/23/数据库/2017-03-31/" class="article-date">
+  <time datetime="2016-04-23T02:49:00.000Z" itemprop="datePublished">2016-04-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/数据库/">数据库</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MySQL数据类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="MySQL数据类型"><a href="#MySQL数据类型" class="headerlink" title="MySQL数据类型"></a>MySQL数据类型</h1><p>MySQL数据类型，可以被分为3类：<strong>数值类型</strong>、<strong>日期和时间类型</strong>以及<strong>字符串(字符)类型</strong></p>
+<h2 id="数据类型的修饰符："><a href="#数据类型的修饰符：" class="headerlink" title="数据类型的修饰符："></a>数据类型的修饰符：</h2><ul>
+<li>方括号(“[”和“]”)指出可选的类型修饰符的部分</li>
+<li>M ：指出最大的显示尺寸。最大的合法的显示尺寸是 255 。 </li>
+<li>D ：适用于浮点类型并且指出跟随在十进制小数点后的数码的数量。最大可能的值是30，但是应该不大于M-2。</li>
+<li>ZEROFILL ：填零，即在数字长度不够的数据前面填充0，以达到设定的长度，MySQL中字段设置为该属性时，将为该列自动地增加UNSIGNED属性。</li>
+<li>UNSIGNED ：为“无符号”的意思, 即为非负数。是MYSQL自定义的类型，非标准SQL。</li>
+</ul>
+<blockquote>
+<p>unsigned 属性只针对整型,用途：</p>
+<ol>
+<li>UNSIGNED 可用来约束数据的范围，例如有些年龄这种值一般能是负数，那么就可以设置一个 UNSIGNED ，这样可以不允许负数插入。</li>
+<li>可以增加数值范围（相当于把负数那部分加到正数上）。不过少用，不方便移植。</li>
+</ol>
+</blockquote>
+<h2 id="一-数值类型"><a href="#一-数值类型" class="headerlink" title="一.数值类型"></a>一.数值类型</h2><h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p>在MySQL中创建整型字段INT（或其它像tinyint）时，可以设定该字段的位数。如int(11),int(5),如果不指定位数，INT型默认长度为11。字段插入长度与int设定的M无关，当插入长度大于设定的M时，字段值不会被截断，还是按照类型的实际精度进行保存。</p>
+<p>整型字段有个ZEROFILL属性，在数字长度不够的数据前面填充0，以达到设定的长度。M值只当属性为ZEROFILL时，才有区别效果。</p>
+<blockquote>
+<p>如表结构为id1 int(10) ，id2 int(5),对应数据为  第一行为（1,1），第二行为（1111111,1111111），当id1，id2字段设置为ZEROFILL属性时，显示数据为第一行为（0000000001,00001），第二行为（0001111111,1111111），不够的位数会以0补齐。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">大小</th>
+<th style="text-align:left">M</th>
+<th style="text-align:left">范围（有符号）</th>
+<th style="text-align:left">范围（无符号）</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">tinyint [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">1字节</td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">-128~127 (-2^7 ~ 2^7 -1)</td>
+<td style="text-align:left">0 ~ 255 (0 ~ 2^8 -1)</td>
+<td style="text-align:left">非常小整数值</td>
+</tr>
+<tr>
+<td style="text-align:left">smallint [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">2字节</td>
+<td style="text-align:left">6</td>
+<td style="text-align:left">-32768~32767（-2^15 ~ 2^15 -1)</td>
+<td style="text-align:left">0 ~ 65535 (0 ~ 2^16 -1)</td>
+<td style="text-align:left">较小整数</td>
+</tr>
+<tr>
+<td style="text-align:left">mediumint [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">3字节</td>
+<td style="text-align:left">9</td>
+<td style="text-align:left">-8388608 ~ 8388607 （-2^23 ~ 2^23 -1）</td>
+<td style="text-align:left">0 ~ 16777215 (0 ~ 2^24 -1)</td>
+<td style="text-align:left">中等大小整数</td>
+</tr>
+<tr>
+<td style="text-align:left">int [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">4字节</td>
+<td style="text-align:left">11</td>
+<td style="text-align:left">-2147483648 ~ 2147483647（-2^31 ~ 2^31 -1）</td>
+<td style="text-align:left">0 ~ 4294967295 (0 ~ 2^32 -1)</td>
+<td style="text-align:left">标准整数</td>
+</tr>
+<tr>
+<td style="text-align:left">integer [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">4字节</td>
+<td style="text-align:left">11</td>
+<td style="text-align:left">-2147483648 ~ 2147483647（-2^31 ~ 2^31 -1）</td>
+<td style="text-align:left">0 ~ 4294967295 (0 ~ 2^32 -1)</td>
+<td style="text-align:left">和int相同</td>
+</tr>
+<tr>
+<td style="text-align:left">bigint [(M)] [UNSIGNED] [ZEROFILL]</td>
+<td style="text-align:left">8字节</td>
+<td style="text-align:left">20</td>
+<td style="text-align:left">-9223372036854775808 ~9223372036854775807(-2^63 ~ 2^63 -1）</td>
+<td style="text-align:left">0 ~ 18446744073709551615(0 ~ 2^64 -1)</td>
+<td style="text-align:left">较大整数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h3><p>对每种浮点类型，可指定一个最大的显示尺寸M和小数位数D。M的值应该取1到255。D的值可为0到30，但是不应大于M-2。M和D对float和double都是可选的，但对于decimal是必须的，在选项M和D时，如果省略了它们，则使用缺省值，如果D被省略，它被设置为0。如果M被省掉，它被设置为10。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">大小</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">float [(M,D)] [ZEROFILL]</td>
+<td style="text-align:left">4字节</td>
+<td style="text-align:left">单精度浮点型，8位精度；参数m只影响显示效果，不影响精度，d却不同，会影响到精度；m是十进制数字的总个数，d是小数点后面的数字个数</td>
+</tr>
+<tr>
+<td style="text-align:left">double[(M,D)] [ZEROFILL]</td>
+<td style="text-align:left">8字节</td>
+<td style="text-align:left">双精度浮点型，16位精度；参数m只影响显示效果，不影响精度，d却不同，会影响到精度</td>
+</tr>
+<tr>
+<td style="text-align:left">real[(M,D)] [ZEROFILL]</td>
+<td style="text-align:left">8字节</td>
+<td style="text-align:left">同double</td>
+</tr>
+<tr>
+<td style="text-align:left">decimal[(M[,D])] [ZEROFILL]</td>
+<td style="text-align:left">4字节</td>
+<td style="text-align:left">decimal(m,d) 定点类型浮点型在数据库中存放的是近似值，而定点类型在数据库中存放的是精确值。参数m是定点类型数字的最大个数（精 度），范围为0~65，d小数点右侧数字的个数，范围为0~30，但不得超过m。对定点数的计算能精确到65位数字。DECIMAL 数据类型用于精度要求非常高的计算中，这种类型允许指定数值的精度和计数方法作为选择参数。精度在这里指为这个值保存的有效数字的总个数，而计数方法表示小数点后数字的位数。比如语句 DECIMAL(7,3) 规定了存储的值不会超过 7 位数字，并且小数点后不超过 3 位</td>
+</tr>
+<tr>
+<td style="text-align:left">numeric[(M,D)]  [ZEROFILL]</td>
+<td style="text-align:left">4字节</td>
+<td style="text-align:left">同decimal</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>(M,D) 表示总共M位，D个小数位，D包含于M中。浮点类型不能是unsigned的。</p>
+</blockquote>
+<p>DECIMAL 类型不同于FLOAT和DECIMAL，其中DECIMAL 实际是以串存放的。DECIMAL 可能的最大取值范围与DOUBLE 一样，但是其有效的取值范围由M 和D 的值决定。如果改变M 而固定D，则其取值范围将随M 的变大而变大。表2 - 7的前三行说明了这一点。如果固定M 而改变D，则其取值范围将随D 的变大而变小（但精度增加）。表2 - 7的后三行说明了这一点。<br><img src="/media/1629270.jpg" alt="1629270"></p>
+<p>给定的DECIMAL 类型的取值范围取决于MySQL数据类型的版本。对于MySQL3.23 以前的版本，DECIMAL(M, D) 列的每个值占用M 字节，而符号（如果需要）和小数点包括在M 字节中。因此，类型为DECIMAL(5, 2) 的列，其取值范围为-9.99 到9 9 . 9 9，因为它们覆盖了所有可能的5 个字符的值。正如MySQL3.23 一样，DECIMAL 值是根据ANSI 规范进行处理的， ANSI 规范规定DECIMAL(M, D) 必须能够表示M 位数字及D 位小数的任何值。</p>
+<p>例如， DECIMAL(5, 2) 必须能够表示从-999.99 到999.99 的所有值。而且必须存储符号和小数点，因此自MySQL3.23以来DECIMAL 值占M + 2 个字节。对于DECIMAL(5, 2)，“最长”的值（- 9 9 9 . 9 9）需要7个字节。在正取值范围的一端，不需要正号，因此MySQL数据类型利用它扩充了取值范围，使其超过了ANSI 所规范所要求的取值范围。如DECIMAL(5, 2) 的最大值为9 9 9 9 . 9 9，因为有7 个字节可用。</p>
+<p>简而言之，在MySQL3.23 及以后的版本中，DECIMAL(M, D) 的取值范围等于更早版本中的DECIMAL(M + 2, D) 的取值范围。在MySQL数据类型的所有版本中，如果某个DECIMAL 列的D 为0，则不存储小数点。这样做的结果是扩充了列的取值范围，因为过去用来存储小数点的字节现在可用来存放其他数字了。</p>
+<h2 id="二-字符类型"><a href="#二-字符类型" class="headerlink" title="二.字符类型"></a>二.字符类型</h2><p>对于可变长的字符类型，其值所占的存储量是不同的，这取决于实际存放在列中的值的长度，这个长度用L表示。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">大小（范围）</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">char(M)[BINARY]</td>
+<td style="text-align:left">M个字节，0 &lt;= M &lt;= 255 (L为固定的=255，不够补空格)</td>
+<td style="text-align:left">定长字符串；CHAR 类型可以使用 BINARY 修饰符。当用于比较运算时，这个修饰符使 CHAR 以二进制方式参于运算，而不是以传统的区分大小写的方式。CHAR值根据缺省字符集以大小写不区分的方式排序和比较，除非给出BINARY关键词</td>
+</tr>
+<tr>
+<td style="text-align:left">varchar(M) [BINARY]</td>
+<td style="text-align:left">L+1个字节，其中L &lt;= M 且0 &lt;= M &lt;= 65535（MySQL5.0之前都是最大255)</td>
+<td style="text-align:left">变长字符串；VARCHAR 类型在使用 BINARY 修饰符时与 CHAR 类型完全相同</td>
+</tr>
+<tr>
+<td style="text-align:left">tinyblob，tinytext</td>
+<td style="text-align:left">L+1个字节，其中L &lt; 28-1 (255)</td>
+<td style="text-align:left">tinyblob：不超过 255 个字符的二进制字符串；tinytext：短文本字符串</td>
+</tr>
+<tr>
+<td style="text-align:left">blob,text</td>
+<td style="text-align:left">L+2个字节，其中L &lt; 216-1(65535)</td>
+<td style="text-align:left">blob：二进制形式的长文本数据，在分类和比较时BLOB 类型区分大小写;text：长文本数据，在分类和比较时TEXT 不区分大小写</td>
+</tr>
+<tr>
+<td style="text-align:left">mediumblob,mediumtext</td>
+<td style="text-align:left">L+3个字节，其中L &lt; 224-1</td>
+<td style="text-align:left">mediumblob：二进制形式的中等长度文本数据；mediumtext ：中等长度文本数据，</td>
+</tr>
+<tr>
+<td style="text-align:left">longblob,longtext</td>
+<td style="text-align:left">L+4个字节，其中L &lt; 232-1</td>
+<td style="text-align:left">longblob：二进制形式的极大文本数据；longtext ：极大文本数据</td>
+</tr>
+<tr>
+<td style="text-align:left">enum(‘value1’,’value2’,…)</td>
+<td style="text-align:left">1或2个字节，取决于枚举值的个数(最多65,535个值)</td>
+</tr>
+<tr>
+<td style="text-align:left">set(‘value1’,’value2’,…)</td>
+<td style="text-align:left">1、2、3、4或者8个字节，取决于set成员的数目(最多64个成员)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三-日期类型"><a href="#三-日期类型" class="headerlink" title="三.日期类型"></a>三.日期类型</h2><p> MySQL 带有 5 个不同的数据类型可供选择。它们可以被分成简单的日期、时间类型，和混合日期、时间类型。根据要求的精度，子类型在每个分类型中都可以使用，并且 MySQL 带有内置功能可以把多样化的输入格式变为一个标准格式。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">大小</th>
+<th style="text-align:left">范围</th>
+<th style="text-align:left">格式</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">YEAR[(2</td>
+<td style="text-align:left">4)]</td>
+<td style="text-align:left">1字节</td>
+<td style="text-align:left">1901/2155</td>
+<td style="text-align:left">YYYY</td>
+<td>年份值</td>
+</tr>
+<tr>
+<td style="text-align:left">DATE</td>
+<td style="text-align:left">3字节</td>
+<td style="text-align:left">‘1000-01-01’–’9999-12-31’</td>
+<td style="text-align:left">YYYY-MM-DD</td>
+<td style="text-align:left">日期值</td>
+</tr>
+<tr>
+<td style="text-align:left">TIME</td>
+<td style="text-align:left">3字节</td>
+<td style="text-align:left">‘-838:59:59’到’838:59:59’</td>
+<td style="text-align:left">HH:MM:SS</td>
+<td style="text-align:left">时间值或持续时间</td>
+</tr>
+<tr>
+<td style="text-align:left">DATETIME</td>
+<td style="text-align:left">8字节</td>
+<td style="text-align:left">‘1000-01-01 00:00:00’–’9999-12-31 23:59:59’</td>
+<td style="text-align:left">YYYY-MM-DD HH:MM:SS</td>
+<td style="text-align:left">混合日期和时间值</td>
+</tr>
+<tr>
+<td style="text-align:left">TIMESTAMP[(M)]</td>
+<td style="text-align:left">8字节</td>
+<td style="text-align:left">1970-01-01 00:00:00/2037 年某时</td>
+<td style="text-align:left">YYYYMMDD HHMMSS</td>
+<td style="text-align:left">混合日期和时间值，时间戳</td>
+</tr>
+</tbody>
+</table>
+<h3 id="YEAR"><a href="#YEAR" class="headerlink" title="YEAR"></a>YEAR</h3><p>给YEAR类型赋值可以有三种方法。</p>
+<ul>
+<li>第一种是直接插入4位字符串或者4位数字。</li>
+<li>第二种是插入2位字符串，这种情况下如果插入‘00’~‘69’，则相当于插入2000~2069；如果插入‘70’~‘99’，则相当于插入1970~1999。第二种情况下插入的如果是‘0’，则与插入‘00’效果相同，都是表示2000年。</li>
+<li>第三种是插入2位数字，它与第二种（插入两位字符串）不同之处仅在于：如果插入的是一位数字0，则表示的是0000，而不是2000年。所以在给YEAR类型赋值时，一定要分清0和‘0’，虽然两者相差个引号，但实际效果确实相差了2000年。</li>
+</ul>
+<h3 id="DATE"><a href="#DATE" class="headerlink" title="DATE"></a>DATE</h3><p>MySQL是以YYYY-MM-DD格式来显示DATE类型的值，插入数据时，数据可以保持这种格式。另外，MySQL还支持一些不严格的语法格式，分隔符“-”可以用“@”、“.”等众多富豪来替代。在插入数据时，也可以使用“YY-MM-DD”格式，YY转化成对应的年份的规则与YEAR类型类似。如果我们想插入当前系统的时间，则可以插入CURRENT_DATE或者NOW()。</p>
+<p>允许使用字符串或数字把值赋给DATE列。</p>
+<h3 id="TIME"><a href="#TIME" class="headerlink" title="TIME"></a>TIME</h3><p>TIME类型表示为“时：分：秒”，尽管小时范围一般是0~23，但是为了表示某些特殊时间间隔，MySQL将TIME的小时范围扩发了，而且支持负值。对TIME类型赋值，标准格式是”HH：MM：SS”，但不一定非要是这种格式。如果插入的是”D HH：MM：SS”格式，则类似插入了”（D*24+HH）：MM：SS”。比如插入”2 23:50:50”，相当于插入了”71:50:50”。如果插入的是”HH：MM”或”SS”格式，则效果是其他未被表示位的值赋为零值。比如插入”30”，相当于插入了”00:00:30”；如果插入”11:25”，相当于插入了”11:25:00”。</p>
+<p>另外也可以插入‘D HH’和‘D HH：MM’，效果按上面的例子可以推理出来了吧。 在MySQl中，对于’HHMMSS’格式，系统能够自动转化为标准格式。如果我们想插入当前系统的时间，则可以插入CURRENT_TIME或者NOW()。     </p>
+<p>TIME类型允许使用字符串或数字把值赋给TIME列,只占3个字节，如果只是存储时间数据，它最合适了。</p>
+<p>需要注意的是，没有冒号分隔符的 TIME 类型值，将会被 MySQL 理解为持续的时间，而不是时间戳。</p>
+<h3 id="DATETIME"><a href="#DATETIME" class="headerlink" title="DATETIME"></a>DATETIME</h3><p>通常用于自动存储包含当前日期和时间的时间戳，并可在需要执行大量数据库事务和需要建立一个调试和审查用途的审计跟踪的应用程序中发挥良好作用。</p>
+<h3 id="TIMESTAMP"><a href="#TIMESTAMP" class="headerlink" title="TIMESTAMP"></a>TIMESTAMP</h3><p>通常用于自动存储包含当前日期和时间的时间戳，并可在需要执行大量数据库事务和需要建立一个调试和审查用途的审计跟踪的应用程序中发挥良好作用。   </p>
+<p>TIMESTAMP的取值范围比较小，没有DATETIME的取值范围大，因此输入值时一定要保证在TIMESTAMP的范围之内。它的插入也与插入其他日期和时间数据类型类似。</p>
+<p>那么TIMESTAMP类型如何插入当前时间？第一，可以使用CURRENT_TIMESTAMP；第二，输入NULL，系统自动输入当前的TIMESTAMP；第三，无任何输入，系统自动输入当前的TIMESTAMP。</p>
+<p>另外有很特殊的一点：TIMESTAMP的数值是与时区相关.</p>
+<p>MySQL以YYYYMMDDHHMMSS、YYMMDDHHMMSS、YYYYMMDD或YYMMDD格式来显示TIMESTAMP值，取决于是否M是14（或省略)、12、8或6，但是允许你使用字符串或数字把值赋给TIMESTAMP列。一个TIMESTAMP列对于记录一个INSERT或UPDATE操作的日期和时间是有用的，因为如果你不自己给它赋值，它自动地被设置为最近操作的日期和时间。你以可以通过赋给它一个NULL值设置它为当前的日期和时间</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/04/23/数据库/2017-03-31/" data-id="cjtf6o95400au0fc56nx0cs3o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据库/">数据库</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/23/数据库/数据库范式详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数据库范式详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/23/数据库/MySQL数据类型/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MySQL数据类型</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>信息检索导论第六章－－文档评分、词项权重计算及向量空间模型 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#信息检索导论第六章–文档评分、词项权重计算及向量空间模型 布尔搜索与排序式检索迄今为止，我们介绍了支持布尔查询的索引处理办法，给定一个布尔查询，一篇文档要么满足查询的要求要么不满足（布尔查询是一种非黑即白的处理方式）。因此对布尔查询常常会导致过少(=0)或者过多(&amp;gt;1000)的结果。因此要对搜索结果进行排序，那么如何设计排序算法呢？前提：排序算法真的有效，即相关度大的文档结果会排在相关度小">
+<meta name="keywords" content="信息检索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息检索导论第六章－－文档评分、词项权重计算及向量空间模型">
+<meta property="og:url" content="http://yoursite.com/2016/03/14/信息检索/信息检索导论第六章--文档评分、词项权重计算及向量空间模型/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#信息检索导论第六章–文档评分、词项权重计算及向量空间模型 布尔搜索与排序式检索迄今为止，我们介绍了支持布尔查询的索引处理办法，给定一个布尔查询，一篇文档要么满足查询的要求要么不满足（布尔查询是一种非黑即白的处理方式）。因此对布尔查询常常会导致过少(=0)或者过多(&amp;gt;1000)的结果。因此要对搜索结果进行排序，那么如何设计排序算法呢？前提：排序算法真的有效，即相关度大的文档结果会排在相关度小">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A01.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A02.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A03.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A04.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A05.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A06.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A07.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A08.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A09.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A010.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A011.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A012.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信息检索导论第六章－－文档评分、词项权重计算及向量空间模型">
+<meta name="twitter:description" content="#信息检索导论第六章–文档评分、词项权重计算及向量空间模型 布尔搜索与排序式检索迄今为止，我们介绍了支持布尔查询的索引处理办法，给定一个布尔查询，一篇文档要么满足查询的要求要么不满足（布尔查询是一种非黑即白的处理方式）。因此对布尔查询常常会导致过少(=0)或者过多(&amp;gt;1000)的结果。因此要对搜索结果进行排序，那么如何设计排序算法呢？前提：排序算法真的有效，即相关度大的文档结果会排在相关度小">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-信息检索/信息检索导论第六章--文档评分、词项权重计算及向量空间模型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/14/信息检索/信息检索导论第六章--文档评分、词项权重计算及向量空间模型/" class="article-date">
+  <time datetime="2016-03-14T05:01:37.000Z" itemprop="datePublished">2016-03-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/信息检索/">信息检索</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      信息检索导论第六章－－文档评分、词项权重计算及向量空间模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#信息检索导论第六章–文档评分、词项权重计算及向量空间模型</p>
+<h2 id="布尔搜索与排序式检索"><a href="#布尔搜索与排序式检索" class="headerlink" title="布尔搜索与排序式检索"></a>布尔搜索与排序式检索</h2><p>迄今为止，我们介绍了支持布尔查询的索引处理办法，给定一个布尔查询，一篇文档要么满足查询的要求要么不满足（布尔查询是一种非黑即白的处理方式）。因此对布尔查询常常会导致过少(=0)或者过多(&gt;1000)的结果。因此要对搜索结果进行排序，那么如何设计排序算法呢？<br><code>前提：</code>排序算法真的有效，即相关度大的文档结果会排在相关度小的文档结果之前<br><code>实现：</code>对每个查询-文档对赋一个[0, 1]之间的分值，该分值度量了文档和查询的匹配程度。<br><a id="more"></a></p>
+<h2 id="一、Jaccard系数方法"><a href="#一、Jaccard系数方法" class="headerlink" title="一、Jaccard系数方法"></a>一、Jaccard系数方法</h2><h3 id="集合重合度"><a href="#集合重合度" class="headerlink" title="集合重合度"></a>集合重合度</h3><p>对查询进行数学建模，采用jaccard系数计算两个集合重合度的，根据jaccard系数对搜索结果进行排序。<br>$$JACCARD(A,B)=\frac{|A\bigcap B|}{|A\bigcup B|}$$</p>
+<blockquote>
+<p>实例：查询“ides of March”，文档“Caesar died in March”。集合A={ides of March}，B={Caesar died in March}，JACCARD(A,  B) = 1/6</p>
+</blockquote>
+<p><strong>jaccard系数的不足：</strong></p>
+<ul>
+<li>不考虑词项频率，即词项在文档中的出现次数。</li>
+<li>罕见词比高频词的信息量更大，Jaccard系数没有考虑这个信息。</li>
+</ul>
+<h2 id="二、文档评分、词项权重计算及向量空间模型方法"><a href="#二、文档评分、词项权重计算及向量空间模型方法" class="headerlink" title="二、文档评分、词项权重计算及向量空间模型方法"></a>二、文档评分、词项权重计算及向量空间模型方法</h2><h3 id="1、参数化索引及域索引"><a href="#1、参数化索引及域索引" class="headerlink" title="1、参数化索引及域索引"></a>1、参数化索引及域索引</h3><p><strong>元数据</strong>：和文档有关的一些特定形式的数据。（如文档的作者、标题、出版日期等）。</p>
+<p><strong>域</strong>：和字段类似，只是它的内容可以是任意的自有文本。字段的取值可能性比较小，域可以是由任意的、数目无限制的文本构成。通常，我们可以把文档的标题和摘要看成域。可以对文档的不同的域建立独立的倒排索引</p>
+<p><strong>目的</strong>:</p>
+<ul>
+<li>可以通过元数据（如文档的作者、标题、出版日期等）来对文档进行索引和检索。</li>
+<li>能够提供一个简单的文档评分方法。</li>
+</ul>
+<p><strong>词典方式处理</strong>（基本的域索引，每个域采用词典项的某种扩展表示方法）<br>在词典中,对不同域分别建立一个索引.同通常一样,查询的处理过程需要进行倒排记录表的合并操作(不同域下倒排索引的合并).<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A01.png" alt></p>
+<p><strong>倒排记录方式处理</strong>（支持域加权评分技术的使用）<br>显然,对于查询,词典方式下域索引的处理要对多个索引进行合并处理,效率相对会比较低.因此考虑将域信息存储在倒排记录而不是词典中.<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A02.png" alt></p>
+<h4 id="1-1、域加权评分"><a href="#1-1、域加权评分" class="headerlink" title="1.1、域加权评分"></a>1.1、域加权评分</h4><p>给定一个布尔查询q和一篇文档d,域加权评分方法给每个(q,d)对计算出一个[0,1]之间的得分.该得分由每个域上的得分线性组合而成,而每个域上的得分取布尔值:要么是0,要么是1.更具体地,给定一系列文档,假定每篇文档有L个域,其对应的权重分别是g1,…,gl (- [0, 1],他们满足$\sum_{i=1}^{l}g_{i}=1$</p>
+<blockquote>
+<p><strong>eg:</strong>一个文档集，其中每篇文章有三个域–author、title和body，对应的权重系数分别为g1＝0.2、g2＝0.3和g3＝0.5，则如果查询shakespeare出现在某篇文档的title和body域，则文档最后总得分为0.8</p>
+</blockquote>
+<hr>
+<blockquote>
+<h4 id="1-2、权重学习"><a href="#1-2、权重学习" class="headerlink" title="1.2、权重学习"></a>1.2、权重学习</h4><h4 id="1-3、最优权重g的计算"><a href="#1-3、最优权重g的计算" class="headerlink" title="1.3、最优权重g的计算"></a>1.3、最优权重g的计算</h4><p><code>没看太懂，到第15章结合机器学习的内容再回来看</code></p>
+</blockquote>
+<hr>
+<h3 id="2、词项频率及权重计算"><a href="#2、词项频率及权重计算" class="headerlink" title="2、词项频率及权重计算"></a>2、词项频率及权重计算</h3><p><strong>词袋模型：</strong>文本被看作是无序的词汇集合，忽略语法甚至是单词的顺序。<br><strong>词项频率tf：</strong>指词项t在文档d中出现的次数</p>
+<h4 id="2-1、采用tf来计算文档评分的方法："><a href="#2-1、采用tf来计算文档评分的方法：" class="headerlink" title="2.1、采用tf来计算文档评分的方法："></a>2.1、采用tf来计算文档评分的方法：</h4><p><strong>第一种方法：</strong>采用原始的tf值</p>
+<blockquote>
+<p>某个词项在A文档中出现10次,即tf=10,在B文档中出现1次,tf=1,那么A比B更相关,但是相关度不会相差10倍.相关度不会正比于词项频率</p>
+</blockquote>
+<p><strong>第二种方法：</strong>采用对数词频</p>
+<blockquote>
+<p>文档-词项的匹配得分是所有同时出现在q和文档d中的词项的对数词频之和<br>$w_{t,d}=\begin{cases}1+log_{10}tf_{t,d}<br> &amp; \text{ if } tf_{t,d} &gt; 0\<br> 0 &amp; \text{ if } otherwise<br>\end{cases}$<br>公式中的数字1是为了平滑计算用的,对于tf值为1的情况,采用对数频率加1的方式平滑处理</p>
+</blockquote>
+<p><strong>另一种tf的变体计算公式：基于最大值的tf归一化</strong></p>
+<blockquote>
+<p>$ntf_{t,d}=a+(1-a)\frac{tf_{t,d}}{tf_{max}(d)}$<br>这种方法被称为增强型规范化tf，其中的a是调节因子，过去经验取值0.5，新的研究表明取值为0.4效果更好。公式中的tf代表这个单词的实际词频数目，而Max(tf)代表了文档中所有单词中出现次数最多的那个单词对应的词频数目。之所以要如此操作，主要对于对长文档的一种抑制，因为如果文档较长，则长文档中所有单词的tf值会普遍比短文档的值高，但是这并不意味这长文档与查询更相关。用单词实际词频除以文档中最高词频，等于将绝对的数值进行了规范化转换，公式的含义就转换为：同一个文档内单词之间的相对重要性。</p>
+</blockquote>
+<h4 id="2-2、逆文档频率"><a href="#2-2、逆文档频率" class="headerlink" title="2.2、逆文档频率"></a>2.2、逆文档频率</h4><p>原始的词项频率会面临这样一个严重的问题,即在和查询进行相关度计算时,所有的词项都被认为是同等重要的。<br>显然罕见词项比常见词项所蕴含的信息更多.因此在对搜索结果排序时,对于罕见词我们希望赋予高权重而对于常见词我们希望赋予低权重。</p>
+<p><code>文档频率df：</code>指的是出现词项t的所有文档的数目</p>
+<p>罕见词项比常见词项蕴含的信息更多,因此df是和词项t的信息量成反比的一个值.由于df本身往往较大,所以通常需要将它映射到一个较小的取值范围中去.为此, 假定所有文档的数目为N, 词项t的<code>idf(inverse document frequency, 逆文本频率)</code>的定义如下:<br>$$idf_{t}=logN/df_{t}$$<br><code>逆文档频率idf</code>是反映词项t的信息量的一个重要指标,一个罕见词的idf往往很高,而高频词的idf就可能较低.</p>
+<blockquote>
+<p><strong>idf的计算样例：</strong><br>N=1,000,000<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A03.png" alt></p>
+</blockquote>
+<p><strong><code>idf</code>对排序的影响：</strong></p>
+<ul>
+<li>idf 会影响至少包含2个词项的查询的文档排序结果</li>
+<li>对于单词项查询,idf对文档排序基本没有任何影响<blockquote>
+<p><code>问题：</code>idf的计算不应该是在查询之前完成吗，为什么这里会说查询会改变词项的相对权重？</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="2-3、td-idf权重计算"><a href="#2-3、td-idf权重计算" class="headerlink" title="2.3、td-idf权重计算"></a>2.3、td-idf权重计算</h4><p><code>td-idf权重计算：</code>词项的tf-idf权重是tf权重和idf权重的乘积<br>$w_{t,d}=(1+logtf_{t,d})log\frac{N}{df_{t}}$</p>
+<p><strong>tf-idf权重</strong></p>
+<ul>
+<li>随着词项频率的增大而增大</li>
+<li>随着词项罕见度的增加而增大</li>
+</ul>
+<p><strong>采用<code>tf-idf</code>来计算文档评分的方法：</strong></p>
+<ol>
+<li>当t只在少数几篇文档中多次出现时，权重取值最大（此时能够对这些文档提供最强的区分能力）；</li>
+<li>当t在一篇文档中出现次数很少，或者在很多文档中出现，权重取值次之（此时对最后的相关度计算作用不大） ；</li>
+<li>如果t在所有文档中都出现，那么权重取值最小。</li>
+</ol>
+<blockquote>
+<p><strong>引申：</strong>在有了tf-idf权重计算之后，一个自然的数学建模的想法是：<code>tf-idf权重矩阵</code><br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A04.png" alt></p>
+<p><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A05.png" alt></p>
+<p><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A06.png" alt></p>
+</blockquote>
+<h3 id="3、向量空间模型"><a href="#3、向量空间模型" class="headerlink" title="3、向量空间模型"></a>3、向量空间模型</h3><p><strong>向量空间模型：</strong>把文档看成是一个向量，其中的每个分量都对应词典中的一个词项，分量值为采用tf-idf计算出的权重值。当某词项在文档中没有出现时，其对应的分量值为0。<br>于是，我们有一个|V|维实值空间，空间的每一维都对应词项（V为词项数目）。</p>
+<blockquote>
+<p>对于Web搜索引擎，空间可能会上千万维。但对每个向量来说又非常稀疏（稀疏矩阵），大部分都是0。</p>
+</blockquote>
+<p><code>有了向量空间模型后，那么如何对查询进行评分呢？</code><br><strong>关键思想：</strong>将查询也看成一篇极短的文档来处理，即将查询表示成同一高维空间的向量。因此，可以通过计算给定的查询向量和每个文档向量的相似度来对所有文档进行排名。<br><code>于是评分问题转变为：在向量空间下， 如何对两篇文档的相似度进行计算？</code></p>
+<h4 id="3-1、相似度计算方法"><a href="#3-1、相似度计算方法" class="headerlink" title="3.1、相似度计算方法"></a>3.1、相似度计算方法</h4><p><strong>方法1. 差向量法：</strong>采用两个文档向量差向量的大小（即欧式距离）进行计算。</p>
+<blockquote>
+<p>但是这种计算方法有一个缺点：两篇内容相似的文档向量的差向量可能很大，这是因为一篇文档可能比另一篇文档要长得多。<img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A07.png" alt><br>假想实验：将文档d 复制一份加在自身末尾得到文档d′，则d′是d的两倍。很显然，从语义上看，d 和d′具有相同的内容，代表它们之间具有最大的相似度，而两者之间的夹角为0，但是，它们的欧氏距离可能会很大。</p>
+</blockquote>
+<p><strong>方法2. 余弦相似度法（cosine similarity）</strong>采用两个文档向量夹角的余弦值进行计算</p>
+<blockquote>
+<p><code>验证夹角大小与余弦大小的等价性</code><br>在区间[0◦, 180◦]上，余弦函数cosine是一个单调递减函数<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A08.png" alt></p>
+</blockquote>
+<p>为了弥补文档长度给上述相似度计算所带来的负面效果， 计算两篇文档 d1和 d2相似度的常规方法是计算两文档向量的余弦相似度$sim(d_{1},d_{2})=\frac{\overrightarrow{V}(d_{1})\cdot \overrightarrow{V}(d_{2})}{|\overrightarrow{V}(d_{1})|\cdot |\overrightarrow{V}(d_{2})|}$<br>公式中除以分母的效果实际上相当于将向量进行长度归一化（称为欧氏归一化），得到单位向量。因此公式可以重写为：$sim(d_{1},d_{2})=\overrightarrow{v}(d_{1})\cdot \overrightarrow{v}(d_{2})$<br>其中：$\overrightarrow{v}(d_{1})=\frac{\overrightarrow{V}(d_{1})}{|\overrightarrow{V}(d_{1})|}$， $\overrightarrow{v}(d_{2})=\frac{\overrightarrow{V}(d_{2})}{|\overrightarrow{V}(d_{2})|}$</p>
+<blockquote>
+<p><code>问题：</code>既然归一化后的向量权重都处于同一数量级，那是否解决了差向量法弊端？</p>
+</blockquote>
+<h4 id="3-2、向量空间模型相似度计算"><a href="#3-2、向量空间模型相似度计算" class="headerlink" title="3.2、向量空间模型相似度计算"></a>3.2、向量空间模型相似度计算</h4><p><strong>向量相似度计算过程：</strong></p>
+<ol>
+<li>将查询表示成tf‐idf权重向量</li>
+<li>将每篇文档表示成同一空间下的tf‐idf权重向量</li>
+<li>计算两个向量之间的某种相似度(如余弦相似度)</li>
+<li>按照相似度大小将文档排序</li>
+<li>将前K（如K =10）篇文档返回给用户</li>
+</ol>
+<p><strong>余弦相似度计算算法:</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CosineScore(q)</span><br><span class="line">    float Scores[0]=0</span><br><span class="line">    Initialize Length[N]</span><br><span class="line">    for each query term t</span><br><span class="line">    do calculate w_tq and fetch posting list for t</span><br><span class="line">        for each pair(d,tf_td) in postings list</span><br><span class="line">        do Scores[d] += wf_td*w_tq</span><br><span class="line">    Read the array Length[d]</span><br><span class="line">    for each d</span><br><span class="line">    do Scores[d] = Scores[d]/Length[d]</span><br><span class="line">    return Top K components of Scores[]</span><br></pre></td></tr></table></figure></p>
+<p><strong>基于原始tf值实例计算过程：</strong></p>
+<ol>
+<li>列出tf矩阵<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A09.png" alt></li>
+<li>计算出对数词频<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A010.png" alt></li>
+<li>对数词频进行余弦归一化后的权重矩阵<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A011.png" alt><br>sim(SaS,PaP) ≈ 0.789 ∗ 0.832 + 0.515 ∗ 0.555 + 0.335 ∗ 0.0 + 0.0 ∗ 0.0 ≈ 0.94.<br>sim(SaS,WH) ≈ 0.79<br>sim(PaP,WH) ≈ 0.69<br>sim(SaS,PaP) &gt; sim(SAS,WH) &gt; sim(PaP,WH) </li>
+</ol>
+<p><strong>余弦相似度的问题</strong><br>余弦归一化倾向于短文档，即对短文档产生的归一化因子太大，而平均而言对长文档产生的归一化因子太小。特别是对那些包含多个不同主题的文档，而查询词项可能只能和文档的部分内容相匹配。这时文档中词项的相对权重，就会和一篇与查询相匹配的短文档迥然不同。</p>
+<blockquote>
+<p><code>于是我们要找到一种方法：</code>对短文档的相似度降低，而长文档的相似度增大，去除原来余弦归一化偏向短文档的问题。<br>Amit Singhal的著名论文Pivoted Document Length Normalization提出了一种回转归一化的处理方法。<br>论文地址：<a href="http://ir.iit.edu/~dagr/cs529/files/handouts/singhal96pivoted.pdf" target="_blank" rel="noopener">http://ir.iit.edu/~dagr/cs529/files/handouts/singhal96pivoted.pdf</a></p>
+</blockquote>
+<h4 id="3-3、文档权重和查询权重计算的三要素"><a href="#3-3、文档权重和查询权重计算的三要素" class="headerlink" title="3.3、文档权重和查询权重计算的三要素"></a>3.3、文档权重和查询权重计算的三要素</h4><p><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E5%85%AD%E7%AB%A012.png" alt></p>
+<p>对于查询和文档常常采用不同的权重计算机制，记法: ddd.qqq</p>
+<blockquote>
+<p>例如: lnc.ltn<br>文档: 对数tf，无idf因子，余弦长度归一化<br>查询: 对数tf，idf，无归一化</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/14/信息检索/信息检索导论第六章--文档评分、词项权重计算及向量空间模型/" data-id="cjtf6o94z00ai0fc5xb6qsyju" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信息检索/">信息检索</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/14/Java/Java源码/集合类/LinkedHashMap源码剖析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          LinkedHashMap源码剖析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/13/Java/Java源码/集合类/HashTable源码剖析/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hashtable源码剖析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

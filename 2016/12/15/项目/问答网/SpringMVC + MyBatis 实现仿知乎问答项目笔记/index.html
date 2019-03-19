@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>SpringMVC + MyBatis 实现仿知乎问答项目笔记 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="问答项目笔记Day1参数解析123@Controllerpublic class IndexController &amp;#123;    @RequestMapping(&amp;quot;/&amp;quot;)     @ResponseBody public String index() &amp;#123;        return &amp;quot;Hello NowCoder&amp;quot;;     &amp;#125;">
+<meta name="keywords" content="Project">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC + MyBatis 实现仿知乎问答项目笔记">
+<meta property="og:url" content="http://yoursite.com/2016/12/15/项目/问答网/SpringMVC + MyBatis 实现仿知乎问答项目笔记/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="问答项目笔记Day1参数解析123@Controllerpublic class IndexController &amp;#123;    @RequestMapping(&amp;quot;/&amp;quot;)     @ResponseBody public String index() &amp;#123;        return &amp;quot;Hello NowCoder&amp;quot;;     &amp;#125;">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/media/%E9%97%AE%E7%AD%94%E7%BD%91.jpg">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringMVC + MyBatis 实现仿知乎问答项目笔记">
+<meta name="twitter:description" content="问答项目笔记Day1参数解析123@Controllerpublic class IndexController &amp;#123;    @RequestMapping(&amp;quot;/&amp;quot;)     @ResponseBody public String index() &amp;#123;        return &amp;quot;Hello NowCoder&amp;quot;;     &amp;#125;">
+<meta name="twitter:image" content="http://yoursite.com/media/%E9%97%AE%E7%AD%94%E7%BD%91.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-项目/问答网/SpringMVC + MyBatis 实现仿知乎问答项目笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/15/项目/问答网/SpringMVC + MyBatis 实现仿知乎问答项目笔记/" class="article-date">
+  <time datetime="2016-12-15T08:11:10.000Z" itemprop="datePublished">2016-12-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Project/">Project</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SpringMVC + MyBatis 实现仿知乎问答项目笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="问答项目笔记"><a href="#问答项目笔记" class="headerlink" title="问答项目笔记"></a>问答项目笔记</h1><h2 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h2><h3 id="参数解析"><a href="#参数解析" class="headerlink" title="参数解析"></a>参数解析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Controllerpublic class IndexController &#123;    @RequestMapping(&quot;/&quot;) </span><br><span class="line">    @ResponseBody public String index() &#123;        return &quot;Hello NowCoder&quot;; </span><br><span class="line">    &#125;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@RequestMapping(value = &quot;/profile/&#123;groupId&#125;/&#123;userId&#125;&quot;) </span><br><span class="line">@ResponseBodypublic String profile(@PathVariable(&quot;groupId&quot;) String groupId,</span><br><span class="line">        @PathVariable(&quot;userId&quot;) int userId,</span><br><span class="line">        @RequestParam(value = &quot;type&quot;, defaultValue = &quot;1&quot;) int type,</span><br><span class="line">        @RequestParam(value = &quot;key&quot;, defaultValue = &quot;nowcoder&quot;) String key) &#123;    return String.format(&quot;&#123;%s&#125;,&#123;%d&#125;,&#123;%d&#125;,&#123;%s&#125;&quot;, groupId, userId, type, key);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<ol>
+<li>@RequsetMapping和@ResponseBody<br>@RequsetMapping(path = {“/index”, “/“}, method = {RequestMethod.GET})表示地址映射，/index和/ 都可以以GET请求方式访问<br>@ResponseBody表示返回的是一个文本，而不是模板</li>
+<li>@PathVariable和@RequestParam<br>@PathVariable用来解析获取路径中的参数<br>@RequestParam用来解析获取请求参数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public String profile(@PathVariable(&quot;userId&quot;) int userId,</span><br><span class="line">                         @PathVariable(&quot;groupId&quot;) String groupId,</span><br><span class="line">                         @RequestParam(value = &quot;type&quot;, defaultValue = &quot;1&quot;) int type,</span><br><span class="line">                         @RequestParam(value = &quot;key&quot;, defaultValue = &quot;zz&quot;, required = false) String key) &#123;</span><br><span class="line">       return String.format(&quot;Profile Page of %s / %d, t:%d k:%s&quot;, groupId,userId,type,key);</span><br></pre></td></tr></table></figure>
+<h3 id="velocity语法"><a href="#velocity语法" class="headerlink" title="velocity语法"></a>velocity语法</h3><p>$!{ 变量/表达式 }</p>
+<h2 id="注释-多行注释"><a href="#注释-多行注释" class="headerlink" title="注释 ## # 多行注释 "></a>注释 ## #<em> 多行注释 </em></h2> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#foreach ($color in $colors) </span><br><span class="line">    Color$!&#123;foreach.count&#125;/$&#123;foreach.index&#125;:$!&#123;color&#125; </span><br><span class="line">#end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>$!{变量/表达式}</code> 和 <code>${变量/表达式}</code>的区别<br> <code>$!{}</code>中数据为空时，强制不显示<br> <code>${}</code>中数据为空时，当做文本显示</p>
+</blockquote>
+<h4 id="属性访问"><a href="#属性访问" class="headerlink" title="属性访问"></a>属性访问</h4><p><code>$!{user.name}</code><br><code>$!{user.getName()}</code></p>
+<h4 id="模板继承"><a href="#模板继承" class="headerlink" title="模板继承"></a>模板继承</h4><p>include 纯文本扩展<br>parse 变量解析</p>
+<h4 id="macro宏"><a href="#macro宏" class="headerlink" title="macro宏"></a>macro宏</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#macro (render_color, $color, $index) </span><br><span class="line">This is Color $index:$color#end</span><br><span class="line">#foreach ($color in $colors) </span><br><span class="line">#render_color($color, $foreach.index)#end</span><br></pre></td></tr></table></figure>
+<h3 id="request-response"><a href="#request-response" class="headerlink" title="request/response"></a>request/response</h3><h4 id="request"><a href="#request" class="headerlink" title="request"></a>request</h4><p>参数解析<br>cookie读取<br>http请求字段<br>文件上传</p>
+<p><strong>HttpServletRequest</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">request.getHeaderNames(); </span><br><span class="line">request.getMethod();</span><br><span class="line">request.getPathInfo();</span><br><span class="line">request.getQueryString();</span><br></pre></td></tr></table></figure>
+<h4 id="response"><a href="#response" class="headerlink" title="response"></a>response</h4><p>页面内容返回<br>cookie下发<br>http字段设置，headers<br><strong>HttpServletResponse</strong></p>
+<pre><code>response.addCookie(new Cookie(key, value)); 
+response.addHeader(key, value);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### Enumeration接口</span><br><span class="line">Enumeration有两个方法：</span><br><span class="line">（1）boolean hasMoreElements();//是否还有元素，如果有返回true，否则表示至少含有一个元素</span><br><span class="line">（2）E nextElement();//如果Enumeration枚举对象还有元素，返回对象只能的下一个元素，否则抛出NoSuchElementException异常。</span><br></pre></td></tr></table></figure>
+
+public class TestEnumeration{
+public static void main(String[] args){
+        Vector v = new Vector();
+        v.addElement(&quot;Lisa&quot;);
+        v.addElement(&quot;Billy&quot;);
+        v.addElement(&quot;Mr Brown&quot;);
+        Enumeration e = v.elements();//返回Enumeration对象
+        while(e.hasMoreElements()){
+            String value = (String)e.nextElement();//调用nextElement方法获得元素
+            System.out.print(value);
+        }
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">### Error</span><br></pre></td></tr></table></figure>
+
+// Spring MVC外的Exception或Spring MVC没有处理的Exception 
+@ExceptionHandler()
+@ResponseBody
+public String error(Exception e) {
+    return &quot;ERROR:&quot; + e.getMessage();
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### IOC（依赖注入）</span><br><span class="line">`@Autowired`自动注入</span><br><span class="line"></span><br><span class="line">### AOP（面向切面，所有业务都要处理的业务）</span><br><span class="line">日志Log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Day2</span><br><span class="line">### 数据库字段设计</span><br><span class="line">每一个实体就是数据库中的一张表，表与表之间是有关联的。</span><br><span class="line"></span><br><span class="line">#### 用户</span><br><span class="line">id, name, password, salt, head_url</span><br><span class="line">&gt;salt:用于密码加密</span><br><span class="line"></span><br><span class="line">#### 站内信</span><br><span class="line">id, fromid, toid, content, conversation_id, created_date</span><br><span class="line"></span><br><span class="line">#### 问题</span><br><span class="line">id, title, content, user_id, created_date, comment_count</span><br><span class="line">&gt;comment_count：冗余设计，提高性能，不需要查询另一张表，可以异步更新</span><br><span class="line"></span><br><span class="line">#### 评论</span><br><span class="line">id, content, user_id, created_date, entity_id, entity_type</span><br><span class="line"></span><br><span class="line">### 数据库创建</span><br><span class="line">- PK: primary key 主键</span><br><span class="line">- NN: not null 非空</span><br><span class="line">- UQ: unique 唯一</span><br><span class="line">- BIN: binary column 存放二进制数据的列</span><br><span class="line">- UN: Unsigned data type 无符号数据类型（需要整数形数据）</span><br><span class="line">- ZF: Fill up values for that column with 0&apos;s if it is numeric 填充0位（例如指定3位小数，整数18就会变成18.000）</span><br><span class="line">- AI: Auto Incremental 自增长</span><br><span class="line"></span><br><span class="line">#### 常用数据类型</span><br><span class="line">- int</span><br><span class="line">- varchar(n)</span><br><span class="line">- datetime</span><br><span class="line">- float(m,d)</span><br><span class="line">- text,65535</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### CRUD操作</span><br><span class="line">- 增</span><br><span class="line">`INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)` </span><br><span class="line">- 删</span><br><span class="line">`DELETE FROM 表名称 WHERE 列名称 = 值`</span><br><span class="line">- 改`UPDATE 表名称 SET 列名称 = 新值 WHERE 列名称 = 某值` </span><br><span class="line">- 查</span><br><span class="line">`SELECT */列名称 FROM 表名称`</span><br><span class="line"></span><br><span class="line">&gt;`SELECT &#123;COLA,COLB,*&#125; FROM &#123;TABLE&#125; WHERE &#123;CONDITION&#125;ORDER BY &#123;COL&#125; DESCLIMIT &#123;OFF&#125;,&#123;COUNT&#125;`</span><br><span class="line"></span><br><span class="line">### MyBatis</span><br><span class="line">#### JDBC数据库操作</span><br><span class="line">1. 加载驱动</span><br><span class="line">2. 创建数据库链接</span><br><span class="line">3. 创建Statement对象</span><br><span class="line">4. 执行SQL获取数据</span><br><span class="line">5. 数据转化</span><br><span class="line">6. 资源释放</span><br><span class="line"></span><br><span class="line">#### MyBatis集成</span><br><span class="line">1. application.properties 增加spring 配置数据库链接地址</span><br><span class="line">2. pom.xml 中引入 mybatis-spring-boot-starter 和 mysql-connector-java 依赖</span><br><span class="line">3. 定义 DAO 接口，注解为 Mapper，然后就可以直接 @Autowired 注入就可以使用了</span><br><span class="line"></span><br><span class="line">三层结构：</span><br><span class="line"></span><br><span class="line">Dao层读取数据库 -&gt; Service层调用Dao层 -&gt; Controller层调用Service</span><br><span class="line">### MyBatis配置方法</span><br><span class="line">#### 注解方式</span><br></pre></td></tr></table></figure>
+
+@Mapper
+public interface UserDAO {
+    String TABLE_NAME = &quot;user&quot;;
+    String INSERT_FIELDS = &quot; name, password, salt, head_url &quot;; 
+    String SELECT_FIELDS = &quot; id, name, password, salt, head_url &quot;; 
+
+    @Insert({&quot;insert into &quot;, TABLE_NAME, &quot;(&quot;, INSERT_FIELDS,
+&quot;) Values (#{name}, #{password}, #{salt}, #{headUrl})&quot;})
+int addUser(User user);
+
+    @Select({&quot;select &quot;, SELECT_FIELDS, &quot; from &quot;, TABLE_NAME, &quot; where id=#{id}&quot;})
+User selectById(int id);
+
+    @Update({&quot;update &quot;, TABLE_NAME, &quot; set password = #{password} where id=#{id}&quot;}) void updatePassword(User user);
+
+    @Delete({&quot;delete from &quot;, TABLE_NAME, &quot; where id = #{id}&quot;})
+    void deleteById(int id);    
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#### XML方式</span><br></pre></td></tr></table></figure>
+
+&lt;mapper namespace=&quot;com.nowcoder.dao.QuestionDAO&quot;&gt;
+    &lt;sql id=&quot;table&quot;&gt;question&lt;/sql&gt;
+    &lt;sql id=&quot;selectFields&quot;&gt;id,title, content,comment_count,created_date,user_id&lt;/sql&gt;
+    &lt;select id=&quot;selectByUserIdAndOffset&quot; resultType=&quot;com.nowcoder.model.Question&quot;&gt;
+        SELECT
+        &lt;include refid=&quot;selectFields&quot;/&gt; 
+        FROM
+        &lt;include refid=&quot;table&quot;/&gt;
+
+        &lt;if test=&quot;userId != 0&quot;&gt; 
+            WHERE user_id = #{userId}
+        &lt;/if&gt;
+        ORDER BY id DESC 
+        LIMIT #{offset},#{limit}
+
+    &lt;/select&gt;
+&lt;/mapper&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">### ViewObject和DateTool</span><br><span class="line">ViewObject：ViewObject:方便传递任何数据到Velocity</span><br><span class="line">DateTool:velocity自带工具类，用于自定义时间格式</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Day3</span><br><span class="line">### 注册</span><br><span class="line">1. 用户名合法性检测(长度，敏感词，重复，特殊字符) </span><br><span class="line">2. 密码长度要求3. 密码salt加密，密码强度检测(md5库)</span><br><span class="line">4. 用户邮件/短信激活</span><br><span class="line"></span><br><span class="line">### 登陆/登出</span><br><span class="line">#### 登陆: </span><br><span class="line">1. 服务器密码校验/三方校验回调，token登记    1. 服务器端token关联userid    1. 客户端存储token(app存储本地，浏览器存储cookie) </span><br><span class="line">2. 服务端/客户端token有效期设置(记住登陆) 注:token可以是sessionid，或者是cookie里的一个key#### 登出: </span><br><span class="line">服务端/客户端token删除</span><br><span class="line">session清理</span><br><span class="line"></span><br><span class="line">### 页面访问</span><br><span class="line">#### 客户端</span><br><span class="line">带 token 的 HTTP 请求</span><br><span class="line">#### 服务端</span><br><span class="line">1. 根据 token 获取用户 id</span><br><span class="line">2. 根据用户 id 获取用户的具体信息</span><br><span class="line">3. 用户和页面访问权限处理</span><br><span class="line">4. 渲染页面/跳转页面</span><br><span class="line"></span><br><span class="line">### 拦截器</span><br><span class="line">判断用户身份</span><br></pre></td></tr></table></figure>
+
+public class PassportInterceptor implements HandlerInterceptor{
+
+    boolean preHandle(HttpServletRequest var1, HttpServletResponse var2,
+Object var3) throws Exception;
+
+    void postHandle(HttpServletRequest var1, HttpServletResponse var2, Object var3, ModelAndView var4) throws Exception;
+
+    void afterCompletion(HttpServletRequest var1, HttpServletResponse var2, Object var3, Exception var4) throws Exception;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#### preHandle</span><br><span class="line">1. 找出 Cookie 中的 ticket </span><br><span class="line">2. 调用 loginTicketDAO 从数据库中找到对应的 ticket，并检验是否过期，状态是否有效</span><br><span class="line">3. 调用 userDAO 从数据库中找到对应的用户</span><br><span class="line">4. 将用户信息存放入 hostHandle中</span><br><span class="line"></span><br><span class="line">&gt; hostHandle 是为了实现随处都可以通过依赖注入的方式访问需要的信息</span><br><span class="line"></span><br><span class="line">#### postHandle</span><br><span class="line">将 hostHandle 中的用户信息加入到 modelAndView 中，用于velocity 调用</span><br><span class="line"></span><br><span class="line">#### afterCompletion</span><br><span class="line">清理工作</span><br><span class="line"></span><br><span class="line">#### 拦截器配置</span><br><span class="line">通过继承 WebWvcConfigurerAdapter 类，并重写 addInterceptors 方法，将自定义的拦截器加入访问链路中。</span><br><span class="line">![拦截器](media/14886163470022/%E6%8B%A6%E6%88%AA%E5%99%A8.png)</span><br></pre></td></tr></table></figure>
+
+@Component
+public class WendaWebConfiguration extends WebMvcConfigurerAdapter{
+
+    @Autowired
+    PassportInterceptor passportInterceptor;
+
+    //重写方法，加入自定义的拦截器
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(passportInterceptor);
+        super.addInterceptors(registry);
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 未登录跳转</span><br><span class="line">通过拦截器过滤实现</span><br></pre></td></tr></table></figure>
+
+@Override
+public void addInterceptors(InterceptorRegistry registry) { 
+    registry.addInterceptor(loginRequiredInterceptor).addPathPatterns(&quot;/user/*&quot;);
+    super.addInterceptors(registry);
+}
+
+//访问跳转
+@Override
+public boolean preHandle(HttpServletRequest httpServletRequest, 
+            HttpServletResponse httpServletResponse, Object o) throws Exception { 
+    if (hostHolder.getUser() == null) {
+        httpServletResponse.sendRedirect(&quot;/reglogin?next=&quot; + uri);
+        return false; 
+        }
+    return true;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"></span><br><span class="line">## Day4</span><br><span class="line">### 问题发布</span><br><span class="line">pom.xml 添加 com.alibaba 的 fastjson 依赖</span><br><span class="line">发布成功返回 json 串中 code 为 0，失败为 1。</span><br><span class="line">&gt;注意使用 HtmlUtils.htmlEscape() 方法进行 html 标签处理，防止 cookies 泄露</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 敏感词过滤</span><br><span class="line">将敏感词构造成前缀树，然后一次遍历 question.title 和 question.content 就可以了</span><br><span class="line">#### 前缀树</span><br><span class="line">- 根节点不包含字符，除根节点外每一个节点都只包含一个字符- 从根节点到某一节点，路径上经过的字符连接起来，为该节点对应的字符串</span><br><span class="line">- 每个节点的所有子节点包含的字符都不相同</span><br><span class="line">![前缀树](media/14886163470022/%E5%89%8D%E7%BC%80%E6%A0%91.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 多线程</span><br><span class="line">- 优势：</span><br><span class="line">    - 充分利用多处理器</span><br><span class="line">    - 可以异步处理任务</span><br><span class="line">- 问题：</span><br><span class="line">    - 数据被多个线程访问，数据的安全性问题</span><br><span class="line">    - 不活跃的线程也会占用内存资源</span><br><span class="line">    - 死锁</span><br><span class="line"></span><br><span class="line">#### 实现多线程</span><br><span class="line">1. extends Thread,重载 run() 方法</span><br><span class="line">2. implement Runnable(),实现 run() 方法</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### Synchronized 内置锁</span><br><span class="line">1. 放在方法上会锁住所有synchronized方法 </span><br><span class="line">2. synchronized(obj) 锁住相关的代码段</span><br><span class="line"></span><br><span class="line">#### BlockingQueue 同步队列</span><br><span class="line">BlockingQueue 阻塞队列。该类是 java.util.concurrent 包下的重要类，通过对 Queue 的学习可以得知，这个 queue 是单向队列，可以在队列头添加元素和在队尾删除或取出元素。类似于一个管道，特别适用于先进先出策略的一些应用场景。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">|  | 抛出异常 | 特殊值 | 阻塞 | 超时 |</span><br><span class="line">| :-: | :-: | :-: | :-: | :-: |</span><br><span class="line">| 插入 |  add(e)| offer(e) | put(e) | offer(e, time, unit) |</span><br><span class="line">| 移除 | remove() | poll() | take() | poll(time, unit) |</span><br><span class="line">| 检查 | element() | peek() | 不可用 | 不可用 |</span><br><span class="line"></span><br><span class="line">BlockingQueue 方法以四种形式出现，对于不能立即满足但可能在将来某一时刻可以满足的操作，这四种形式的处理方式不同：</span><br><span class="line"></span><br><span class="line">- 第一种是抛出一个异常</span><br><span class="line">- 第二种是返回一个特殊值（null 或 false，具体取决于操作）</span><br><span class="line">- 第三种是在操作可以成功前，无限期地阻塞当前线程</span><br><span class="line">- 第四种是在放弃前只在给定的最大时间限制内阻塞。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### ThreadLocal</span><br><span class="line">1. 线程局部变量。即使是一个 static 成员，每个线程访 问的变量是不同的。2. 常见于web中存储当前用户到一个静态工具类中，在线程的任何地方都可以访问到当前线程的用户。3. 参考 HostHolder.java 里的 users</span><br><span class="line"></span><br><span class="line">&gt;实现：每个 Thread 都持有一个 TreadLocalMap 类型的变量（该类是一个轻量级的 Map，功能与 map 一样，区别是桶里放的是 entry 而不是 entry 的链表。功能还是一个 map。）以本身为 key，以目标为 value。</span><br><span class="line">主要方法是 get() 和 set(T a) ，set 之后在 map 里维护一个 threadLocal -&gt; a，get 时将 a 返回。ThreadLocal 是一个特殊的容器。</span><br><span class="line"></span><br><span class="line">#### Executor</span><br><span class="line">1. 提供一个运行任务的框架。2. 将任务和如何运行任务解耦。3. 常用于提供线程池或定时任务服务</span><br></pre></td></tr></table></figure>
+
+ExecutorService service = Executors.newFixedThreadPool(2);
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i &lt; 10; ++i) {
+                    try {
+                        Thread.sleep(1000);
+                        System.out.println(&quot;Executor1:&quot; + i);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### Future</span><br><span class="line"></span><br><span class="line">## Day6</span><br><span class="line">### 通用的新模块开发流程</span><br><span class="line"></span><br><span class="line">1. Database Column(字段设计)2. Model:模型定义，和数据库相匹配3. DAO:数据读取4. Service:服务包装5. Controller:业务入口</span><br><span class="line">6. Test</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 评论中心</span><br><span class="line">统一的评论服务，覆盖所有的实体评论 </span><br><span class="line">字段设计：</span><br><span class="line"></span><br><span class="line">- id- content</span><br><span class="line">- entity_id -&gt;questionId/commentId</span><br><span class="line">- entity_type question/comment</span><br><span class="line">- created_date</span><br><span class="line">- user_id</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 消息中心</span><br><span class="line">字段设计：</span><br><span class="line"></span><br><span class="line">- id</span><br><span class="line">- from_id</span><br><span class="line">- to_id</span><br><span class="line">- content</span><br><span class="line">- created_date</span><br><span class="line">- has_read</span><br><span class="line">- conversation_id</span><br><span class="line"></span><br><span class="line">## Day7</span><br><span class="line">### Redis</span><br><span class="line">#### Redis简介</span><br><span class="line">Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 它支持多种类型的数据结构，如 字符串（strings）， 散列（hashes）， 列表（lists）， 集合（sets）， 有序集合（sorted sets） 与范围查询， bitmaps， hyperloglogs 和 地理空间（geospatial） 索引半径查询。 Redis 内置了 复制（replication），LUA脚本（Lua scripting）， LRU驱动事件（LRU eviction），事务（transactions） 和不同级别的 磁盘持久化（persistence）， 并通过 Redis哨兵（Sentinel）和自动 分区（Cluster）提供高可用性（high availability）。</span><br><span class="line"></span><br><span class="line">#### Redis安装</span><br><span class="line">[Redis安装配置](http://www.jianshu.com/p/6b5eca8d908b)</span><br><span class="line">[Redis快速教程](http://www.yiibai.com/redis/redis_quick_guide.html)</span><br><span class="line">mac下Redis安装</span><br><span class="line">1. 下载最新的稳定版Redis安装包 redis*.tar.gz</span><br><span class="line">2. 在/usr/local目录下解压 `tar - zvxf redis*.tar.gz`</span><br><span class="line">3. 进入/usr/local/redis目录下，输入`sudo make test`，等待完成</span><br><span class="line">4. 输入`sudo make install`，完成安装</span><br><span class="line">5. 启动Redis，输入命令`redis-server`</span><br><span class="line"></span><br><span class="line">#### Redis数据结构</span><br><span class="line">##### List</span><br><span class="line">**双向列表，适用于最新列表，关注列表**</span><br><span class="line"></span><br><span class="line">- lpush</span><br><span class="line">- lpop</span><br><span class="line">- blpop</span><br><span class="line">- lindex</span><br><span class="line">- lrange</span><br><span class="line">- lrem</span><br><span class="line">- linsert</span><br><span class="line">- lset</span><br><span class="line">- rpush</span><br><span class="line"></span><br><span class="line">##### Set</span><br><span class="line">**适用于无顺序的集合，如点赞点踩、抽奖、已读、共同好友**</span><br><span class="line"></span><br><span class="line">- sdiff</span><br><span class="line">- smembers</span><br><span class="line">- sinter</span><br><span class="line">- scard</span><br><span class="line"></span><br><span class="line">##### SortedSet</span><br><span class="line">**排行榜，优先队列**</span><br><span class="line"></span><br><span class="line">- zadd</span><br><span class="line">- zscore</span><br><span class="line">- zrange</span><br><span class="line">- zcount</span><br><span class="line">- zrank</span><br><span class="line">- zrevrank</span><br><span class="line"></span><br><span class="line">##### Hash</span><br><span class="line">**对象属性不定长属性数**</span><br><span class="line"></span><br><span class="line">- hset</span><br><span class="line">- hget</span><br><span class="line">- hgetAll</span><br><span class="line">- hexists</span><br><span class="line">- hkeys</span><br><span class="line">- hvals</span><br><span class="line"></span><br><span class="line">##### KV</span><br><span class="line">**单一数值，验证码、PV、缓存**</span><br><span class="line"></span><br><span class="line">- set</span><br><span class="line">- setex</span><br><span class="line">- incr</span><br><span class="line"></span><br><span class="line">### Redis实现踩赞功能</span><br><span class="line">底层通过一个@Service的概念，将每个元素的赞跟踩存到Redis的集合里，Key一定要独立，通过RedisKeyUtil将entityType和entityId生成独立的Key，点赞则将userId放入集合</span><br><span class="line"></span><br><span class="line">## Day8</span><br><span class="line">### 异步队列</span><br><span class="line">Redis异步队列实现点赞站内信发送</span><br><span class="line"></span><br><span class="line">1. EventProducer的fireEvent将消息lpush到队列(RedisList)中。</span><br><span class="line">2. 各种Handler实现EventHandler接口，其中有两个方法，事件处理方法和获取支持的事件类型。</span><br><span class="line">3. EventConsumer通过applicationContext.getBeansOfType(EventHandler.class)自动找到所有实现EventHandler的Handler类，并存储在Map1&lt;String, EventHandler&gt;中。</span><br><span class="line">4. 迭代访问Map1,获取每个Handler支持的所有事件类型，存储在List中，并迭代访问List，并将其Handler注册在Map&lt;EventType, List&lt;EventHandler&gt;&gt; config 中。</span><br><span class="line">5. 消费者线程取出event后，查询config，获取所有Handler并执行</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**什么是消息队列？**</span><br><span class="line">所谓消息队列，就是一个以队列数据结构为基础的一个实体，这个实体是真实存在的，比如程序中的数组，数据库中的表，或者redis等等，都可以。</span><br><span class="line"></span><br><span class="line">**首先我们说说为什么要使用队列，什么情况下才会使用队列？**</span><br><span class="line">我的理解是，那些实时性要求不高，且比较耗时的任务，是队列的最佳应用场景。比如说我在某网站注册一个账号，当我的信息入库注册成功后，网站需要发送一封激活邮件，让我激活账号，而这个发邮件的操作并不是需要实时响应的，没有必要卡在那个注册界面，等待邮件发送成功，再说发送邮件本来就是一个耗时的操作（需要调用第三方smtp服务器），此时，选择消息队列去处理。注册完成，我只要向队列投递一个消息，消息的内容中包含我要发送邮件的一些设置，以及发送时间，重试次数等消息属性。这里的投递操作（可以是入库，写入缓存等）是要消息进入一个实体的队列。其中应该有一进程（消费者）一直在后台运行，他不断的去轮训队列中的消息（按照时间正序，队列是先进先出），看有没有达到执行条件的，如果有就取出一条，根据消息配置，执行任务，如果成功，则销毁这条消息，继续轮训，如果失败，则重试，知道达到重试次数。这时用户已经收到注册成功的提示，但是已经去做其他事了，邮件也来了，用户点击邮件，注册成功。这就是消息队列的一个典型应用。</span><br><span class="line">再说一个场景，点赞，这个在高并发的情况下，很容易造成数据库连接数占满，到时整个网站响应缓慢，才是就是想到要解决数据库的压力问题，一般就是两种方案，一是提高数据库本身的能力（如增加连接数，读写分离等），但是数据库总是有极限的，到达了极限是没有办法在提升了的，此时就要考虑第二种方案，释放数据库的压力，将压力转移到缓存里面。就拿实际的点赞来说吧，用户的点赞请求到来，我只是将点赞请求投递到消息队列里面，后续的点赞请求可以将消息合并，即只更新点赞数，不产生新的任务，此时有个进行再不断的轮训消息队列，将点赞消息消耗，并将值更新到数据库里面，这样就有效的降低了数据库的压力，因为在缓存层将数个数据库更新请求合并成一个，大大提高了效率，降低了负载。</span><br><span class="line"></span><br><span class="line">### 邮件发送</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## Day9</span><br><span class="line">### 关注服务</span><br><span class="line">#### 概念</span><br><span class="line">1. A 关注 B</span><br><span class="line">2. A 是 B 的粉丝</span><br><span class="line">3. B 是 A 的关注者</span><br><span class="line"></span><br><span class="line">#### 特点</span><br><span class="line">1. 多对多的服务</span><br><span class="line">2. ID 和 ID 的关联，有序</span><br><span class="line"></span><br><span class="line">#### Service</span><br><span class="line">1. 通用关注接口</span><br><span class="line">2. 粉丝列表分页</span><br><span class="line">3. 关注对象列表分页</span><br><span class="line"></span><br><span class="line">#### Controller</span><br><span class="line">1. 首页问题关注数</span><br><span class="line">2. 详情页问题关注列表</span><br><span class="line">3. 粉丝/关注人列表</span><br><span class="line">4. 关注异步事件</span><br><span class="line"></span><br><span class="line">#### 存储结构</span><br><span class="line">Redis： zset/list</span><br><span class="line"></span><br><span class="line">### Redis事务</span><br><span class="line">Redis 在接受到一个 client 发来的命令后会立即处理并返回处理结果，但是当一个 client 在一个连接中发出 multi 命令时，这个连接会进入一个事务上下文，该连接后续的命令并不是立即执行，而是先放到一 个队列中。当从此连接受到 exec 命令后，redis 会顺序的执行队列中的所有命令。并将所有命令的运行结果打包到一起返回给 client.然后此连接就结束事务上下文。</span><br><span class="line"></span><br><span class="line">### 排序算法</span><br><span class="line">#### Hacker News</span><br><span class="line">[Hacker News](https://news.ycombinator.com/)</span><br><span class="line">`Score=(P-1)/(T+2)^G`</span><br><span class="line"></span><br><span class="line">- P:投票数，-1是把自己投的过滤掉 </span><br><span class="line">- T:发布到现在的时间间隔，单位小时，+2防止除数太小 </span><br><span class="line">- G:重力加速度，分值根据时间降低速率</span><br><span class="line"></span><br><span class="line">#### Reddit</span><br><span class="line">[Reddit](https://www.reddit.com/)</span><br><span class="line">$ f(t_&#123;s&#125;, y, z)=log_&#123;10&#125;z +\frac&#123; yt_&#123;s&#125;&#125;&#123;45000&#125;N$</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&gt;时间是最重要的权重，由于流量比较大，所以对于高赞文章有所优势，适合新闻类排序</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### StackOverflow</span><br><span class="line">[StackOverflow](http://stackoverflow.com)</span><br><span class="line">![StackOverflo](media/14886163470022/StackOverflow.png)</span><br><span class="line"></span><br><span class="line">- Qviews:问题浏览数，通过log来平滑</span><br><span class="line">- Qanswer:问题回答数，有回答的题目才是好问题 </span><br><span class="line">- Qscore:问题赞踩差，赞的越多，问题越好</span><br><span class="line">- sum(Ascores):回答赞踩差，回答的越多问题越好 </span><br><span class="line">- QageInHours:题目发布时间差，时间越久排名越后 </span><br><span class="line">- Qupdated:最新的回答时间，越新关注度越高</span><br><span class="line"></span><br><span class="line">#### IMDB</span><br><span class="line">[IMDB](http://www.imdb.com/help/show_leaf?votestopfaq)</span><br><span class="line">加权排名 (WR) = (v ÷ (v+m)) × R + (m ÷ (v+m)) × C</span><br><span class="line">- R = 某电影投票平均分- v = **有效**投票人数- m = 最低投票人数，1250 </span><br><span class="line">- C = 所有电影平均值</span><br><span class="line">&gt;投票人数越多，越偏向于用户打分值，防止冷门电影小数人高分导致的高分</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#### Topcoder</span><br><span class="line">https://community.topcoder.com/longcontest/?module=Static&amp;d1=support&amp;d2=ratings</span><br><span class="line"></span><br><span class="line">用于计算编程比赛排名</span><br><span class="line"></span><br><span class="line">## Day10</span><br><span class="line">### timeline/feed流过程</span><br><span class="line">1. 事件触发产生新鲜事</span><br><span class="line">2. 粉丝新鲜事列表获取</span><br><span class="line">3. 各新鲜事自定义渲染</span><br><span class="line">4. 新鲜事排序显示  </span><br><span class="line">5. 广告推荐整合</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 推拉模式结合</span><br><span class="line"></span><br><span class="line">|  |  定义| 用处 | 优缺点 |</span><br><span class="line">| :---: | :--- | :---| :--- |</span><br><span class="line">| 推 | 事件触发后广播给所有&lt;br&gt;的粉丝 | 写时消息推送给粉丝。&lt;br&gt;空间换时间 | 对于粉丝数过多的事件&lt;br&gt;后台压力较大，浪费存&lt;br&gt;储空间。流程清晰，开&lt;br&gt;发难度低，关注新用户&lt;br&gt;需要同步更新feed流 |</span><br><span class="line">|  拉| 登陆打开页面的时候根&lt;br&gt;据关注的实体动态生成&lt;br&gt;timeline内容 |读时拉取所有好友的消&lt;br&gt;息，再聚合。时间换空间  | 读取压力大，存储占用&lt;br&gt;小，缓存最近读取的feed，&lt;br&gt;根据时间分区拉取 |</span><br><span class="line">| 推拉结合 | 活跃/在线用户推，&lt;br&gt;其他用户拉 | 基于推，混入拉；基于&lt;br&gt;拉，加速推。时空平衡 | 降低存储空间，又满足&lt;br&gt;大部分用户的读取需求 |</span><br><span class="line"></span><br><span class="line">### 新鲜事存储/渲染</span><br><span class="line">![](media/14886163470022/14894917198966.jpg)</span><br><span class="line"></span><br><span class="line">获取新鲜事到显示的过程</span><br><span class="line">1. timeline新鲜事统一存储</span><br><span class="line">2. 用户保存新鲜事id列表</span><br><span class="line">3. 根据新鲜事id找到核心数据</span><br><span class="line">4. 根据核心数据获取新鲜事类型</span><br><span class="line">5. 根据类型选取对应的新鲜事模板进行渲染</span><br><span class="line"></span><br><span class="line">### 微博架构演化</span><br><span class="line">**第一版**1. 纯推送，推送延迟，压力大，数据存储 浪费**第二版**1. 推送给有效用户(当天登陆过的用户) </span><br><span class="line">2. 大号拉，小号推，整合feed流3. 按月时间拆分保存，索引每月微博边界 </span><br><span class="line">4. 异步处理，发送成功先在自己流里可见**第三版**1. 服务化，feed按月，私信按uid拆分 </span><br><span class="line">2. 分级缓存-热门，短期，历史微博3. 多机房数据同步</span><br><span class="line"></span><br><span class="line">### 人人网架构</span><br><span class="line">1. 以推送为主，新鲜事合并   </span><br><span class="line">2. 内存缓存关系链3. 数据压缩缓存quicklz4. 异步线程池5. flyweight</span><br><span class="line"></span><br><span class="line">### 新鲜事开发和优化</span><br><span class="line">#### 开发1. EventHandler2. FeedDAO/Service/Model </span><br><span class="line">3. Redis队列存储</span><br><span class="line"></span><br><span class="line">#### 优化1. 多好友合并去重2. 关联实体删除清理3. 取消/新增关注实时更新 </span><br><span class="line">4. 分时段存储5. 缓存和增量拉</span><br><span class="line"></span><br><span class="line">#### 拉模式实现过程</span><br><span class="line">所有的feed都会通过一个feedHandler的事件监听器，当Handler监听到事件以后，就会把事件存储在数据库feed表中；当需要显示数据时，则找出所有我关注的人，再找出关注的人现在发生的事件，统一取出然后渲染页面展示</span><br><span class="line">&gt;拉的模式就是触发了，然后将事件存储下来，等到想看的时候，则去拉我关注的人的最近产生的所有的feed，然后排序显示。</span><br><span class="line">&gt;适用于僵尸用户，关注者多的大号</span><br><span class="line"></span><br><span class="line">#### 推模式实现过程</span><br><span class="line">所有的feed都会通过一个feedHandler的事件监听器，当Handler监听到事件以后,就会把事件lpush给这个事件的每一个关注者；关注者上线后取得最近发生的事件的id，然后取出对应的事件，渲染展示即可</span><br><span class="line">&gt;推的模式就是触发以后就在所有关注此问题或者用户的人的feed流里都加一个刚触发的事件。</span><br><span class="line">&gt;适合用于推给有效用户、活跃用户、关注者少的小号</span><br><span class="line"></span><br><span class="line">## Day11</span><br><span class="line">### 爬虫</span><br><span class="line">- 手动:requests，beautifulsoup，urllib2，httpclient</span><br><span class="line">- 入门:pyspider，webmagic</span><br><span class="line">- 专业:scrapy，nutch</span><br><span class="line">- </span><br><span class="line">### pyspider</span><br><span class="line"></span><br><span class="line">### Processor/CSS选择器</span><br><span class="line"></span><br><span class="line">|  选择器 |  描述 |</span><br><span class="line">| :-- | :-- |</span><br><span class="line">|.class|class=“class”||#id| `&lt;p id=“id”&gt;` ||div.inner|`&lt;div class=“inner”&gt;`||`a[href^=“http://”]`|带http开头href的a元素||p div|p元素下的div元素(不必父子)||p&gt;div&gt;span|p元素下的div元素下的span||[target=_blank]|Target=_blank|</span><br><span class="line"></span><br><span class="line">`div.inner&gt;a` 意思是 `&lt;div class=&quot;inner&quot;&gt;`元素下的a元素</span><br></pre></td></tr></table></figure>
+
+&lt;div class=&quot;inner&quot;&gt;
+    &lt;a href=&quot;https://www.v2ex.com/go/retroarch&quot; class=&quot;item_node&quot;&gt;RetroArch&lt;/a&gt;&lt;a href=&quot;https://www.v2ex.com/go/zelda&quot; class=&quot;item_node&quot;&gt;塞尔达传说&lt;/a&gt;
+</code></pre><p>##</p>
+<h2 id="项目面试"><a href="#项目面试" class="headerlink" title="项目面试"></a>项目面试</h2><h3 id="Spring框架"><a href="#Spring框架" class="headerlink" title="Spring框架"></a>Spring框架</h3><h4 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h4><p>解决了数据初始化的问题，可以将代码写的很简洁</p>
+<h4 id="容器是怎么样的"><a href="#容器是怎么样的" class="headerlink" title="容器是怎么样的"></a>容器是怎么样的</h4><h4 id="初始化是怎么做的"><a href="#初始化是怎么做的" class="headerlink" title="初始化是怎么做的"></a>初始化是怎么做的</h4><h4 id="数据是怎么真正初始化的"><a href="#数据是怎么真正初始化的" class="headerlink" title="数据是怎么真正初始化的"></a>数据是怎么真正初始化的</h4><h4 id="切面编程的思维用处"><a href="#切面编程的思维用处" class="headerlink" title="切面编程的思维用处"></a>切面编程的思维用处</h4><h4 id="整体框架是怎么样的，为什么要这样分"><a href="#整体框架是怎么样的，为什么要这样分" class="headerlink" title="整体框架是怎么样的，为什么要这样分"></a>整体框架是怎么样的，为什么要这样分</h4><h3 id="Velocity"><a href="#Velocity" class="headerlink" title="Velocity"></a>Velocity</h3><h4 id="为什么使用"><a href="#为什么使用" class="headerlink" title="为什么使用"></a>为什么使用</h4><p>前后端分离，达到解耦的目的</p>
+<h4 id="data如何穿过来的，如何解析的，支持什么呢"><a href="#data如何穿过来的，如何解析的，支持什么呢" class="headerlink" title="data如何穿过来的，如何解析的，支持什么呢"></a>data如何穿过来的，如何解析的，支持什么呢</h4><h3 id="MyBatis"><a href="#MyBatis" class="headerlink" title="MyBatis"></a>MyBatis</h3><h4 id="xml配置多重条件如何解析，如何与系统结合"><a href="#xml配置多重条件如何解析，如何与系统结合" class="headerlink" title="xml配置多重条件如何解析，如何与系统结合"></a>xml配置多重条件如何解析，如何与系统结合</h4><h3 id="登录、注册"><a href="#登录、注册" class="headerlink" title="登录、注册"></a>登录、注册</h3><p>网站安全，密码加salt，邮件激活<br>登录注册通过拦截器实现，思想，底层如何实现<br>token实现</p>
+<blockquote>
+<p>分布式统一登录，token共享</p>
+</blockquote>
+<h3 id="敏感词过滤"><a href="#敏感词过滤" class="headerlink" title="敏感词过滤"></a>敏感词过滤</h3><p>将敏感词构造前缀树，对待检测文本通过一次扫描找出其中存在的敏感词，降低了时间复杂度</p>
+<h3 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h3><p>Redis设计与实现</p>
+<h4 id="点赞点踩的功能"><a href="#点赞点踩的功能" class="headerlink" title="点赞点踩的功能"></a>点赞点踩的功能</h4><p>使用Redis的set，不需要记录时间</p>
+<h4 id="timeline功能"><a href="#timeline功能" class="headerlink" title="timeline功能"></a>timeline功能</h4><p>使用list实现优先队列</p>
+<h3 id="实现异步框架"><a href="#实现异步框架" class="headerlink" title="实现异步框架"></a>实现异步框架</h3><p>每一步操作后面附带的操作可能比较多，比如点赞之后站内信之类的，为了把结果及时返回给用户，所以采用了异步框架，自己用Redis的队列实现了异步框架,当时还考虑了使用java的优先队列来实现</p>
+<h4 id="异步框架构成"><a href="#异步框架构成" class="headerlink" title="异步框架构成"></a>异步框架构成</h4><p>消息的发射，消息的处理，事件的模型定义，EventHandler</p>
+<h3 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h3><h3 id="timeline"><a href="#timeline" class="headerlink" title="timeline"></a>timeline</h3><p>自己实现了timeline，为了提高效率自己实现了异步框架</p>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>异步的</li>
+<li>通过注解的方式实现自己注册事件<code>applicationContext.getBeansOfType</code>找出所有实现了EventHandler接口的Handler</li>
+<li>使用了Redis的list实现优先队列</li>
+</ul>
+<h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><h4 id="如何提高效率的"><a href="#如何提高效率的" class="headerlink" title="如何提高效率的"></a>如何提高效率的</h4><p>多线程</p>
+<h4 id="用了什么解析数据"><a href="#用了什么解析数据" class="headerlink" title="用了什么解析数据"></a>用了什么解析数据</h4><h4 id="爬虫-1"><a href="#爬虫-1" class="headerlink" title="爬虫"></a>爬虫</h4><p> <img src="/media/%E9%97%AE%E7%AD%94%E7%BD%91.jpg" alt="问答网"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/12/15/项目/问答网/SpringMVC + MyBatis 实现仿知乎问答项目笔记/" data-id="cjtf6o97800f20fc5v20idbr0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Project/">Project</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/01/10/Java/多线程与并发/生产者-消费者问题的多种 Java 实现方式/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          生产者-消费者问题的多种 Java 实现方式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/10/Java/Velocity笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Velocity笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

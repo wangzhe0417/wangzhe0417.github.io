@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-kafka/kafka详解--性能" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/22/kafka/kafka详解--性能/" class="article-date">
+  <time datetime="2017-05-22T03:13:00.000Z" itemprop="datePublished">2017-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka详解–性能"><a href="#kafka详解–性能" class="headerlink" title="kafka详解–性能"></a>kafka详解–性能</h1><p>kafka性能如此之高主要是kafka针对四个方面做了性能优化</p>
+<ul>
+<li>将大量小io改造成少量大io</li>
+<li>利用sendfile减少数据拷贝</li>
+<li>支持snappy,gzip,lz4三种算法批量压缩消息，减少网络传输消耗</li>
+<li>采用nio网络模型，与1 acceptor thread + N processor threads的reactor线程模型</li>
+</ul>
+<h2 id="大量小io改造成少量大io"><a href="#大量小io改造成少量大io" class="headerlink" title="大量小io改造成少量大io"></a>大量小io改造成少量大io</h2><p>大量读写少量消息会导致性能较差，通过将消息聚合，可以减少读写次数（减少随机IO），增加单次读写数据量（增加顺序IO）</p>
+<p>在大量文件读写的时候，基于queue的read和append只需要一次磁盘寻址，而Btree则会涉及多次。磁盘寻址过程极大降低了读写性能</p>
+<h2 id="利用sendfile减少数据拷贝"><a href="#利用sendfile减少数据拷贝" class="headerlink" title="利用sendfile减少数据拷贝"></a>利用sendfile减少数据拷贝</h2><h3 id="sendfile"><a href="#sendfile" class="headerlink" title="sendfile"></a>sendfile</h3><p>在传统的文件传输里面（read/write方式），在实现上其实是比较复杂的，需要经过多次上下文的切换，我们看一下如下两行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//传统的read/write方式进行文件到socket的传输</span><br><span class="line">read(file, tmp_buf, len);      </span><br><span class="line">write(socket, tmp_buf, len);</span><br></pre></td></tr></table></figure>
+<p>当需要对一个文件进行传输的时候，其具体流程细节如下：</p>
+<ol>
+<li>调用read函数，文件数据被copy到内核缓冲区</li>
+<li>read函数返回，文件数据从内核缓冲区copy到用户缓冲区</li>
+<li>write函数调用，将文件数据从用户缓冲区copy到内核与socket相关的缓冲区。</li>
+<li>数据从socket缓冲区copy到相关协议引擎。</li>
+</ol>
+<p>一般来说一个网络应用是通过读硬盘数据，然后写数据到 socket 来完成网络传输的。上面2行用代码解释了这一点，不过上面2行简单的代码掩盖了底层的很多操作。来看看底层是怎么执行上面2行代码的：</p>
+<ol>
+<li>系统调用 read() 产生一个上下文切换：从 user mode 切换到 kernel mode，然后 DMA 执行拷贝，把文件数据从硬盘读到一个 kernel buffer 里。</li>
+<li>数据从 kernel buffer 拷贝到 user buffer，然后系统调用 read() 返回，这时又产生一个上下文切换：从kernel mode 切换到 user mode。</li>
+<li>系统调用 write() 产生一个上下文切换：从 user mode 切换到 kernel mode，然后把步骤2读到 user buffer 的数据拷贝到 kernel buffer（数据第2次拷贝到 kernel buffer），不过这次是个不同的 kernel buffer，这个 buffer 和 socket 相关联。</li>
+<li>系统调用 write() 返回，产生一个上下文切换：从 kernel mode 切换到 user mode（第4次切换了），然后 DMA 从 kernel buffer 拷贝数据到协议栈（第4次拷贝了）。</li>
+</ol>
+<p>上面4个步骤有4次上下文切换，有4次拷贝，我们发现如果能减少切换次数和拷贝次数将会有效提升性能。在kernel 2.0+ 版本中，系统调用 sendfile() 就是用来简化上面步骤提升性能的。sendfile() 不但能减少切换次数而且还能减少拷贝次数。</p>
+<p>以上细节是传统read/write方式进行网络文件传输的方式，我们可以看到，在这个过程当中，文件数据实际上是经过了四次copy操作：</p>
+<p><strong>硬盘—&gt;内核buf—&gt;用户buf—&gt;socket相关缓冲区—&gt;协议引擎</strong></p>
+<p>而sendfile系统调用则提供了一种减少以上多次copy，提升文件传输性能的方法。Sendfile系统调用是在2.1版本内核时引进的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sendfile(socket, file, len);</span><br></pre></td></tr></table></figure>
+<p>运行流程如下：</p>
+<ol>
+<li>sendfile系统调用，文件数据被copy至内核缓冲区</li>
+<li>再从内核缓冲区copy至内核中socket相关的缓冲区</li>
+<li>最后再socket相关的缓冲区copy到协议引擎</li>
+</ol>
+<p>相较传统read/write方式，2.1版本内核引进的sendfile已经减少了内核缓冲区到user缓冲区，再由user缓冲区到socket相关 缓冲区的文件copy，而在内核版本2.4之后，文件描述符结果被改变，sendfile实现了更简单的方式，系统调用方式仍然一样，细节与2.1版本的 不同之处在于，当文件数据被复制到内核缓冲区时，不再将所有数据copy到socket相关的缓冲区，而是仅仅将记录数据位置和长度相关的数据保存到 socket相关的缓存，而实际数据将由DMA模块直接发送到协议引擎，再次减少了一次copy操作。</p>
+<h2 id="支持snappy-gzip-lz4三种算法批量压缩消息，减少网络传输消耗"><a href="#支持snappy-gzip-lz4三种算法批量压缩消息，减少网络传输消耗" class="headerlink" title="支持snappy,gzip,lz4三种算法批量压缩消息，减少网络传输消耗"></a>支持snappy,gzip,lz4三种算法批量压缩消息，减少网络传输消耗</h2><h2 id="采用nio网络模型，与1-acceptor-thread-N-processor-threads的reactor线程模型"><a href="#采用nio网络模型，与1-acceptor-thread-N-processor-threads的reactor线程模型" class="headerlink" title="采用nio网络模型，与1 acceptor thread + N processor threads的reactor线程模型"></a>采用nio网络模型，与1 acceptor thread + N processor threads的reactor线程模型</h2><p>kafka server端采用与Mina一样的网络、线程模型。server端基于nio，采用1个acceptor线程接受tcp连接，并将连接分配给N个proccessor线程，proccessor线程执行具体的IO读写、逻辑处理操作。（注：相比较于这种模型，netty的N boss + N worker的模型更加灵活）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/05/22/kafka/kafka详解--性能/" data-id="cjtf6o92s004b0fc5zzrs9ov7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka/Kafka设计解析（一）--Kafka背景及架构介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/" class="article-date">
+  <time datetime="2017-05-22T03:13:00.000Z" itemprop="datePublished">2017-05-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Kafka设计解析（一）–Kafka背景及架构介绍"><a href="#Kafka设计解析（一）–Kafka背景及架构介绍" class="headerlink" title="Kafka设计解析（一）–Kafka背景及架构介绍"></a>Kafka设计解析（一）–Kafka背景及架构介绍</h1><blockquote>
+<p>本文介绍了Kafka的创建背景，设计目标，使用消息系统的优势以及目前流行的消息系统对比。并介绍了Kafka的架构，Producer消息路由，Consumer Group以及由其实现的不同消息分发方式，Topic &amp; Partition，最后介绍了Kafka Consumer为何使用pull模式以及Kafka提供的三种delivery guarantee。</p>
+</blockquote>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>　　Kafka是由LinkedIn开发并开源的分布式消息系统，因其分布式及高吞吐率而被广泛使用，现已与Cloudera Hadoop，Apache Storm，Apache Spark集成。本文介绍了Kafka的创建背景，设计目标，使用消息系统的优势以及目前流行的消息系统对比。并介绍了Kafka的架构，Producer消息路由，Consumer Group以及由其实现的不同消息分发方式，Topic &amp; Partition，最后介绍了Kafka Consumer为何使用pull模式以及Kafka提供的三种delivery guarantee。</p>
+<h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><h3 id="Kafka创建背景"><a href="#Kafka创建背景" class="headerlink" title="Kafka创建背景"></a>Kafka创建背景</h3><p>　　Kafka是一个消息系统，原本开发自LinkedIn，用作LinkedIn的活动流（Activity Stream）和运营数据处理管道（Pipeline）的基础。现在它已被多家不同类型的公司 作为多种类型的数据管道和消息系统使用。<br>　　活动流数据是几乎所有站点在对其网站使用情况做报表时都要用到的数据中最常规的部分。活动数据包括页面访问量（Page View）、被查看内容方面的信息以及搜索情况等内容。这种数据通常的处理方式是先把各种活动以日志的形式写入某种文件，然后周期性地对这些文件进行统计分析。运营数据指的是服务器的性能数据（CPU、IO使用率、请求时间、服务日志等等数据)。运营数据的统计方法种类繁多。<br>　　近年来，活动和运营数据处理已经成为了网站软件产品特性中一个至关重要的组成部分，这就需要一套稍微更加复杂的基础设施对其提供支持。 　　</p>
+<h3 id="Kafka简介"><a href="#Kafka简介" class="headerlink" title="Kafka简介"></a>Kafka简介</h3><p>　　Kafka是一种分布式的，基于发布/订阅的消息系统。主要设计目标如下：</p>
+<ul>
+<li>以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能</li>
+<li>高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输</li>
+<li>支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输</li>
+<li>同时支持离线数据处理和实时数据处理</li>
+<li>Scale out：支持在线水平扩展</li>
+</ul>
+<h3 id="为何使用消息系统"><a href="#为何使用消息系统" class="headerlink" title="为何使用消息系统"></a>为何使用消息系统</h3><ul>
+<li><p><strong>解耦</strong><br>　　在项目启动之初来预测将来项目会碰到什么需求，是极其困难的。消息系统在处理过程中间插入了一个隐含的、基于数据的接口层，两边的处理过程都要实现这一接口。这允许你独立的扩展或修改两边的处理过程，只要确保它们遵守同样的接口约束。</p>
+</li>
+<li><p><strong>冗余</strong><br>　　有些情况下，处理数据的过程会失败。除非数据被持久化，否则将造成丢失。消息队列把数据进行持久化直到它们已经被完全处理，通过这一方式规避了数据丢失风险。许多消息队列所采用的”插入-获取-删除”范式中，在把一个消息从队列中删除之前，需要你的处理系统明确的指出该消息已经被处理完毕，从而确保你的数据被安全的保存直到你使用完毕。</p>
+</li>
+<li><p><strong>扩展性</strong><br>　　因为消息队列解耦了你的处理过程，所以增大消息入队和处理的频率是很容易的，只要另外增加处理过程即可。不需要改变代码、不需要调节参数。扩展就像调大电力按钮一样简单。</p>
+</li>
+<li><p><strong>灵活性 &amp; 峰值处理能力</strong><br>　　在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见；如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。</p>
+</li>
+<li><p><strong>可恢复性</strong><br>　　系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理消息的进程挂掉，加入队列中的消息仍然可以在系统恢复后被处理。</p>
+</li>
+<li><p><strong>顺序保证</strong><br>　　在大多使用场景下，数据处理的顺序都很重要。大部分消息队列本来就是排序的，并且能保证数据会按照特定的顺序来处理。Kafka保证一个Partition内的消息的有序性。</p>
+</li>
+<li><p><strong>缓冲</strong><br>　　在任何重要的系统中，都会有需要不同的处理时间的元素。例如，加载一张图片比应用过滤器花费更少的时间。消息队列通过一个缓冲层来帮助任务最高效率的执行———写入队列的处理会尽可能的快速。该缓冲有助于控制和优化数据流经过系统的速度。</p>
+</li>
+<li><p><strong>异步通信</strong><br>　　很多时候，用户不想也不需要立即处理消息。消息队列提供了异步处理机制，允许用户把一个消息放入队列，但并不立即处理它。想向队列中放入多少消息就放多少，然后在需要的时候再去处理它们。</p>
+</li>
+</ul>
+<h3 id="常用Message-Queue对比"><a href="#常用Message-Queue对比" class="headerlink" title="常用Message Queue对比"></a>常用Message Queue对比</h3><ul>
+<li><p><strong>RabbitMQ</strong><br>　　RabbitMQ是使用Erlang编写的一个开源的消息队列，本身支持很多的协议：AMQP，XMPP, SMTP, STOMP，也正因如此，它非常重量级，更适合于企业级的开发。同时实现了Broker构架，这意味着消息在发送给客户端时先在中心队列排队。对路由，负载均衡或者数据持久化都有很好的支持。</p>
+</li>
+<li><p><strong>Redis</strong><br>　　Redis是一个基于Key-Value对的NoSQL数据库，开发维护很活跃。虽然它是一个Key-Value数据库存储系统，但它本身支持MQ功能，所以完全可以当做一个轻量级的队列服务来使用。对于RabbitMQ和Redis的入队和出队操作，各执行100万次，每10万次记录一次执行时间。测试数据分为128Bytes、512Bytes、1K和10K四个不同大小的数据。实验表明：入队时，当数据比较小时Redis的性能要高于RabbitMQ，而如果数据大小超过了10K，Redis则慢的无法忍受；出队时，无论数据大小，Redis都表现出非常好的性能，而RabbitMQ的出队性能则远低于Redis。</p>
+</li>
+<li><p><strong>ZeroMQ</strong><br>　　ZeroMQ号称最快的消息队列系统，尤其针对大吞吐量的需求场景。ZMQ能够实现RabbitMQ不擅长的高级/复杂的队列，但是开发人员需要自己组合多种技术框架，技术上的复杂度是对这MQ能够应用成功的挑战。ZeroMQ具有一个独特的非中间件的模式，你不需要安装和运行一个消息服务器或中间件，因为你的应用程序将扮演这个服务器角色。你只需要简单的引用ZeroMQ程序库，可以使用NuGet安装，然后你就可以愉快的在应用程序之间发送消息了。但是ZeroMQ仅提供非持久性的队列，也就是说如果宕机，数据将会丢失。其中，Twitter的Storm 0.9.0以前的版本中默认使用ZeroMQ作为数据流的传输（Storm从0.9版本开始同时支持ZeroMQ和Netty作为传输模块）。</p>
+</li>
+<li><p><strong>ActiveMQ</strong><br>　　ActiveMQ是Apache下的一个子项目。 类似于ZeroMQ，它能够以代理人和点对点的技术实现队列。同时类似于RabbitMQ，它少量代码就可以高效地实现高级应用场景。</p>
+</li>
+<li><p><strong>Kafka/Jafka</strong><br>　　Kafka是Apache下的一个子项目，是一个高性能跨语言分布式发布/订阅消息队列系统，而Jafka是在Kafka之上孵化而来的，即Kafka的一个升级版。具有以下特性：快速持久化，可以在O(1)的系统开销下进行消息持久化；高吞吐，在一台普通的服务器上既可以达到10W/s的吞吐速率；完全的分布式系统，Broker、Producer、Consumer都原生自动支持分布式，自动实现负载均衡；支持Hadoop数据并行加载，对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka通过Hadoop的并行加载机制统一了在线和离线的消息处理。Apache Kafka相对于ActiveMQ是一个非常轻量级的消息系统，除了性能非常好之外，还是一个工作良好的分布式系统。</p>
+</li>
+</ul>
+<h2 id="Kafka架构"><a href="#Kafka架构" class="headerlink" title="Kafka架构"></a>Kafka架构</h2><h3 id="Terminology"><a href="#Terminology" class="headerlink" title="Terminology"></a>Terminology</h3><ul>
+<li><strong>Broker</strong><br>　　Kafka集群包含一个或多个服务器，这种服务器被称为broker</li>
+<li><strong>Topic</strong><br>　　每条发布到Kafka集群的消息都有一个类别，这个类别被称为Topic。（物理上不同Topic的消息分开存储，逻辑上一个Topic的消息虽然保存于一个或多个broker上但用户只需指定消息的Topic即可生产或消费数据而不必关心数据存于何处）</li>
+<li><strong>Partition</strong><br>　　Parition是物理上的概念，每个Topic包含一个或多个Partition.</li>
+<li><strong>Producer</strong><br>　　负责发布消息到Kafka broker</li>
+<li><strong>Consumer</strong><br>　　消息消费者，向Kafka broker读取消息的客户端。</li>
+<li><strong>Consumer Group</strong><br>　　每个Consumer属于一个特定的Consumer Group（可为每个Consumer指定group name，若不指定group name则属于默认的group）。<br>Kafka拓扑结构</li>
+</ul>
+<h3 id="Kafka拓扑结构"><a href="#Kafka拓扑结构" class="headerlink" title="Kafka拓扑结构"></a>Kafka拓扑结构</h3><p><img src="/media/14956141516602.png" alt></p>
+<p>如上图所示，一个典型的Kafka集群中包含若干Producer（可以是web前端产生的Page View，或者是服务器日志，系统CPU、Memory等），若干broker（Kafka支持水平扩展，一般broker数量越多，集群吞吐率越高），若干Consumer Group，以及一个Zookeeper集群。Kafka通过Zookeeper管理集群配置，选举leader，以及在Consumer Group发生变化时进行rebalance。Producer使用push模式将消息发布到broker，Consumer使用pull模式从broker订阅并消费消息。 　</p>
+<h3 id="Topic-amp-Partition"><a href="#Topic-amp-Partition" class="headerlink" title="Topic &amp; Partition"></a>Topic &amp; Partition</h3><p>　　Topic在逻辑上可以被认为是一个queue，每条消费都必须指定它的Topic，可以简单理解为必须指明把这条消息放进哪个queue里。为了使得Kafka的吞吐率可以线性提高，物理上把Topic分成一个或多个Partition，每个Partition在物理上对应一个文件夹，该文件夹下存储这个Partition的所有消息和索引文件。若创建topic1和topic2两个topic，且分别有13个和19个分区，则整个集群上会相应会生成共32个文件夹（本文所用集群共8个节点，此处topic1和topic2 replication-factor均为1），如下图所示。</p>
+<p><img src="/media/14956143538813.png" alt><br>　　每个日志文件都是一个log entry序列，每个log entry包含一个4字节整型数值（值为N+5），1个字节的”magic value”，4个字节的CRC校验码，其后跟N个字节的消息体。每条消息都有一个当前Partition下唯一的64字节的offset，它指明了这条消息的起始位置。磁盘上存储的消息格式如下：<br>　　message length ： 4 bytes (value: 1+4+n)<br>　　“magic” value ： 1 byte<br>　　crc ： 4 bytes<br>　　payload ： n bytes<br>　　这个<code>log entry</code>并非由一个文件构成，而是分成多个segment，每个segment以该segment第一条消息的offset命名并以“.kafka”为后缀。另外会有一个索引文件，它标明了每个segment下包含的log entry的offset范围，如下图所示。<br><img src="/media/14956143952984.png" alt><br>　　因为每条消息都被append到该Partition中，属于顺序写磁盘，因此效率非常高（经验证，顺序写磁盘效率比随机写内存还要高，这是Kafka高吞吐率的一个很重要的保证）。</p>
+<p><img src="/media/14956144267046.png" alt></p>
+<p>　　对于传统的message queue而言，一般会删除已经被消费的消息，而Kafka集群会保留所有的消息，无论其被消费与否。当然，因为磁盘限制，不可能永久保留所有数据（实际上也没必要），因此Kafka提供两种策略删除旧数据。一是基于时间，二是基于Partition文件大小。例如可以通过配置$KAFKA_HOME/config/server.properties，让Kafka删除一周前的数据，也可在Partition文件超过1GB时删除旧数据，配置如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># The minimum age of a log file to be eligible for deletion</span><br><span class="line">log.retention.hours=168</span><br><span class="line"># The maximum size of a log segment file. When this size is reached a new log segment will be created.</span><br><span class="line">log.segment.bytes=1073741824</span><br><span class="line"># The interval at which log segments are checked to see if they can be deleted according to the retention policies</span><br><span class="line">log.retention.check.interval.ms=300000</span><br><span class="line"># If log.cleaner.enable=true is set the cleaner will be enabled and individual logs can then be marked for log compaction.</span><br><span class="line">log.cleaner.enable=false</span><br></pre></td></tr></table></figure>
+<p>　　这里要注意，因为Kafka读取特定消息的时间复杂度为O(1)，即与文件大小无关，所以这里删除过期文件与提高Kafka性能无关。选择怎样的删除策略只与磁盘以及具体的需求有关。另外，Kafka会为每一个Consumer Group保留一些metadata信息——当前消费的消息的position，也即offset。这个offset由Consumer控制。正常情况下Consumer会在消费完一条消息后递增该offset。当然，Consumer也可将offset设成一个较小的值，重新消费一些消息。因为offet由Consumer控制，所以Kafka broker是无状态的，它不需要标记哪些消息被哪些消费过，也不需要通过broker去保证同一个Consumer Group只有一个Consumer能消费某一条消息，因此也就不需要锁机制，这也为Kafka的高吞吐率提供了有力保障。 　　</p>
+<h3 id="Producer消息路由"><a href="#Producer消息路由" class="headerlink" title="Producer消息路由"></a>Producer消息路由</h3><p>　　Producer发送消息到broker时，会根据Paritition机制选择将其存储到哪一个Partition。如果Partition机制设置合理，所有消息可以均匀分布到不同的Partition里，这样就实现了负载均衡。如果一个Topic对应一个文件，那这个文件所在的机器I/O将会成为这个Topic的性能瓶颈，而有了Partition后，不同的消息可以并行写入不同broker的不同Partition里，极大的提高了吞吐率。可以在$KAFKA_HOME/config/server.properties中通过配置项num.partitions来指定新建Topic的默认Partition数量，也可在创建Topic时通过参数指定，同时也可以在Topic创建之后通过Kafka提供的工具修改。<br>　　<br>　　在发送一条消息时，可以指定这条消息的key，Producer根据这个key和Partition机制来判断应该将这条消息发送到哪个Parition。Paritition机制可以通过指定Producer的paritition. class这一参数来指定，该class必须实现kafka.producer.Partitioner接口。本例中如果key可以被解析为整数则将对应的整数与Partition总数取余，该消息会被发送到该数对应的Partition。（每个Parition都会有个序号,序号从0开始）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import kafka.producer.Partitioner;</span><br><span class="line">import kafka.utils.VerifiableProperties;</span><br><span class="line">public class JasonPartitioner&lt;T&gt; implements Partitioner &#123;</span><br><span class="line">    public JasonPartitioner(VerifiableProperties verifiableProperties) &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    @Override</span><br><span class="line">    public int partition(Object key, int numPartitions) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            int partitionNum = Integer.parseInt((String) key);</span><br><span class="line">            return Math.abs(Integer.parseInt((String) key) % numPartitions);</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            return Math.abs(key.hashCode() % numPartitions);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　如果将上例中的类作为partition.class，并通过如下代码发送20条消息（key分别为0，1，2，3）至topic3（包含4个Partition）。
+　　</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void sendMessage() throws InterruptedException&#123;</span><br><span class="line">　　for(int i = 1; i &lt;= 5; i++)&#123;</span><br><span class="line">　　      List messageList = new ArrayList&lt;KeyedMessage&lt;String, String&gt;&gt;();</span><br><span class="line">　　      for(int j = 0; j &lt; 4; j++）&#123;</span><br><span class="line">　　          messageList.add(new KeyedMessage&lt;String, String&gt;(&quot;topic2&quot;, String.valueOf(j), String.format(&quot;The %d message for key %d&quot;, i,  j));</span><br><span class="line">　　      &#125;</span><br><span class="line">　　      producer.send(messageList);</span><br><span class="line">    &#125;</span><br><span class="line">　　producer.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　则key相同的消息会被发送并存储到同一个partition里，而且key的序号正好和Partition序号相同。（Partition序号从0开始，本例中的key也从0开始）。下图所示是通过Java程序调用Consumer后打印出的消息列表。<br>　　<br>　<img src="/media/14956147910953.png" alt>
+　</p>
+<h3 id="Consumer-Group"><a href="#Consumer-Group" class="headerlink" title="Consumer Group"></a>Consumer Group</h3><p>　　（本节所有描述都是基于Consumer hight level API而非low level API）。<br>　　使用Consumer high level API时，同一Topic的一条消息只能被同一个Consumer Group内的一个Consumer消费，但多个Consumer Group可同时消费这一消息。</p>
+<p><img src="/media/14956148155722.png" alt></p>
+<p>　　这是Kafka用来实现一个Topic消息的广播（发给所有的Consumer）和单播（发给某一个Consumer）的手段。一个Topic可以对应多个Consumer Group。如果需要实现广播，只要每个Consumer有一个独立的Group就可以了。要实现单播只要所有的Consumer在同一个Group里。用Consumer Group还可以将Consumer进行自由的分组而不需要多次发送消息到不同的Topic。<br>　　实际上，Kafka的设计理念之一就是同时提供离线处理和实时处理。根据这一特性，可以使用Storm这种实时流处理系统对消息进行实时在线处理，同时使用Hadoop这种批处理系统进行离线处理，还可以同时将数据实时备份到另一个数据中心，只需要保证这三个操作所使用的Consumer属于不同的Consumer Group即可。下图是Kafka在Linkedin的一种简化部署示意图。</p>
+<p><img src="/media/14956148306521.png" alt></p>
+<p>　　下面这个例子更清晰地展示了Kafka Consumer Group的特性。首先创建一个Topic (名为topic1，包含3个Partition)，然后创建一个属于group1的Consumer实例，并创建三个属于group2的Consumer实例，最后通过Producer向topic1发送key分别为1，2，3的消息。结果发现属于group1的Consumer收到了所有的这三条消息，同时group2中的3个Consumer分别收到了key为1，2，3的消息。如下图所示。</p>
+<p><img src="/media/14956148507097.png" alt></p>
+<h3 id="Push-vs-Pull"><a href="#Push-vs-Pull" class="headerlink" title="Push vs. Pull　　"></a>Push vs. Pull　　</h3><p>　　作为一个消息系统，Kafka遵循了传统的方式，选择由Producer向broker push消息并由Consumer从broker pull消息。一些logging-centric system，比如Facebook的Scribe和Cloudera的Flume，采用push模式。事实上，push模式和pull模式各有优劣。<br>　　push模式很难适应消费速率不同的消费者，因为消息发送速率是由broker决定的。push模式的目标是尽可能以最快速度传递消息，但是这样很容易造成Consumer来不及处理消息，典型的表现就是拒绝服务以及网络拥塞。而pull模式则可以根据Consumer的消费能力以适当的速率消费消息。<br>　　对于Kafka而言，pull模式更合适。pull模式可简化broker的设计，Consumer可自主控制消费消息的速率，同时Consumer可以自己控制消费方式——即可批量消费也可逐条消费，同时还能选择不同的提交方式从而实现不同的传输语义。 　　</p>
+<h3 id="Kafka-delivery-guarantee"><a href="#Kafka-delivery-guarantee" class="headerlink" title="Kafka delivery guarantee"></a>Kafka delivery guarantee</h3><p>　　<br>　　有这么几种可能的delivery guarantee：</p>
+<ul>
+<li>At most once 消息可能会丢，但绝不会重复传输</li>
+<li>At least one 消息绝不会丢，但可能会重复传输</li>
+<li>Exactly once 每条消息肯定会被传输一次且仅传输一次，很多时候这是用户所想要的。<br>　　<br>　　当Producer向broker发送消息时，一旦这条消息被commit，因数replication的存在，它就不会丢。但是如果Producer发送数据给broker后，遇到网络问题而造成通信中断，那Producer就无法判断该条消息是否已经commit。虽然Kafka无法确定网络故障期间发生了什么，但是Producer可以生成一种类似于主键的东西，发生故障时幂等性的重试多次，这样就做到了<code>Exactly once</code>。截止到目前(Kafka 0.8.2版本，2015-03-04)，这一Feature还并未实现，有希望在Kafka未来的版本中实现。（所以目前默认情况下一条消息从Producer到broker是确保了<code>At least once</code>，可通过设置Producer异步发送实现<code>At most once</code>）。<br>　　接下来讨论的是消息从broker到Consumer的delivery guarantee语义。（仅针对Kafka consumer high level API）。Consumer在从broker读取消息后，可以选择commit，该操作会在Zookeeper中保存该Consumer在该Partition中读取的消息的offset。该Consumer下一次再读该Partition时会从下一条开始读取。如未commit，下一次读取的开始位置会跟上一次commit之后的开始位置相同。当然可以将Consumer设置为autocommit，即Consumer一旦读到数据立即自动commit。如果只讨论这一读取消息的过程，那Kafka是确保了<code>Exactly once</code>。但实际使用中应用程序并非在Consumer读取完数据就结束了，而是要进行进一步处理，而数据处理与commit的顺序在很大程度上决定了消息从broker和consumer的delivery guarantee semantic。<br>读完消息先commit再处理消息。这种模式下，如果Consumer在commit后还没来得及处理消息就crash了，下次重新开始工作后就无法读到刚刚已提交而未处理的消息，这就对应于<code>At most once</code><br>读完消息先处理再commit。这种模式下，如果在处理完消息之后commit之前Consumer crash了，下次重新开始工作时还会处理刚刚未commit的消息，实际上该消息已经被处理过了。这就对应于<code>At least once</code>。在很多使用场景下，消息都有一个主键，所以消息的处理往往具有幂等性，即多次处理这一条消息跟只处理一次是等效的，那就可以认为是<code>Exactly once</code>。（笔者认为这种说法比较牵强，毕竟它不是Kafka本身提供的机制，主键本身也并不能完全保证操作的幂等性。而且实际上我们说delivery guarantee 语义是讨论被处理多少次，而非处理结果怎样，因为处理方式多种多样，我们不应该把处理过程的特性——如是否幂等性，当成Kafka本身的Feature）<br>如果一定要做到<code>Exactly once</code>，就需要协调offset和实际操作的输出。经典的做法是引入两阶段提交。如果能让offset和操作输入存在同一个地方，会更简洁和通用。这种方式可能更好，因为许多输出系统可能不支持两阶段提交。比如，Consumer拿到数据后可能把数据放到HDFS，如果把最新的offset和数据本身一起写到HDFS，那就可以保证数据的输出和offset的更新要么都完成，要么都不完成，间接实现<code>Exactly once</code>。（目前就high level API而言，offset是存于Zookeeper中的，无法存于HDFS，而low level API的offset是由自己去维护的，可以将之存于HDFS中）<br>　　总之，Kafka默认保证<code>At least once</code>，并且允许通过设置Producer异步提交来实现At most once。而Exactly once要求与外部存储系统协作，幸运的是Kafka提供的offset可以非常直接非常容易得使用这种方式。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/" data-id="cjtf6o95q00bl0fc53jbmc04p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FreeMarker/2017-04-28" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/26/FreeMarker/2017-04-28/" class="article-date">
+  <time datetime="2017-04-26T03:13:00.000Z" itemprop="datePublished">2017-04-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FreeMarker/">FreeMarker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Freemarker入门"><a href="#Freemarker入门" class="headerlink" title="Freemarker入门"></a>Freemarker入门</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="标量类别"><a href="#标量类别" class="headerlink" title="标量类别"></a>标量类别</h3><ul>
+<li>字符串</li>
+<li>数字</li>
+<li>日期/时间</li>
+<li>布尔值</li>
+</ul>
+<blockquote>
+<ol>
+<li>数据模型可以被看做是树状结构</li>
+<li>标量存储单一的值</li>
+<li>哈希表示存储变量和与其相关且有唯一标识名称变量的容器</li>
+<li>序列式存储有序变量的容器。存储的变量可以通过数字索引来检索，索引通常从零开始。</li>
+</ol>
+</blockquote>
+<h3 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h3><ul>
+<li>interpolations 插值 <code>${...}</code></li>
+<li>FTL tags 标签</li>
+</ul>
+<h2 id="一、整体结构"><a href="#一、整体结构" class="headerlink" title="一、整体结构"></a>一、整体结构</h2><p>1、注释：&lt;#–注释内容–&gt;，不会输出。<br>2、文本：直接输出。<br>3、interpolation:由 ${var} 或 #{var} 限定，由计算值代替输出。<br>4、FTL标记</p>
+<h2 id="二、指令："><a href="#二、指令：" class="headerlink" title="二、指令："></a>二、指令：</h2><p>freemarker指令有两种：<br>1、预定义指令：引用方式为&lt;#指令名称&gt;<br>2、用户定义指令：引用方式为&lt;@指令名称&gt;，引用用户定义指令时须将#换为@。<br>注意：如果使用不存在的指令，FreeMarker不会使用模板输出，而是产生一个错误消息。<br>freemarker指令由FTL标记来引用，FTL标记和HTML标记类似，名字前加#来加 以区分。如HTML标记的形式为</p><h1></h1>则FTL标记的形式是&lt;#list&gt;&lt; /#list&gt;（此处h1标记和list指令没有任何功能上的对应关系，只是做为说明使用一下）。<br>有三种FTL标记：<br>1)、开始标记：&lt;#指令名称&gt;<br>2)、结束标记：&lt;/#指令名称&gt;<br>3)、空标记：&lt;#指令名称/&gt;<br>注意：<br>1) FTL会忽略标记之中的空格，但是，&lt;#和指令 与 &lt;/#和指令 之间不能有空格。<br>2) FTL标记不能够交叉，必须合理嵌套。每个开始标记对应一个结束标记，层层嵌套。 如：<br>&lt;#list&gt;<p></p>
+<p><li><br>${数据}<br>&lt;#if 变量&gt;</li></p>
+<p></p><p>game over!</p><br>&lt;/#if&gt;<br><br>&lt;/#list&gt;<br>注意事项：<br>1)、FTL对大小写敏感。 所以使用的标记及interpolation要注意大小写。name与NAME就是不同的对象。&lt;#list&gt;是正确的标记，而&lt;#List&gt;则不是。<br>2)、interpolation只能在文本部分使用，不能位于FTL标记内。如&lt;#if ${var}&gt;是错误的，正确的方法是：&lt;#if var&gt;,而且此处var必须为布尔值。<br>3)、FTL标记不能位于另一个FTL标记内部，注释例外。注释可以位于标记及interpolation内部。<p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/26/FreeMarker/2017-04-28/" data-id="cjtf6o918000w0fc52fslpd02" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FreeMarker/Freemarker" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/26/FreeMarker/Freemarker/" class="article-date">
+  <time datetime="2017-04-26T03:13:00.000Z" itemprop="datePublished">2017-04-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/FreeMarker/">FreeMarker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Freemarker入门"><a href="#Freemarker入门" class="headerlink" title="Freemarker入门"></a>Freemarker入门</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><h3 id="标量类别"><a href="#标量类别" class="headerlink" title="标量类别"></a>标量类别</h3><ul>
+<li>字符串</li>
+<li>数字</li>
+<li>日期/时间</li>
+<li>布尔值</li>
+</ul>
+<blockquote>
+<ol>
+<li>数据模型可以被看做是树状结构</li>
+<li>标量存储单一的值</li>
+<li>哈希表示存储变量和与其相关且有唯一标识名称变量的容器</li>
+<li>序列式存储有序变量的容器。存储的变量可以通过数字索引来检索，索引通常从零开始。</li>
+</ol>
+</blockquote>
+<h3 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h3><ul>
+<li>interpolations 插值 <code>${...}</code></li>
+<li>FTL tags 标签   以符号<code>#</code> 开头,用户自定义的 FTL 标签使用<code>@</code>符号来代替<code>#</code></li>
+<li>Comments 注释   用<code>&lt;#--</code>和<code>--&gt;</code>来分 隔</li>
+<li>directives 指令 就是所指的 FTL 标签。这些指令在 HTML 的标签<code>(如&lt;table&gt;和 &lt;/table&gt;)</code>和 HTML 元素<code>(如 table 元素)</code>中的关系是相同的。</li>
+</ul>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><p>1、 if 指令    &lt;#if condition&gt;和&lt;/#if&gt; condition为true，显示中间内容，condition为false，中间内容被略过；使用&lt;#else&gt;标签可以指定当条件为假时程序执行的内容。<br>2、 list 指令  </p>
+<h2 id="一、整体结构"><a href="#一、整体结构" class="headerlink" title="一、整体结构"></a>一、整体结构</h2><p>1、注释：&lt;#–注释内容–&gt;，不会输出。<br>2、文本：直接输出。<br>3、interpolation:由 ${var} 或 #{var} 限定，由计算值代替输出。<br>4、FTL标记</p>
+<h2 id="二、指令："><a href="#二、指令：" class="headerlink" title="二、指令："></a>二、指令：</h2><p>freemarker指令有两种：<br>1、预定义指令：引用方式为&lt;#指令名称&gt;<br>2、用户定义指令：引用方式为&lt;@指令名称&gt;，引用用户定义指令时须将#换为@。<br>注意：如果使用不存在的指令，FreeMarker不会使用模板输出，而是产生一个错误消息。<br>freemarker指令由FTL标记来引用，FTL标记和HTML标记类似，名字前加#来加 以区分。如HTML标记的形式为</p><h1></h1>则FTL标记的形式是&lt;#list&gt;&lt; /#list&gt;（此处h1标记和list指令没有任何功能上的对应关系，只是做为说明使用一下）。<br>有三种FTL标记：<br>1)、开始标记：&lt;#指令名称&gt;<br>2)、结束标记：&lt;/#指令名称&gt;<br>3)、空标记：&lt;#指令名称/&gt;<br>注意：<br>1) FTL会忽略标记之中的空格，但是，&lt;#和指令 与 &lt;/#和指令 之间不能有空格。<br>2) FTL标记不能够交叉，必须合理嵌套。每个开始标记对应一个结束标记，层层嵌套。 如：<br>&lt;#list&gt;<p></p>
+<p><li><br>${数据}<br>&lt;#if 变量&gt;</li></p>
+<p></p><p>game over!</p><br>&lt;/#if&gt;<br><br>&lt;/#list&gt;<br>注意事项：<br>1)、FTL对大小写敏感。 所以使用的标记及interpolation要注意大小写。name与NAME就是不同的对象。&lt;#list&gt;是正确的标记，而&lt;#List&gt;则不是。<br>2)、interpolation只能在文本部分使用，不能位于FTL标记内。如&lt;#if ${var}&gt;是错误的，正确的方法是：&lt;#if var&gt;,而且此处var必须为布尔值。<br>3)、FTL标记不能位于另一个FTL标记内部，注释例外。注释可以位于标记及interpolation内部。<p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/26/FreeMarker/Freemarker/" data-id="cjtf6o91a000z0fc5h2b2lqjq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Scala/2017-04-24" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/20/Scala/2017-04-24/" class="article-date">
+  <time datetime="2017-04-20T08:06:13.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Scala/">Scala</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Scala学习笔记"><a href="#Scala学习笔记" class="headerlink" title="Scala学习笔记"></a>Scala学习笔记</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/20/Scala/2017-04-24/" data-id="cjtf6o92j003t0fc5uw1bjwod" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scala/">Scala</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Scala/Scala学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/20/Scala/Scala学习笔记/" class="article-date">
+  <time datetime="2017-04-20T08:06:13.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Scala/">Scala</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/Scala/Scala学习笔记/">Scala学习笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Scala学习笔记"><a href="#Scala学习笔记" class="headerlink" title="Scala学习笔记"></a>Scala学习笔记</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/20/Scala/Scala学习笔记/" data-id="cjtf6o92l003v0fc5njmcwr2s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Scala/">Scala</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka/kafka-manager同时支持从zk和从内部topic&#34;__consumer_offsets&#34;中读取offset信息" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/20/kafka/kafka-manager同时支持从zk和从内部topic" __consumer_offsets"中读取offset信息 " class="article-date">
+  <time datetime="2017-04-20T03:13:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/kafka/kafka-manager同时支持从zk和从内部topic" __consumer_offsets"中读取offset信息 ">kafka-manager同时支持从zk和从内部topic&#34;__consumer_offsets&#34;中读取offset信息</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka-manager同时支持从zk和从内部topic”-consumer-offsets”中读取offset信息"><a href="#kafka-manager同时支持从zk和从内部topic”-consumer-offsets”中读取offset信息" class="headerlink" title="kafka-manager同时支持从zk和从内部topic”__consumer_offsets”中读取offset信息"></a>kafka-manager同时支持从zk和从内部topic”__consumer_offsets”中读取offset信息</h1><h2 id="kafka-manager"><a href="#kafka-manager" class="headerlink" title="kafka-manager"></a>kafka-manager</h2><p>kafka-manager 用于监控 Kafka 集群中 Topic 被消费的情况。包含 Lags 的产生，Offset 的变动，Partition 的分布，Owner ，Topic 被创建的时间和修改的时间等信息。</p>
+<p>在计算lags时需要需要获取 logsize 和消费者消费到的offset下标来(offsetZK.getOffset())来计算lags,<br>即 <code>lag = offsetZk.getOffset() == -1 ? 0 : logSize - offsetZk.getOffset()</code></p>
+<p>需要查询offset的方法</p>
+<ul>
+<li>OffsetController<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/20/kafka/kafka-manager同时支持从zk和从内部topic" __consumer_offsets"中读取offset信息 " data-id="cjtf6o92n00410fc58zisubyy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka/kafka0.8升级0.10测试计划" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/20/kafka/kafka0.8升级0.10测试计划/" class="article-date">
+  <time datetime="2017-04-20T03:13:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/20/kafka/kafka0.8升级0.10测试计划/">kafka0.8升级0.10测试计划</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka0-8升级0-10测试计划"><a href="#kafka0-8升级0-10测试计划" class="headerlink" title="kafka0.8升级0.10测试计划"></a>kafka0.8升级0.10测试计划</h1><p>升级测试 10.0.41.135~10.0.41.137 kafka集群测试机</p>
+<h2 id="一、升级主流程"><a href="#一、升级主流程" class="headerlink" title="一、升级主流程"></a>一、升级主流程</h2><h3 id="1、拷贝0-8版本配置文件，修改添加0-10版本配置"><a href="#1、拷贝0-8版本配置文件，修改添加0-10版本配置" class="headerlink" title="1、拷贝0.8版本配置文件，修改添加0.10版本配置"></a>1、拷贝0.8版本配置文件，修改添加0.10版本配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#修改项</span><br><span class="line">log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs</span><br><span class="line"></span><br><span class="line">#添加项 </span><br><span class="line">auto.create.topics.enable=false</span><br><span class="line">num.replica.fetchers=3</span><br><span class="line">unclean.leader.election.enable=false</span><br><span class="line">inter.broker.protocol.version=0.8.2.0</span><br><span class="line">log.message.format.version=0.8.2.0</span><br></pre></td></tr></table></figure>
+<h3 id="2、逐一停止0-8版本kafka，启动0-10版本kafka"><a href="#2、逐一停止0-8版本kafka，启动0-10版本kafka" class="headerlink" title="2、逐一停止0.8版本kafka，启动0.10版本kafka"></a>2、逐一停止0.8版本kafka，启动0.10版本kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#停止该服务器上所有0.8kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill –SIGTERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#可选命令</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181（可选）</span><br></pre></td></tr></table></figure>
+<h3 id="3、修改配置，并在此逐一启动kafka"><a href="#3、修改配置，并在此逐一启动kafka" class="headerlink" title="3、修改配置，并在此逐一启动kafka"></a>3、修改配置，并在此逐一启动kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#修改0.10配置</span><br><span class="line">inter.broker.protocol.version=0.10.1.0</span><br><span class="line"></span><br><span class="line">#停止该服务器上所有0.10kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -s TERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line">	</span><br><span class="line">#可选命令</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181（可选）</span><br></pre></td></tr></table></figure>
+<h2 id="二、测试"><a href="#二、测试" class="headerlink" title="二、测试"></a>二、测试</h2><h3 id="topic准备"><a href="#topic准备" class="headerlink" title="topic准备"></a>topic准备</h3><ul>
+<li>wangzhe：用于测试升级过程自动leader均衡和手动leader均衡</li>
+<li>wangzhe_long_running ：测试升级过程中topic生产消费是否出问题</li>
+</ul>
+<h4 id="wangzhe"><a href="#wangzhe" class="headerlink" title="wangzhe"></a>wangzhe</h4><p>测试0.8和0.10版本客户端对0.10版本kafka集群的生产消费许可状况</p>
+<p>分别测试未均衡前、自动均衡后和手动均衡后的leader、replicas和lsr</p>
+<blockquote>
+<p>自动均衡时间过久（大概要一天），只测试手动均衡和未均衡之前的状态</p>
+</blockquote>
+<h4 id="wangzhe-long-running"><a href="#wangzhe-long-running" class="headerlink" title="wangzhe_long_running"></a>wangzhe_long_running</h4><p>在测试开始前执行持续开启写入命令和持续开启消费命令，在测试过程中查看是否报错</p>
+<h3 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h3><h4 id="1、准备测试初试环境"><a href="#1、准备测试初试环境" class="headerlink" title="1、准备测试初试环境"></a>1、准备测试初试环境</h4><p>之前测试已经将0.10的kafka升级完成，将0.8和0.10配置均恢复为未升级前，将kafka集群停止，恢复到0.8kafka集群</p>
+<h4 id="2、创建新topic"><a href="#2、创建新topic" class="headerlink" title="2、创建新topic"></a>2、创建新topic</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe_long_running</span><br></pre></td></tr></table></figure>
+<h4 id="3、预置topic数据"><a href="#3、预置topic数据" class="headerlink" title="3、预置topic数据"></a>3、预置topic数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line">kafka_08_1</span><br><span class="line">kafka_08_2</span><br><span class="line">kafka_08_3</span><br><span class="line">kafka_08_4</span><br><span class="line">kafka_08_5</span><br><span class="line">kafka_08_6</span><br><span class="line">kafka_08_7</span><br><span class="line">kafka_08_8</span><br><span class="line">kafka_08_9</span><br></pre></td></tr></table></figure>
+<h4 id="4、拷贝0-8版本配置并添加修改"><a href="#4、拷贝0-8版本配置并添加修改" class="headerlink" title="4、拷贝0.8版本配置并添加修改"></a>4、拷贝0.8版本配置并添加修改</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server.properties</span><br><span class="line">#修改项</span><br><span class="line">log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs</span><br><span class="line"></span><br><span class="line">#添加项 </span><br><span class="line">auto.create.topics.enable=false</span><br><span class="line">num.replica.fetchers=3</span><br><span class="line">unclean.leader.election.enable=false</span><br><span class="line">inter.broker.protocol.version=0.8.2.0</span><br><span class="line">log.message.format.version=0.8.2.0</span><br></pre></td></tr></table></figure>
+<h4 id="5、开启持续写入-消费"><a href="#5、开启持续写入-消费" class="headerlink" title="5、开启持续写入/消费"></a>5、开启持续写入/消费</h4><p>在10.0.41.132测试机上开启持续写入和持续消费，测试wangzhe_long_running</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#开启持续写入</span><br><span class="line">bin/kafka-producer-perf-test.sh --messages 1000000000 --message-size 5 --batch-size 10 --topics wangzhe_long_running --threads 1 --broker-list slave135:9092,slave136:9092,slave137:9092</span><br><span class="line"></span><br><span class="line">#开启持续消费</span><br><span class="line">bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe_long_running</span><br></pre></td></tr></table></figure>
+<h4 id="6、逐一停止0-8kafka节点并对应的启动0-10节点"><a href="#6、逐一停止0-8kafka节点并对应的启动0-10节点" class="headerlink" title="6、逐一停止0.8kafka节点并对应的启动0.10节点"></a>6、逐一停止0.8kafka节点并对应的启动0.10节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#停止0.8节点</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -SIGTERM</span><br><span class="line"></span><br><span class="line">#启动0.10节点</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#查看topic状态</span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#第二遍测试手动均衡前后topic状态</span><br><span class="line">#手动均衡</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br></pre></td></tr></table></figure>
+<h4 id="7、修改配置，并再次逐一重启"><a href="#7、修改配置，并再次逐一重启" class="headerlink" title="7、修改配置，并再次逐一重启"></a>7、修改配置，并再次逐一重启</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#修改0.10配置</span><br><span class="line">inter.broker.protocol.version=0.10.1.0</span><br><span class="line"></span><br><span class="line">#停止该服务器上所有0.10kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -s TERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line">	</span><br><span class="line">#第二遍测试手动均衡前后topic状态</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br></pre></td></tr></table></figure>
+<h4 id="9、测试0-8和0-10客户端生产消费0-10版本kafka集群"><a href="#9、测试0-8和0-10客户端生产消费0-10版本kafka集群" class="headerlink" title="9、测试0.8和0.10客户端生产消费0.10版本kafka集群"></a>9、测试0.8和0.10客户端生产消费0.10版本kafka集群</h4><p>测试0.8和0.10客户端生产消费0.10版本kafka集群<br>生产者和消费者为10.0.41.132测试机，位于kafka集群之外</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#0.8的生产者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#0.8的消费者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的消费者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的生产者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#0.8的消费者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的消费者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br></pre></td></tr></table></figure>
+<p>至此，测试流程完成</p>
+<h2 id="命令参考"><a href="#命令参考" class="headerlink" title="命令参考"></a>命令参考</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#启动kafka</span><br><span class="line">bin/kafka-server-start.sh config/server.properties</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#创建topic</span><br><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#删除topic</span><br><span class="line">bin/kafka-topics.sh --delete --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#查看所有topic</span><br><span class="line">bin/kafka-topics.sh --list --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">#查看topic状态</span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#启动生产者（启动成功进入命令行阻塞状态，可以输入数据，回车发送）</span><br><span class="line">bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe_long_running</span><br><span class="line"></span><br><span class="line">#启动消费者(启动后命令行处于阻塞状态，生产者发布的消息会在此显示)</span><br><span class="line">bin/kafka-console-consumer.sh –zookeeper localhost:2181 –topic test –wangzhe_long_running</span><br><span class="line"></span><br><span class="line">#终止节点所有kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -SIGTERM</span><br><span class="line"></span><br><span class="line">#持续开启写入</span><br><span class="line">bin/kafka-producer-perf-test.sh --messages 1000000000 --message-size 5 --batch-size 10 --topics wangzhe_long_running --threads 1 --broker-list slave135:9092,slave136:9092,slave137:9092</span><br><span class="line"></span><br><span class="line">#持续开启消费</span><br><span class="line">bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe_long_running --from-beginning</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/20/kafka/kafka0.8升级0.10测试计划/" data-id="cjtf6o92q00470fc5bppmmhpx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka/2017-04-18" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/18/kafka/2017-04-18/" class="article-date">
+  <time datetime="2017-04-18T03:13:00.000Z" itemprop="datePublished">2017-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/18/kafka/2017-04-18/">kafka学习记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka"><a href="#kafka" class="headerlink" title="kafka"></a>kafka</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/18/kafka/2017-04-18/" data-id="cjtf6o92m003z0fc5enqa74fk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kafka/kafka入坑指南" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/18/kafka/kafka入坑指南/" class="article-date">
+  <time datetime="2017-04-18T03:13:00.000Z" itemprop="datePublished">2017-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/18/kafka/kafka入坑指南/">kafka入坑指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka入坑指南"><a href="#kafka入坑指南" class="headerlink" title="kafka入坑指南"></a>kafka入坑指南</h1><p>Kafka是为大数据而生的消息中间件，以其百万级TPS的吞吐量名声大噪，迅速成为大数据领域的宠儿，在数据采集、传输、存储的过程中发挥着举足轻重的作用，而Storm，Spark，Flink等大数据流处理或批处理平台都有Kafka的相关插件支持。本着为开源做贡献的原则，在学习Kafka的同时也参与了Kafka官方文档的翻译，Kafka的官网文档写的比较详细，学习Kafka只看官方文档就可以了。</p>
+<p><a href="http://www.apache.wiki/display/Kafka" target="_blank" rel="noopener">kafka中文文档</a><br><a href="https://github.com/yahoo/kafka-manager" target="_blank" rel="noopener">kafka-manager</a></p>
+<p><a href="http://ppt.geekidentity.com/kafka/#/" target="_blank" rel="noopener">kafka技术分享PPT</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/18/kafka/kafka入坑指南/" data-id="cjtf6o92p00450fc5buqf8umm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

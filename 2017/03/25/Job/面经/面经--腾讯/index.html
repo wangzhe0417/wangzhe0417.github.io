@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>面经--腾讯 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="腾讯视频搜索部门 — 一面（两个小时）远程写代码二分查找和二叉树两个结点的最低公共子结点 介绍项目大端模式和小端模式0x12345678地址：0x00 0x01 0x02 0x03大端：0x78 0x56 0x34 0x12小端：0x12 0x34 0x56 0x78大端就是数据的高位保存在内存的低位，即倒序小端就是数据的低位保存在内存的低位，即正序">
+<meta name="keywords" content="面经">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面经--腾讯">
+<meta property="og:url" content="http://yoursite.com/2017/03/25/Job/面经/面经--腾讯/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="腾讯视频搜索部门 — 一面（两个小时）远程写代码二分查找和二叉树两个结点的最低公共子结点 介绍项目大端模式和小端模式0x12345678地址：0x00 0x01 0x02 0x03大端：0x78 0x56 0x34 0x12小端：0x12 0x34 0x56 0x78大端就是数据的高位保存在内存的低位，即倒序小端就是数据的低位保存在内存的低位，即正序">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面经--腾讯">
+<meta name="twitter:description" content="腾讯视频搜索部门 — 一面（两个小时）远程写代码二分查找和二叉树两个结点的最低公共子结点 介绍项目大端模式和小端模式0x12345678地址：0x00 0x01 0x02 0x03大端：0x78 0x56 0x34 0x12小端：0x12 0x34 0x56 0x78大端就是数据的高位保存在内存的低位，即倒序小端就是数据的低位保存在内存的低位，即正序">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Job/面经/面经--腾讯" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/25/Job/面经/面经--腾讯/" class="article-date">
+  <time datetime="2017-03-25T12:06:13.000Z" itemprop="datePublished">2017-03-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Job/">Job</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      面经--腾讯
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="腾讯视频搜索部门-—-一面（两个小时）"><a href="#腾讯视频搜索部门-—-一面（两个小时）" class="headerlink" title="腾讯视频搜索部门 — 一面（两个小时）"></a>腾讯视频搜索部门 — 一面（两个小时）</h1><h2 id="远程写代码"><a href="#远程写代码" class="headerlink" title="远程写代码"></a>远程写代码</h2><p>二分查找和二叉树两个结点的最低公共子结点</p>
+<h2 id="介绍项目"><a href="#介绍项目" class="headerlink" title="介绍项目"></a>介绍项目</h2><h2 id="大端模式和小端模式"><a href="#大端模式和小端模式" class="headerlink" title="大端模式和小端模式"></a>大端模式和小端模式</h2><p>0x12345678<br>地址：0x00 0x01 0x02 0x03<br>大端：0x78 0x56 0x34 0x12<br>小端：0x12 0x34 0x56 0x78<br>大端就是数据的高位保存在内存的低位，即倒序<br>小端就是数据的低位保存在内存的低位，即正序</p>
+<a id="more"></a>
+<h2 id="HTTP协议Keep-Alive模式"><a href="#HTTP协议Keep-Alive模式" class="headerlink" title="HTTP协议Keep-Alive模式"></a>HTTP协议Keep-Alive模式</h2><p>HTTP协议采用“请求-应答”模式，当使用普通模式，即非KeepAlive模式时，每个请求/应答客户和服务器都要新建一个连接，完成 之后立即断开连接（HTTP协议为无连接的协议）；当使用Keep-Alive模式（又称持久连接、连接重用）时，Keep-Alive功能使客户端到服 务器端的连接持续有效，当出现对服务器的后继请求时，Keep-Alive功能避免了建立或者重新建立连接。</p>
+<h3 id="Keep-Alive模式如何判断数据已接受完成"><a href="#Keep-Alive模式如何判断数据已接受完成" class="headerlink" title="Keep-Alive模式如何判断数据已接受完成"></a>Keep-Alive模式如何判断数据已接受完成</h3><p>Keep-Alive模式发送玩数据HTTP服务器不会自动断开连接，所有不能再使用返回EOF（-1）来判断</p>
+<h4 id="1-使用消息首部字段Conent-Length"><a href="#1-使用消息首部字段Conent-Length" class="headerlink" title="1. 使用消息首部字段Conent-Length"></a>1. 使用消息首部字段Conent-Length</h4><p>服务器是预先知道内容大小，用Conent-Length</p>
+<h4 id="2-使用消息首部字段Transfer-Encoding"><a href="#2-使用消息首部字段Transfer-Encoding" class="headerlink" title="2. 使用消息首部字段Transfer-Encoding"></a>2. 使用消息首部字段Transfer-Encoding</h4><ol>
+<li>服务器是不可能预先知道内容大小，这时就可以使用Transfer-Encoding：chunk模式来传输 数据</li>
+<li>一边产生数据，一边发给客户端，服务器就需要使用Transfer-Encoding: chunked</li>
+</ol>
+<h2 id="浏览器是做什么的"><a href="#浏览器是做什么的" class="headerlink" title="浏览器是做什么的"></a>浏览器是做什么的</h2><p>用来解析网页，解析HTML文件的</p>
+<h2 id="哪些情况会导致Linux系统变慢，如何查看"><a href="#哪些情况会导致Linux系统变慢，如何查看" class="headerlink" title="哪些情况会导致Linux系统变慢，如何查看"></a>哪些情况会导致Linux系统变慢，如何查看</h2><ul>
+<li>CPU：top</li>
+<li>内存：free</li>
+<li>硬盘：iotop</li>
+</ul>
+<h2 id="用户态和内核态的区别"><a href="#用户态和内核态的区别" class="headerlink" title="用户态和内核态的区别"></a>用户态和内核态的区别</h2><h2 id="查看进程和端口号占用情况"><a href="#查看进程和端口号占用情况" class="headerlink" title="查看进程和端口号占用情况"></a>查看进程和端口号占用情况</h2><p>查看进程：ps | grep ***<br>查看进程和端口号使用情况：netstat -apn</p>
+<h2 id="进程通信的方式"><a href="#进程通信的方式" class="headerlink" title="进程通信的方式"></a>进程通信的方式</h2><ol>
+<li>管道( pipe )：管道是一种半双工的通信方式，数据只能单向流动，而且只能在具有亲缘关系的进程间使用。进程的亲缘关系通常是指父子进程关系。</li>
+<li>有名管道 (named pipe) ： 有名管道也是半双工的通信方式，但是它允许无亲缘关系进程间的通信。</li>
+<li>信号量( semophore ) ： 信号量是一个计数器，可以用来控制多个进程对共享资源的访问。它常作为一种锁机制，防止某进程正在访问共享资源时，其他进程也访问该资源。因此，主要作为进程间以及同一进程内不同线程之间的同步手段。</li>
+<li>消息队列( message queue ) ： 消息队列是由消息的链表，存放在内核中并由消息队列标识符标识。消息队列克服了信号传递信息少、管道只能承载无格式字节流以及缓冲区大小受限等缺点。</li>
+<li>信号 ( sinal ) ： 信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生。</li>
+<li>共享内存( shared memory ) ：共享内存就是映射一段能被其他进程所访问的内存，这段共享内存由一个进程创建，但多个进程都可以访问。共享内存是最快的 IPC 方式，它是针对其他进程间通信方式运行效率低而专门设计的。它往往与其他通信机制，如信号两，配合使用，来实现进程间的同步和通信。</li>
+<li>套接字( socket ) ： 套解口也是一种进程间通信机制，与其他通信机制不同的是，它可用于不同及其间的进程通信。</li>
+</ol>
+<h2 id="在浏览器中输入网址按回车后发生了什么"><a href="#在浏览器中输入网址按回车后发生了什么" class="headerlink" title="在浏览器中输入网址按回车后发生了什么"></a>在浏览器中输入网址按回车后发生了什么</h2><ol>
+<li><p><strong>连接</strong> 当我们输入这样一个请求时，首先要建立一个socket连接，因为socket是通过ip和端口建立的，所以之前还有一个DNS解析过程，把URL解析为ip，如果url里不包含端口号，则会使用该协议的默认端口号。</p>
+<blockquote>
+<p>DNS的过程是这样的：首先我们知道我们本地的机器上在配置网络时都会填写DNS，这样本机就会把这个url发给这个配置的DNS服务器，如果能够找到相应的url则返回其ip，否则该DNS将继续将该解析请求发送给上级DNS，整个DNS可以看做是一个树状结构，该请求将一直发送到根直到得到结果。</p>
+</blockquote>
+</li>
+<li><p><strong>请求</strong> 连接成功建立后，开始向web服务器发送请求，这个请求一般是GET或POST</p>
+</li>
+<li><strong>应答</strong> web服务器收到这个请求，进行处理。从它的文档空间中搜索子目录mydir的文件index.html。如果找到该文件，Web服务器把该文件内容传送给相应的Web浏览器。为了告知浏览器，，Web服务器首先传送一些HTTP头信息，然后传送具体内容（即HTTP体信息），HTTP头信息和HTTP体信息之间用一个空行分开。</li>
+<li><strong>关闭连接</strong> 当应答结束后，Web浏览器与Web服务器必须断开，以保证其它Web浏览器能够与Web服务器建立连接。</li>
+</ol>
+<h2 id="301，302的区别；500指什么"><a href="#301，302的区别；500指什么" class="headerlink" title="301，302的区别；500指什么"></a>301，302的区别；500指什么</h2><h3 id="3-重定向"><a href="#3-重定向" class="headerlink" title="3** 重定向"></a>3** 重定向</h3><ul>
+<li>301 : 代表永久性重定向</li>
+<li>302 : 代表暂时性重定向 <h3 id="500-服务器内部错误"><a href="#500-服务器内部错误" class="headerlink" title="500 服务器内部错误"></a>500 服务器内部错误</h3></li>
+</ul>
+<h2 id="搜索推荐是用什么实现的"><a href="#搜索推荐是用什么实现的" class="headerlink" title="搜索推荐是用什么实现的"></a>搜索推荐是用什么实现的</h2><p>Trie树结构</p>
+<h2 id="TCP-UDP的区别"><a href="#TCP-UDP的区别" class="headerlink" title="TCP/UDP的区别"></a>TCP/UDP的区别</h2><p>HTTP使用TCP还是UDP</p>
+<h2 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h2><h2 id="对于抓取网页中js代码怎么处理，静态页面又怎么处理"><a href="#对于抓取网页中js代码怎么处理，静态页面又怎么处理" class="headerlink" title="对于抓取网页中js代码怎么处理，静态页面又怎么处理"></a>对于抓取网页中js代码怎么处理，静态页面又怎么处理</h2><h2 id="sellect和epoll的区别"><a href="#sellect和epoll的区别" class="headerlink" title="sellect和epoll的区别"></a>sellect和epoll的区别</h2><h2 id="5亿搜索词中-找到出现次数最多的top100"><a href="#5亿搜索词中-找到出现次数最多的top100" class="headerlink" title="5亿搜索词中,找到出现次数最多的top100"></a>5亿搜索词中,找到出现次数最多的top100</h2><p>5亿搜索词<br>一个搜索10个字，20个字节<br>5亿 * 20字节 = 100亿字节 = 10,000,000,000B = 10G<br>可以一次放入内存，则先用hash统计词频，再用取出大跟堆</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/03/25/Job/面经/面经--腾讯/" data-id="cjtf6o96d00dj0fc5u59b53bl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面经/">面经</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/01/Algorithm/面试算法题/给出两个单词（start和end）与一个字典，找出从start到end的最短转换序列/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          给出两个单词（start和end）与一个字典，找出从start到end的最短转换序列
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/25/Job/面经/2017-03-25/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

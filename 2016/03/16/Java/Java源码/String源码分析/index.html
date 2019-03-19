@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>String源码剖析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="String源码分析 从一段代码说起： 12345public void stringTest()&amp;#123;    String a = &amp;quot;a&amp;quot;+&amp;quot;b&amp;quot;+1;    String b = &amp;quot;ab1&amp;quot;;    System.out.println(a == b);&amp;#125; 大家猜一猜结果如何？如果你的结论是true。好吧，再来一段代码">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String源码剖析">
+<meta property="og:url" content="http://yoursite.com/2016/03/16/Java/Java源码/String源码分析/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="String源码分析 从一段代码说起： 12345public void stringTest()&amp;#123;    String a = &amp;quot;a&amp;quot;+&amp;quot;b&amp;quot;+1;    String b = &amp;quot;ab1&amp;quot;;    System.out.println(a == b);&amp;#125; 大家猜一猜结果如何？如果你的结论是true。好吧，再来一段代码">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="String源码剖析">
+<meta name="twitter:description" content="String源码分析 从一段代码说起： 12345public void stringTest()&amp;#123;    String a = &amp;quot;a&amp;quot;+&amp;quot;b&amp;quot;+1;    String b = &amp;quot;ab1&amp;quot;;    System.out.println(a == b);&amp;#125; 大家猜一猜结果如何？如果你的结论是true。好吧，再来一段代码">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java/Java源码/String源码分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/16/Java/Java源码/String源码分析/" class="article-date">
+  <time datetime="2016-03-16T08:06:13.000Z" itemprop="datePublished">2016-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      String源码剖析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="String源码分析"><a href="#String源码分析" class="headerlink" title="String源码分析"></a>String源码分析</h1><hr>
+<p>从一段代码说起：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void stringTest()&#123;</span><br><span class="line">    String a = &quot;a&quot;+&quot;b&quot;+1;</span><br><span class="line">    String b = &quot;ab1&quot;;</span><br><span class="line">    System.out.println(a == b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大家猜一猜结果如何？如果你的结论是true。好吧，再来一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void stringTest()&#123;</span><br><span class="line">    String a = new String(&quot;ab1&quot;);</span><br><span class="line">    String b = &quot;ab1&quot;;</span><br><span class="line">    System.out.println(a == b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如何呢？正确答案是false。</p>
+<p>让我们看看经过编译器编译后的代码如何</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//第一段代码</span><br><span class="line">public void stringTest() &#123;</span><br><span class="line">    String a = &quot;ab1&quot;;</span><br><span class="line">    String b = &quot;ab1&quot;;</span><br><span class="line">    System.out.println(a == b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//第二段代码</span><br><span class="line">public void stringTest() &#123;</span><br><span class="line">    String a1 = new String(&quot;ab1&quot;);</span><br><span class="line">    String b = &quot;ab1&quot;;</span><br><span class="line">    System.out.println(a1 == b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也就是说第一段代码经过了编译期优化，原因是编译器发现”a”+”b”+1和”ab1”的效果是一样的，都是不可变量组成。但是为什么他们的内存地址会相同呢？如果你对此还有兴趣，那就一起看看String类的一些重要源码吧。<br><a id="more"></a></p>
+<h2 id="1-String类"><a href="#1-String类" class="headerlink" title="1.String类"></a>1.String类</h2><p>String类被final所修饰，也就是说String对象是不可变量，并发程序最喜欢不可变量了。String类实现了Serializable, Comparable<string>, CharSequence接口。</string></p>
+<p>Comparable接口有compareTo(String s)方法，CharSequence接口有length()，charAt(int index)，subSequence(int start,int end)方法。</p>
+<h2 id="2-String属性"><a href="#2-String属性" class="headerlink" title="2.String属性"></a>2.String属性</h2><p>String类中包含一个不可变的char数组用来存放字符串，一个int型的变量hash用来存放计算后的哈希值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/** The value is used for character storage. */</span><br><span class="line">private final char value[];</span><br><span class="line"></span><br><span class="line">/** Cache the hash code for the string */</span><br><span class="line">private int hash; // Default to 0</span><br><span class="line"></span><br><span class="line">/** use serialVersionUID from JDK 1.0.2 for interoperability */</span><br><span class="line">private static final long serialVersionUID = -6849794470754667710L;</span><br></pre></td></tr></table></figure>
+<h2 id="3-String构造函数"><a href="#3-String构造函数" class="headerlink" title="3.String构造函数"></a>3.String构造函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//不含参数的构造函数，一般没什么用，因为value是不可变量</span><br><span class="line">public String() &#123;</span><br><span class="line">    this.value = new char[0];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//参数为String类型</span><br><span class="line">public String(String original) &#123;</span><br><span class="line">    this.value = original.value;</span><br><span class="line">    this.hash = original.hash;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//参数为char数组，使用java.utils包中的Arrays类复制</span><br><span class="line">public String(char value[]) &#123;</span><br><span class="line">    this.value = Arrays.copyOf(value, value.length);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//从bytes数组中的offset位置开始，将长度为length的字节，以charsetName格式编码，拷贝到value</span><br><span class="line">public String(byte bytes[], int offset, int length, String charsetName)</span><br><span class="line">        throws UnsupportedEncodingException &#123;</span><br><span class="line">    if (charsetName == null)</span><br><span class="line">        throw new NullPointerException(&quot;charsetName&quot;);</span><br><span class="line">    checkBounds(bytes, offset, length);</span><br><span class="line">    this.value = StringCoding.decode(charsetName, bytes, offset, length);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//调用public String(byte bytes[], int offset, int length, String charsetName)构造函数</span><br><span class="line">public String(byte bytes[], String charsetName)</span><br><span class="line">        throws UnsupportedEncodingException &#123;</span><br><span class="line">    this(bytes, 0, bytes.length, charsetName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-String常用方法"><a href="#4-String常用方法" class="headerlink" title="4.String常用方法"></a>4.String常用方法</h2><h3 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">boolean equals(Object anObject)</span><br><span class="line"></span><br><span class="line">public boolean equals(Object anObject) &#123;</span><br><span class="line">    //如果引用的是同一个对象，返回真</span><br><span class="line">    if (this == anObject) &#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    //如果不是String类型的数据，返回假</span><br><span class="line">    if (anObject instanceof String) &#123;</span><br><span class="line">        String anotherString = (String) anObject;</span><br><span class="line">        int n = value.length;</span><br><span class="line">        //如果char数组长度不相等，返回假</span><br><span class="line">        if (n == anotherString.value.length) &#123;</span><br><span class="line">            char v1[] = value;</span><br><span class="line">            char v2[] = anotherString.value;</span><br><span class="line">            int i = 0;</span><br><span class="line">            //从后往前单个字符判断，如果有不相等，返回假</span><br><span class="line">            while (n-- != 0) &#123;</span><br><span class="line">                if (v1[i] != v2[i])</span><br><span class="line">                        return false;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            //每个字符都相等，返回真</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>equals方法经常用得到，它用来判断两个对象从实际意义上是否相等，String对象判断规则：</p>
+<p>内存地址相同，则为真。</p>
+<p>如果对象类型不是String类型，则为假。否则继续判断。</p>
+<p>如果对象长度不相等，则为假。否则继续判断。</p>
+<p>从后往前，判断String类中char数组value的单个字符是否相等，有不相等则为假。如果一直相等直到第一个数，则返回真。</p>
+<p>由此可以看出，如果对两个超长的字符串进行比较还是非常费时间的。</p>
+<h3 id="compareTo"><a href="#compareTo" class="headerlink" title="compareTo()"></a>compareTo()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">int compareTo(String anotherString)</span><br><span class="line"></span><br><span class="line">public int compareTo(String anotherString) &#123;</span><br><span class="line">    //自身对象字符串长度len1</span><br><span class="line">    int len1 = value.length;</span><br><span class="line">    //被比较对象字符串长度len2</span><br><span class="line">    int len2 = anotherString.value.length;</span><br><span class="line">    //取两个字符串长度的最小值lim</span><br><span class="line">    int lim = Math.min(len1, len2);</span><br><span class="line">    char v1[] = value;</span><br><span class="line">    char v2[] = anotherString.value;</span><br><span class="line"></span><br><span class="line">    int k = 0;</span><br><span class="line">    //从value的第一个字符开始到最小长度lim处为止，如果字符不相等，返回自身（对象不相等处字符-被比较对象不相等字符）</span><br><span class="line">    while (k &lt; lim) &#123;</span><br><span class="line">        char c1 = v1[k];</span><br><span class="line">        char c2 = v2[k];</span><br><span class="line">        if (c1 != c2) &#123;</span><br><span class="line">            return c1 - c2;</span><br><span class="line">        &#125;</span><br><span class="line">        k++;</span><br><span class="line">    &#125;</span><br><span class="line">    //如果前面都相等，则返回（自身长度-被比较对象长度）</span><br><span class="line">    return len1 - len2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法写的很巧妙，先从0开始判断字符大小。如果两个对象能比较字符的地方比较完了还相等，就直接返回自身长度减被比较对象长度，如果两个字符串长度相等，则返回的是0，巧妙地判断了三种情况。</p>
+<h3 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode()"></a>hashCode()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int hashCode()</span><br><span class="line"></span><br><span class="line">public int hashCode() &#123;</span><br><span class="line">    int h = hash;</span><br><span class="line">    //如果hash没有被计算过，并且字符串不为空，则进行hashCode计算</span><br><span class="line">    if (h == 0 &amp;&amp; value.length &gt; 0) &#123;</span><br><span class="line">        char val[] = value;</span><br><span class="line"></span><br><span class="line">        //计算过程</span><br><span class="line">        //s[0]*31^(n-1) + s[1]*31^(n-2) + ... + s[n-1]</span><br><span class="line">        for (int i = 0; i &lt; value.length; i++) &#123;</span><br><span class="line">            h = 31 * h + val[i];</span><br><span class="line">        &#125;</span><br><span class="line">        //hash赋值</span><br><span class="line">        hash = h;</span><br><span class="line">    &#125;</span><br><span class="line">    return h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>String类重写了hashCode方法，Object中的hashCode方法是一个Native调用。String类的hash采用多项式计算得来，我们完全可以通过不相同的字符串得出同样的hash，所以两个String对象的hashCode相同，并不代表两个String是一样的。</p>
+<h3 id="startsWith"><a href="#startsWith" class="headerlink" title="startsWith()"></a>startsWith()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">boolean startsWith(String prefix,int toffset)</span><br><span class="line"></span><br><span class="line">public boolean startsWith(String prefix, int toffset) &#123;</span><br><span class="line">    char ta[] = value;</span><br><span class="line">    int to = toffset;</span><br><span class="line">    char pa[] = prefix.value;</span><br><span class="line">    int po = 0;</span><br><span class="line">    int pc = prefix.value.length;</span><br><span class="line">    // Note: toffset might be near -1&gt;&gt;&gt;1.</span><br><span class="line">    //如果起始地址小于0或者（起始地址+所比较对象长度）大于自身对象长度，返回假</span><br><span class="line">    if ((toffset &lt; 0) || (toffset &gt; value.length - pc)) &#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    //从所比较对象的末尾开始比较</span><br><span class="line">    while (--pc &gt;= 0) &#123;</span><br><span class="line">        if (ta[to++] != pa[po++]) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean startsWith(String prefix) &#123;</span><br><span class="line">    return startsWith(prefix, 0);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public boolean endsWith(String suffix) &#123;</span><br><span class="line">    return startsWith(suffix, value.length - suffix.value.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>起始比较和末尾比较都是比较经常用得到的方法，例如在判断一个字符串是不是http协议的，或者初步判断一个文件是不是mp3文件，都可以采用这个方法进行比较。</p>
+<h3 id="concat"><a href="#concat" class="headerlink" title="concat()"></a>concat()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">String concat(String str)</span><br><span class="line"></span><br><span class="line">public String concat(String str) &#123;</span><br><span class="line">    int otherLen = str.length();</span><br><span class="line">    //如果被添加的字符串为空，返回对象本身</span><br><span class="line">    if (otherLen == 0) &#123;</span><br><span class="line">        return this;</span><br><span class="line">    &#125;</span><br><span class="line">    int len = value.length;</span><br><span class="line">    char buf[] = Arrays.copyOf(value, len + otherLen);</span><br><span class="line">    str.getChars(buf, len);</span><br><span class="line">    return new String(buf, true);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>concat方法也是经常用的方法之一，它先判断被添加字符串是否为空来决定要不要创建新的对象。</p>
+<h3 id="replace"><a href="#replace" class="headerlink" title="replace()"></a>replace()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">String replace(char oldChar,char newChar)</span><br><span class="line"></span><br><span class="line">public String replace(char oldChar, char newChar) &#123;</span><br><span class="line">    //新旧值先对比</span><br><span class="line">    if (oldChar != newChar) &#123;</span><br><span class="line">        int len = value.length;</span><br><span class="line">        int i = -1;</span><br><span class="line">        char[] val = value; /* avoid getfield opcode */</span><br><span class="line"></span><br><span class="line">        //找到旧值最开始出现的位置</span><br><span class="line">        while (++i &lt; len) &#123;</span><br><span class="line">            if (val[i] == oldChar) &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //从那个位置开始，直到末尾，用新值代替出现的旧值</span><br><span class="line">        if (i &lt; len) &#123;</span><br><span class="line">            char buf[] = new char[len];</span><br><span class="line">            for (int j = 0; j &lt; i; j++) &#123;</span><br><span class="line">                buf[j] = val[j];</span><br><span class="line">            &#125;</span><br><span class="line">            while (i &lt; len) &#123;</span><br><span class="line">                char c = val[i];</span><br><span class="line">                buf[i] = (c == oldChar) ? newChar : c;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            return new String(buf, true);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法也有讨巧的地方，例如最开始先找出旧值出现的位置，这样节省了一部分对比的时间。replace(String oldStr,String newStr)方法通过正则表达式来判断。</p>
+<h3 id="trim"><a href="#trim" class="headerlink" title="trim()"></a>trim()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">String trim()</span><br><span class="line"></span><br><span class="line">public String trim() &#123;</span><br><span class="line">    int len = value.length;</span><br><span class="line">    int st = 0;</span><br><span class="line">    char[] val = value;    /* avoid getfield opcode */</span><br><span class="line"></span><br><span class="line">    //找到字符串前段没有空格的位置</span><br><span class="line">    while ((st &lt; len) &amp;&amp; (val[st] &lt;= &apos; &apos;)) &#123;</span><br><span class="line">        st++;</span><br><span class="line">    &#125;</span><br><span class="line">    //找到字符串末尾没有空格的位置</span><br><span class="line">    while ((st &lt; len) &amp;&amp; (val[len - 1] &lt;= &apos; &apos;)) &#123;</span><br><span class="line">        len--;</span><br><span class="line">    &#125;</span><br><span class="line">    //如果前后都没有出现空格，返回字符串本身</span><br><span class="line">    return ((st &gt; 0) || (len &lt; value.length)) ? substring(st, len) : this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>trim方法用起来也6的飞起</p>
+<h3 id="intern"><a href="#intern" class="headerlink" title="intern()"></a>intern()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String intern()</span><br><span class="line"></span><br><span class="line">public native String intern();</span><br></pre></td></tr></table></figure>
+<p>intern方法是Native调用，它的作用是在方法区中的常量池里通过equals方法寻找等值的对象，如果没有找到则在常量池中开辟一片空间存放字符串并返回该对应String的引用，否则直接返回常量池中已存在String对象的引用。</p>
+<p>将引言中第二段代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//String a = new String(&quot;ab1&quot;);</span><br><span class="line">//改为</span><br><span class="line">String a = new String(&quot;ab1&quot;).intern();</span><br></pre></td></tr></table></figure>
+<p>则结果为为真，原因在于a所指向的地址来自于常量池，而b所指向的字符串常量默认会调用这个方法，所以a和b都指向了同一个地址空间。</p>
+<h3 id="hash32"><a href="#hash32" class="headerlink" title="hash32()"></a>hash32()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">int hash32()</span><br><span class="line"></span><br><span class="line">private transient int hash32 = 0;</span><br><span class="line">int hash32() &#123;</span><br><span class="line">    int h = hash32;</span><br><span class="line">    if (0 == h) &#123;</span><br><span class="line">       // harmless data race on hash32 here.</span><br><span class="line">       h = sun.misc.Hashing.murmur3_32(HASHING_SEED, value, 0, value.length);</span><br><span class="line"></span><br><span class="line">       // ensure result is not zero to avoid recalcing</span><br><span class="line">       h = (0 != h) ? h : 1;</span><br><span class="line"></span><br><span class="line">       hash32 = h;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return h;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在JDK1.7中，Hash相关集合类在String类作key的情况下，不再使用hashCode方式离散数据，而是采用hash32方法。这个方法默认使用系统当前时间，String类地址，System类地址等作为因子计算得到hash种子，通过hash种子在经过hash得到32位的int型数值。</p>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public int length() &#123;</span><br><span class="line">    return value.length;</span><br><span class="line">&#125;</span><br><span class="line">public String toString() &#123;</span><br><span class="line">    return this;</span><br><span class="line">&#125;</span><br><span class="line">public boolean isEmpty() &#123;</span><br><span class="line">    return value.length == 0;</span><br><span class="line">&#125;</span><br><span class="line">public char charAt(int index) &#123;</span><br><span class="line">    if ((index &lt; 0) || (index &gt;= value.length)) &#123;</span><br><span class="line">        throw new StringIndexOutOfBoundsException(index);</span><br><span class="line">    &#125;</span><br><span class="line">    return value[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是一些简单的常用方法。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>String对象是不可变类型，返回类型为String的String方法每次返回的都是新的String对象，除了某些方法的某些特定条件返回自身。</p>
+<p>String对象的三种比较方式：</p>
+<p>==内存比较：直接对比两个引用所指向的内存值，精确简洁直接明了。</p>
+<p>equals字符串值比较：比较两个引用所指对象字面值是否相等。</p>
+<p>hashCode字符串数值化比较：将字符串数值化。两个引用的hashCode相同，不保证内存一定相同，不保证字面值一定相同。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/16/Java/Java源码/String源码分析/" data-id="cjtf6o96t00e90fc53abnltwa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/17/项目/搜索引擎/搜索引擎项目概述/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          搜索引擎项目概述
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/16/Lucene/Lucene学习记录—原理篇/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lucene学习记录—原理篇</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

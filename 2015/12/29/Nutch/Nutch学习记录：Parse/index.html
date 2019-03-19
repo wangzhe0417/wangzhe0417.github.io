@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Nutch学习记录：Parse | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Nutch学习记录：Parse Parse阶段和Fetch同属于一个循环层次中，在Fetch后由Parse阶段对抓取的内容进行解析。该阶段的入口是：1public void parse(Path segment) throws IOException">
+<meta name="keywords" content="Nutch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nutch学习记录：Parse">
+<meta property="og:url" content="http://yoursite.com/2015/12/29/Nutch/Nutch学习记录：Parse/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Nutch学习记录：Parse Parse阶段和Fetch同属于一个循环层次中，在Fetch后由Parse阶段对抓取的内容进行解析。该阶段的入口是：1public void parse(Path segment) throws IOException">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nutch学习记录：Parse">
+<meta name="twitter:description" content="#Nutch学习记录：Parse Parse阶段和Fetch同属于一个循环层次中，在Fetch后由Parse阶段对抓取的内容进行解析。该阶段的入口是：1public void parse(Path segment) throws IOException">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Nutch/Nutch学习记录：Parse" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/12/29/Nutch/Nutch学习记录：Parse/" class="article-date">
+  <time datetime="2015-12-29T11:09:20.000Z" itemprop="datePublished">2015-12-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nutch/">Nutch</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nutch学习记录：Parse
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Nutch学习记录：Parse</p>
+<p>Parse阶段和Fetch同属于一个循环层次中，在Fetch后由Parse阶段对抓取的内容进行解析。该阶段的入口是：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">parse</span><span class="params">(Path segment)</span> <span class="keyword">throws</span> IOException</span></span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>其中就是对即将启动的Parse阶段的MapReduce任务进行配置，主要的配置如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FileInputFormat.addInputPath(job, <span class="keyword">new</span> Path(segment, Content.DIR_NAME));</span><br><span class="line">job.set(Nutch.SEGMENT_NAME_KEY, segment.getName());</span><br><span class="line">job.setInputFormat(SequenceFileInputFormat.class);</span><br><span class="line">job.setMapperClass(ParseSegment.class);</span><br><span class="line">job.setReducerClass(ParseSegment.class);    </span><br><span class="line">FileOutputFormat.setOutputPath(job, segment);       </span><br><span class="line">job.setOutputFormat(ParseOutputFormat.class);</span><br><span class="line">job.setOutputKeyClass(Text.class);</span><br><span class="line">job.setOutputValueClass(ParseImpl.class);</span><br></pre></td></tr></table></figure></p>
+<p>其中输入路径就是Fetch阶段保存下来的segment/content目录，其中键值对的类型是&lt;url, content&gt;。Mapper和Reducer都在ParseSegment类中，输出的键值对类型是&lt;url, ParseImpl&gt;。输出格式是由ParseOutputFormat类实现的，它也是进行解析的重要部分。</p>
+<h3 id="Mapper阶段"><a href="#Mapper阶段" class="headerlink" title="Mapper阶段"></a>Mapper阶段</h3><p>在进行配置之后就启动任务，首先分析map方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">map</span><span class="params">(WritableComparable key, Content content,</span></span></span><br><span class="line"><span class="function"><span class="params">                      OutputCollector&amp;lt;Text, ParseImpl&amp;gt; output, Reporter reporter)</span></span></span><br><span class="line"><span class="function">    <span class="keyword">throws</span> IOException </span>&#123;        </span><br><span class="line">    <span class="comment">// convert on the fly from old UTF8 keys</span></span><br><span class="line">        <span class="keyword">if</span> (key <span class="keyword">instanceof</span> UTF8) &#123;</span><br><span class="line">          newKey.set(key.toString());</span><br><span class="line">          key = newKey;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> status = Integer.parseInt(content.getMetadata().get(Nutch.FETCH_STATUS_KEY));       <span class="comment">// 获取fetch阶段的状态</span></span><br><span class="line">        <span class="keyword">if</span> (status != CrawlDatum.STATUS_FETCH_SUCCESS) &#123;</span><br><span class="line">          <span class="comment">// content not fetched successfully, skip document</span></span><br><span class="line">          LOG.debug(<span class="string">"Skipping "</span> + key + <span class="string">" as content is not fetched successfully"</span>);</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ParseResult parseResult = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          parseResult = <span class="keyword">new</span> ParseUtil(getConf()).parse(content);  </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">          LOG.warn(<span class="string">"Error parsing: "</span> + key + <span class="string">": "</span> + StringUtils.stringifyException(e));</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>map首先获取Fetch阶段的状态，如果没有抓取成功，则返回，跳过这个网页，如果成功则调用ParseUtil的parse方法，对页面进行解析，该方法实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">parsers = <span class="keyword">this</span>.parserFactory.getParsers(content.getContentType(), content.getUrl() != <span class="keyword">null</span> ? content.getUrl():<span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+<p>首先根据网页的类型找出可以解析这个网页的全部parser，再依次调用每个parser的getParse方法对网页进行解析，只要有一个parser成功解析了网页就返回给map方法的parseResult。对于HTML来说，使用HtmlParser作为其解析器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ParseResult <span class="title">getParse</span><span class="params">(Content content)</span> </span>&#123;   <span class="comment">// 解析content</span></span><br><span class="line">    HTMLMetaTags metaTags = <span class="keyword">new</span> HTMLMetaTags();</span><br><span class="line">        ......</span><br><span class="line">    DocumentFragment root;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] contentInOctets = content.getContent();</span><br><span class="line">        InputSource input = <span class="keyword">new</span> InputSource(<span class="keyword">new</span> ByteArrayInputStream(contentInOctets));</span><br><span class="line">        ......</span><br><span class="line">        input.setEncoding(encoding);</span><br><span class="line">        <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123; LOG.trace(<span class="string">"Parsing..."</span>); &#125;</span><br><span class="line">        root = parse(input);  </span><br><span class="line">    &#125;</span><br><span class="line">    ......</span><br><span class="line">    HTMLMetaProcessor.getMetaTags(metaTags, root, base);  <span class="comment">// 获取网页的meta标签中的属性</span></span><br><span class="line">    <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123;</span><br><span class="line">        LOG.trace(<span class="string">"Meta tags for "</span> + base + <span class="string">": "</span> + metaTags.toString());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>首先对输入的内容进行处理，行程InputSource类型的对象，传入parse方法，该方法调用第三方库Neko（还有另外一个TagSoup）将输入的数据形成DOM树，并将头节点返回给root。接着，调用HTMLMetaProcessor的getMetaTags获取网页中meta标签的属性。meta标签中包含了许多对搜索引擎爬虫有用的信息，指明了哪些网页可以检索，哪些链接不能跟踪等，在这个方法中用到的一些标签对应的变量如下： </p>
+<ul>
+<li>noIndex 允许搜索引擎访问这个URL,但不允许搜索引擎索引它，且不允许在搜索结果页面显示</li>
+<li>noFollow 允许搜索引擎访问这个URL，允许搜索引擎索引它，在搜索结果页面显示，但不传递PR值</li>
+<li>noCache 是否缓存页面</li>
+<li>refresh 是否重定向</li>
+<li>baseHref</li>
+<li>refreshTime 重定向跳转的时间</li>
+<li>refreshHref 重定向到的链接</li>
+</ul>
+<p>接下来就根据meta标签中规定的内容进行进一步的解析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!metaTags.getNoIndex()) &#123;            <span class="comment">// okay to index </span></span><br><span class="line">    StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">    <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123; LOG.trace(<span class="string">"Getting text..."</span>); &#125;</span><br><span class="line">    utils.getText(sb, root);          <span class="comment">// extract text  提取网页内容</span></span><br><span class="line">    text = sb.toString();</span><br><span class="line">    sb.setLength(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123; LOG.trace(<span class="string">"Getting title..."</span>); &#125;</span><br><span class="line">          utils.getTitle(sb, root);         <span class="comment">// extract title   提取标题</span></span><br><span class="line">          title = sb.toString().trim();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如果该网页允许索引，则从DOM树的title标签下取出网页的标题，并提取去掉标签后的网页内容。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!metaTags.getNoFollow()) &#123;              <span class="comment">// okay to follow links </span></span><br><span class="line">    ArrayList&amp;lt;Outlink&amp;gt; l = <span class="keyword">new</span> ArrayList&amp;lt;Outlink&amp;gt;();   <span class="comment">// extract outlinks</span></span><br><span class="line">    URL baseTag = utils.getBase(root);</span><br><span class="line">    <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123; </span><br><span class="line">        LOG.trace(<span class="string">"Getting links..."</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    utils.getOutlinks(baseTag!=<span class="keyword">null</span>?baseTag:base, l, root);        </span><br><span class="line">    outlinks = l.toArray(<span class="keyword">new</span> Outlink[l.size()]);</span><br><span class="line">    <span class="keyword">if</span> (LOG.isTraceEnabled()) &#123;</span><br><span class="line">        LOG.trace(<span class="string">"found "</span>+outlinks.length+<span class="string">" outlinks in "</span>+content.getUrl());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果这个页面可以跟踪出链，则从DOM中提取出所有的出链并赋给outlinks数组。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (metaTags.getRefresh()) &#123;  <span class="comment">// 要重定向</span></span><br><span class="line">    status.setMinorCode(ParseStatus.SUCCESS_REDIRECT);</span><br><span class="line">    status.setArgs(<span class="keyword">new</span> String[] &#123;metaTags.getRefreshHref().toString(),</span><br><span class="line">            Integer.toString(metaTags.getRefreshTime())&#125;);   </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如果在meta标签中发现需要重定向，则设置解析状态的minorCode为SUCCESS_REDIRECT，并设置好重定向需要的重定向链接和刷新时间参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ParseData parseData = <span class="keyword">new</span> ParseData(status, title, outlinks, content.getMetadata(), metadata);              </span><br><span class="line">ParseResult parseResult = ParseResult.createParseResult(content.getUrl(), <span class="keyword">new</span> ParseImpl(text, parseData));</span><br></pre></td></tr></table></figure>
+<p>最后，将解析结果构造成ParseResult类型，再进行html过滤之后，就返回构造的ParseResult。 </p>
+<p>这里需要说明，解析结果是层层封装的，最高层是ParseResult，它包含了所有的解析结果。几个包含解析结果的类的关系如下： </p>
+<p><img src="http://oawztil0a.bkt.clouddn.com/Blog/Nutch/nutch.png" alt></p>
+<p>   如上图所示，每个类中都包含了不同的解析出的内容，ParseResult类中的parseMap映射里包含的就是&lt;url,parseImpl&gt;键值对，其中parseImpl是对parseData和parseText的封装。creatParseResult方法就是将键值对中需要的内容写入到parseMap中。</p>
+<p>在封装好解析结果后，程序返回到ParseSegment类的map方法中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Entry&amp;lt;Text, Parse&amp;gt; entry : parseResult) &#123;   </span><br><span class="line">    Text url = entry.getKey();</span><br><span class="line">    Parse parse = entry.getValue();</span><br><span class="line">      ......</span><br><span class="line">    <span class="keyword">byte</span>[] signature = SignatureFactory.getSignature(getConf()).calculate(content, parse); </span><br><span class="line">    parse.getData().getContentMeta().set(Nutch.SIGNATURE_KEY, StringUtil.toHexString(signature));</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        scfilters.passScoreAfterParsing(url, content, parse);  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (ScoringFilterException e) &#123;</span><br><span class="line">            ......</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">output.collect(url, <span class="keyword">new</span> ParseImpl(<span class="keyword">new</span> ParseText(parse.getText()), parse.getData(), parse.isCanonical()));</span><br></pre></td></tr></table></figure>
+<p>使用迭代器依次从parseResult的parseMap中取出&lt;url, parseImpl&gt;（对于HtmlParser来说，parseMap中只有一组键值对），对content计算MD5签名并存入到contentMeta中。随后又调用scroing filter的passScoreAfterParsing方法，对于OPIC算法的filter来说，该方法就是将content的metadata中SCORE.KEY对应的得分拷贝到parseData中。</p>
+<p>最后，收集map的结果&lt;url, parseImpl&gt;。</p>
+<h3 id="Reducer阶段"><a href="#Reducer阶段" class="headerlink" title="Reducer阶段"></a>Reducer阶段</h3><p>reduce方法非常简单，就是收集第一个&lt;url, parseImpl&gt;对，并输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reduce</span><span class="params">(Text key, Iterator&amp;lt;Writable&amp;gt; values, OutputCollector&amp;lt;Text, Writable&amp;gt; output, Reporter reporter)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    output.collect(key, (Writable)values.next()); <span class="comment">// collect first value</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ParseOutputFormat"><a href="#ParseOutputFormat" class="headerlink" title="ParseOutputFormat"></a>ParseOutputFormat</h3><p>虽然看上去只是一个输出格式，但实际上它不仅担负了控制输出的功能还担负了解析页面的作用。该类最主要的方法就是getRecordWriter方法，它为输出返回一个writer。下面对其进行分析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> RecordWriter&amp;lt;Text, Parse&amp;gt; getRecordWriter(FileSystem fs, JobConf job, String name, Progressable progress) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    ......</span><br><span class="line">    Path out = FileOutputFormat.getOutputPath(job);        </span><br><span class="line">    Path text = <span class="keyword">new</span> Path(<span class="keyword">new</span> Path(out, ParseText.DIR_NAME), name);</span><br><span class="line">    Path data = <span class="keyword">new</span> Path(<span class="keyword">new</span> Path(out, ParseData.DIR_NAME), name);</span><br><span class="line">    Path crawl = <span class="keyword">new</span> Path(<span class="keyword">new</span> Path(out, CrawlDatum.PARSE_DIR_NAME), name);</span><br><span class="line">    <span class="keyword">final</span> MapFile.Writer textOut = <span class="keyword">new</span> MapFile.Writer(job, fs, text.toString(), Text.class, ParseText.class, CompressionType.RECORD, progress);   </span><br><span class="line">    <span class="keyword">final</span> MapFile.Writer dataOut = <span class="keyword">new</span> MapFile.Writer(job, fs, data.toString(), Text.class, ParseData.class, compType, progress);     <span class="keyword">final</span> SequenceFile.Writer crawlOut = SequenceFile.createWriter(fs, job, crawl, Text.class, CrawlDatum.class, compType, progress);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该方法初始化了三个输出路径，分别用于三种不同格式的输出，这三个输出将用于三种不同的目的。这三个输出分别对应的输出格式如下： </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">输出</th>
+<th style="text-align:center">格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">textOut</td>
+<td style="text-align:center">(Text, ParseText)</td>
+</tr>
+<tr>
+<td style="text-align:left">dataOut</td>
+<td style="text-align:center">（Text, ParseData)</td>
+</tr>
+<tr>
+<td style="text-align:left">crawlOut</td>
+<td style="text-align:center">(Text, CrawlDatum)</td>
+</tr>
+</tbody>
+</table>
+<p>该类返回一个RecordWriter类的对象，真正向输出写数据的就是这个类的write方法。接下来对write方法进行分析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Text key, Parse parse)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    String fromUrl = key.toString();</span><br><span class="line">    String fromHost = <span class="keyword">null</span>;</span><br><span class="line">    String toHost = <span class="keyword">null</span>;</span><br><span class="line">    textOut.append(key, <span class="keyword">new</span> ParseText(parse.getText(), parse.getThemeText()));  </span><br><span class="line">    ParseData parseData = parse.getData();   </span><br><span class="line">    String sig = parseData.getContentMeta().get(Nutch.SIGNATURE_KEY);</span><br><span class="line">    <span class="keyword">if</span> (sig != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] signature = StringUtil.fromHexString(sig);</span><br><span class="line">        <span class="keyword">if</span> (signature != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// append a CrawlDatum with a signature</span></span><br><span class="line">            CrawlDatum d = <span class="keyword">new</span> CrawlDatum(CrawlDatum.STATUS_SIGNATURE, <span class="number">0</span>);</span><br><span class="line">            d.setSignature(signature);</span><br><span class="line">            crawlOut.append(key, d);                    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>write方法的输入就是reduce方法收集的&lt;url, parseImpl&gt;对，相同的url被分发到同一个reducer上处理。fromUrl就是输入进来的key。这个fromUrl是相对后面解析出来的出链而言的。</p>
+<p>首先向textOut中添加输出&lt;key, ParseText&gt;。接着再从contentMeta中取出网页的签名，如果不为空则将它写成字节流，并添加到key对应的crawlDatum中，将&lt;key, crawlDatum&gt;对添加到crawlOut输出。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ParseStatus pstatus = parseData.getStatus();   </span><br><span class="line"><span class="keyword">if</span> (pstatus != <span class="keyword">null</span> &amp;&amp; pstatus.isSuccess() &amp;&amp; pstatus.getMinorCode() == ParseStatus.SUCCESS_REDIRECT) &#123;  <span class="comment">// 重定向   参数在HtmlParser中设置</span></span><br><span class="line">    String newUrl = pstatus.getMessage();                   </span><br><span class="line">    <span class="keyword">int</span> refreshTime = Integer.valueOf(pstatus.getArgs()[<span class="number">1</span>]);</span><br><span class="line">    newUrl = normalizers.normalize(newUrl,URLNormalizers.SCOPE_FETCHER);</span><br><span class="line">    newUrl = filters.filter(newUrl);</span><br><span class="line">    String url = key.toString();</span><br><span class="line">    <span class="keyword">if</span> (newUrl != <span class="keyword">null</span> &amp;&amp; !newUrl.equals(url)) &#123;</span><br><span class="line">        String reprUrl = URLUtil.chooseRepr(url, newUrl, refreshTime &lt; Fetcher.PERM_REFRESH_TIME);   <span class="comment">//根据方法中的算法在原始url和重定向到的url中选出一个代表url(representation url)</span></span><br><span class="line">        CrawlDatum newDatum = <span class="keyword">new</span> CrawlDatum();</span><br><span class="line">        newDatum.setStatus(CrawlDatum.STATUS_LINKED);</span><br><span class="line">        <span class="keyword">if</span> (reprUrl != <span class="keyword">null</span> &amp;&amp; !reprUrl.equals(newUrl)) &#123;</span><br><span class="line">            newDatum.getMetaData().put(Nutch.WRITABLE_REPR_URL_KEY,<span class="keyword">new</span> Text(reprUrl));</span><br><span class="line">        &#125;</span><br><span class="line">        crawlOut.append(<span class="keyword">new</span> Text(newUrl), newDatum);    <span class="comment">//添加新解析出的&amp;lt;url, crawlDatum&amp;gt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来，程序获取parseData中的parseStatus，如果状态中表明需要重定向（上文介绍过在哪里设置需要重定向的标志）则继续获取重定向到的链接newUrl和刷新时间。如果newUrl和key中的url不同，则调用Util.chooseRepr方法根据该方法的算法（参见     <a href="http://help.yahoo.com/l/nz/yahooxtra/search/webcrawler/slurp-11.html" target="_blank" rel="noopener">http://help.yahoo.com/l/nz/yahooxtra/search/webcrawler/slurp-11.html</a>）算则出key和newUrl中的一个代表链接。如果代表连接不是newUrl，则将newUrl的crawlDatum的metaData中WRITABLE_REPR_URL_KEY对应的值写成代表连接reprUrl。并将&lt;newUrl, newDatum&gt;写入到crawlOut的输出中。</p>
+<p>接下来的部分收集出链为后面的crawlDb的更新作准备：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Outlink[] links = parseData.getOutlinks();</span><br><span class="line"><span class="keyword">int</span> outlinksToStore = Math.min(maxOutlinks, links.length);</span><br><span class="line">......</span><br><span class="line">List&amp;lt;Entry&amp;lt;Text, CrawlDatum&amp;gt;&amp;gt; targets = <span class="keyword">new</span> ArrayList&amp;lt;Entry&amp;lt;Text, CrawlDatum&amp;gt;&amp;gt;(outlinksToStore);                </span><br><span class="line">List&amp;lt;Outlink&amp;gt; outlinkList = <span class="keyword">new</span> ArrayList&amp;lt;Outlink&amp;gt;(outlinksToStore);</span><br></pre></td></tr></table></figure>
+<p>首先取出在前面解析出来的outlink，放入links数组中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &amp;lt; links.length &amp;&amp; validCount &lt; outlinksToStore; i++) &#123;</span><br><span class="line">    String toUrl = links[i].getToUrl();</span><br><span class="line">    <span class="comment">// ignore links to self (or anchors within the page)</span></span><br><span class="line">    <span class="keyword">if</span> (fromUrl.equals(toUrl)) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (ignoreExternalLinks) &#123;   <span class="comment">// 忽略链向其它主机的链接</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            toHost = <span class="keyword">new</span> URL(toUrl).getHost().toLowerCase();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (MalformedURLException e) &#123;</span><br><span class="line">            toHost = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (toHost == <span class="keyword">null</span> || !toHost.equals(fromHost)) &#123; <span class="comment">// external</span></span><br><span class="line">        <span class="comment">// links</span></span><br><span class="line">            <span class="keyword">continue</span>; <span class="comment">// skip it</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        toUrl = normalizers.normalize(toUrl, URLNormalizers.SCOPE_OUTLINK); <span class="comment">// normalize the url</span></span><br><span class="line">        toUrl = filters.filter(toUrl); <span class="comment">// filter the url</span></span><br><span class="line">        <span class="keyword">if</span> (toUrl == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    CrawlDatum target = <span class="keyword">new</span> CrawlDatum(CrawlDatum.STATUS_LINKED, interval);   <span class="comment">// interval 爬行间隔</span></span><br><span class="line">    Text targetUrl = <span class="keyword">new</span> Text(toUrl);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        scfilters.initialScore(targetUrl, target);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (ScoringFilterException e) &#123;</span><br><span class="line">        LOG.warn(<span class="string">"Cannot filter init score for url "</span> + key</span><br><span class="line">     + <span class="string">", using default: "</span> + e.getMessage());</span><br><span class="line">        target.setScore(<span class="number">0.0f</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    targets.add(<span class="keyword">new</span> SimpleEntry(targetUrl, target));    <span class="comment">// 将出链的&lt;url, crawldatum&gt;加入到targets List中</span></span><br><span class="line">    outlinkList.add(links[i]); <span class="comment">// 将出链加入到outlinkList的List中</span></span><br><span class="line">    validCount++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来进入到循环中，直到所有的出链遍历完或者达到存储限制。每次循环从outlinks中取出一个出链，如果限制了链向其它主机的链接，则忽略这样的链接。对toUrl进行正规化和过滤，如果不能通过这些检查则跳到下一次循环。对与能够通过检查的链接，则对其赋予初始得分后将链接及其对应的crawlDatum以&lt;url, crawlDatum&gt;的形式加入到targets列表中。将url加入到linkList中。</p>
+<p>接着，调用scoringfilter的distributeScoreToOutlinks为出链分发得分，在OPIC算法中，分发的方法是父链接的得分/出链的个数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Entry&amp;lt;Text, CrawlDatum&amp;gt; target : targets) &#123;</span><br><span class="line">    crawlOut.append(target.getKey(), target.getValue());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将带得分的所有通过规范性和过滤检查的出链&lt;url, crawldatum&gt;写入到crawlOut中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Outlink[] filteredLinks = outlinkList.toArray(<span class="keyword">new</span> Outlink[outlinkList.size()]);</span><br><span class="line">parseData = <span class="keyword">new</span> ParseData(parseData.getStatus(), parseData.getTitle(), filteredLinks, parseData.getContentMeta(),</span><br><span class="line">parseData.getParseMeta());</span><br><span class="line">dataOut.append(key, parseData);   <span class="comment">// 向dataOut中添加&amp;lt;url, parseData&amp;gt;</span></span><br></pre></td></tr></table></figure>
+<p>将通过过滤的出链存入数组filteredLinks中，并将parseData重新生成。向dataOut中写入这些&lt;url, parseData&gt;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!parse.isCanonical()) &#123;</span><br><span class="line">    CrawlDatum datum = <span class="keyword">new</span> CrawlDatum();</span><br><span class="line">    datum.setStatus(CrawlDatum.STATUS_FETCH_SUCCESS);</span><br><span class="line">    String timeString = parse.getData().getContentMeta().get(Nutch.FETCH_TIME_KEY);</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        datum.setFetchTime(Long.parseLong(timeString));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        LOG.warn(<span class="string">"Can't read fetch time for: "</span> + key);</span><br><span class="line">        datum.setFetchTime(System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">    crawlOut.append(key, datum);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，如果是子链接，向crawlOut中添加&lt;url, crawldatum&gt;。write方法结束。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>由于ParseOutputFormat设计三个输出路径，每个输出路径又不止一次输出，所以在这有必要对所有的输出进行一下小节：</p>
+<ul>
+<li>textOut：输出的内容：根据reduce输出的&lt;url, parse&gt;中的parse得到ParseText，以此形成&lt;url, parseText&gt;输出。</li>
+<li>dataOut：write方法最后的带出链得分的&lt;url, parseData&gt;。</li>
+<li>crawlOut：<ol>
+<li>reduce输出的key 和带有它对应的网页签名的&lt;url, crawlDatum&gt;。</li>
+<li>如果key的网页要重定向，则输出重定向的&lt;url, crawlDatum&gt;。</li>
+<li>通过正规化和过滤的带得分的出链的&lt;url, crawlDatum&gt;</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/12/29/Nutch/Nutch学习记录：Parse/" data-id="cjtf6o95r00bo0fc5uvlmp247" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nutch/">Nutch</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/01/09/Nutch/Nutch学习记录：Index/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nutch学习记录：Index
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/23/Nutch/Nutch学习记录：Fetch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nutch学习记录：Fetch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

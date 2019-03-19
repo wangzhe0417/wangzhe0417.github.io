@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>堆与堆排序 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="堆与堆排序堆排序与快速排序，归并排序一样都是时间复杂度为O(NlogN)的几种常见排序方法。学习堆排序前，先讲解下什么是数据结构中的二叉堆。 二叉堆的定义二叉堆是完全二叉树或者是近似完全二叉树。二叉堆满足二个特性：1．父结点的键值总是大于或等于（小于或等于）任何一个子节点的键值。2．每个结点的左子树和右子树都是一个二叉堆（都是最大堆或最小堆）。当父结点的键值总是大于或等于任何一个子节点的键值时为最">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆与堆排序">
+<meta property="og:url" content="http://yoursite.com/2016/09/28/Algorithm/堆与堆排序/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="堆与堆排序堆排序与快速排序，归并排序一样都是时间复杂度为O(NlogN)的几种常见排序方法。学习堆排序前，先讲解下什么是数据结构中的二叉堆。 二叉堆的定义二叉堆是完全二叉树或者是近似完全二叉树。二叉堆满足二个特性：1．父结点的键值总是大于或等于（小于或等于）任何一个子节点的键值。2．每个结点的左子树和右子树都是一个二叉堆（都是最大堆或最小堆）。当父结点的键值总是大于或等于任何一个子节点的键值时为最">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://hi.csdn.net/attachment/201108/22/0_1314014666d5oe.gif">
+<meta property="og:image" content="http://hi.csdn.net/attachment/201108/22/0_1314014706gZqn.gif">
+<meta property="og:image" content="http://hi.csdn.net/attachment/201108/24/0_131415207877s7.gif">
+<meta property="og:image" content="http://hi.csdn.net/attachment/201108/22/0_1314014725K5k6.gif">
+<meta property="og:image" content="http://hi.csdn.net/attachment/201108/22/0_1314014735kbBA.gif">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="堆与堆排序">
+<meta name="twitter:description" content="堆与堆排序堆排序与快速排序，归并排序一样都是时间复杂度为O(NlogN)的几种常见排序方法。学习堆排序前，先讲解下什么是数据结构中的二叉堆。 二叉堆的定义二叉堆是完全二叉树或者是近似完全二叉树。二叉堆满足二个特性：1．父结点的键值总是大于或等于（小于或等于）任何一个子节点的键值。2．每个结点的左子树和右子树都是一个二叉堆（都是最大堆或最小堆）。当父结点的键值总是大于或等于任何一个子节点的键值时为最">
+<meta name="twitter:image" content="http://hi.csdn.net/attachment/201108/22/0_1314014666d5oe.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Algorithm/堆与堆排序" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/28/Algorithm/堆与堆排序/" class="article-date">
+  <time datetime="2016-09-28T07:13:00.000Z" itemprop="datePublished">2016-09-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Algorithm/">Algorithm</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      堆与堆排序
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="堆与堆排序"><a href="#堆与堆排序" class="headerlink" title="堆与堆排序"></a>堆与堆排序</h1><p>堆排序与快速排序，归并排序一样都是时间复杂度为O(NlogN)的几种常见排序方法。学习堆排序前，先讲解下什么是数据结构中的二叉堆。</p>
+<h2 id="二叉堆的定义"><a href="#二叉堆的定义" class="headerlink" title="二叉堆的定义"></a>二叉堆的定义</h2><p>二叉堆是完全二叉树或者是近似完全二叉树。<br>二叉堆满足二个特性：<br>1．父结点的键值总是大于或等于（小于或等于）任何一个子节点的键值。<br>2．每个结点的左子树和右子树都是一个二叉堆（都是最大堆或最小堆）。<br>当父结点的键值总是大于或等于任何一个子节点的键值时为最大堆。当父结点的键值总是小于或等于任何一个子节点的键值时为最小堆。下图展示一个最小堆：<br><img src="http://hi.csdn.net/attachment/201108/22/0_1314014666d5oe.gif" alt><br>由于其它几种堆（二项式堆，斐波纳契堆等）用的较少，一般将二叉堆就简称为堆。</p>
+<a id="more"></a>
+<h2 id="堆的存储"><a href="#堆的存储" class="headerlink" title="堆的存储"></a>堆的存储</h2><p>一般都用数组来表示堆，i结点的父结点下标就为(i – 1) / 2。它的左右子结点下标分别为2i + 1和2i + 2。如第0个结点左右子结点下标分别为1和2。<br><img src="http://hi.csdn.net/attachment/201108/22/0_1314014706gZqn.gif" alt></p>
+<h2 id="堆的操作——插入删除"><a href="#堆的操作——插入删除" class="headerlink" title="堆的操作——插入删除"></a>堆的操作——插入删除</h2><p>下面先给出《数据结构C++语言描述》中最小堆的建立插入删除的图解，再给出本人的实现代码，最好是先看明白图后再去看代码。<br><img src="http://hi.csdn.net/attachment/201108/24/0_131415207877s7.gif" alt></p>
+<h3 id="堆的插入"><a href="#堆的插入" class="headerlink" title="堆的插入"></a>堆的插入</h3><p>每次插入都是将新数据放在数组最后。可以发现从这个新数据的父结点到根结点必然为一个有序的数列，现在的任务是将这个新数据插入到这个有序数据中——这就类似于直接插入排序中将一个数据并入到有序区间中，对照《白话经典算法系列之二 直接插入排序的三种实现》不难写出插入一个新数据时堆的调整代码：<br>    //  新加入i结点  其父结点为(i - 1) / 2<br>    void MinHeapFixup(int a[], int i)<br>    {<br>        int j, temp;  </p>
+<pre><code>    temp = a[i];  
+    j = (i - 1) / 2;      //父结点  
+    while (j &gt;= 0 &amp;&amp; i != 0)  
+    {  
+        if (a[j] &lt;= temp)  
+            break;  
+
+        a[i] = a[j];     //把较大的子结点往下移动,替换它的子结点  
+        i = j;  
+        j = (i - 1) / 2;  
+    }  
+    a[i] = temp;  
+}  
+</code></pre><p>更简短的表达为：<br>    void MinHeapFixup(int a[], int i)<br>    {<br>        for (int j = (i - 1) / 2; (j &gt;= 0 &amp;&amp; i != 0)&amp;&amp; a[i] &gt; a[j]; i = j, j = (i - 1) / 2)<br>            Swap(a[i], a[j]);<br>    }<br>插入时：<br>    //在最小堆中加入新的数据nNum<br>    void MinHeapAddNumber(int a[], int n, int nNum)<br>    {<br>        a[n] = nNum;<br>        MinHeapFixup(a, n);<br>    }  </p>
+<h3 id="堆的删除"><a href="#堆的删除" class="headerlink" title="堆的删除"></a>堆的删除</h3><p>按定义，堆中每次都只能删除第0个数据。为了便于重建堆，实际的操作是将最后一个数据的值赋给根结点，然后再从根结点开始进行一次从上向下的调整。调整时先在左右儿子结点中找最小的，如果父结点比这个最小的子结点还小说明不需要调整了，反之将父结点和它交换后再考虑后面的结点。相当于从根结点将一个数据的“下沉”过程。下面给出代码：<br>    //  从i节点开始调整,n为节点总数 从0开始计算 i节点的子节点为 2<em>i+1, 2</em>i+2<br>    void MinHeapFixdown(int a[], int i, int n)<br>    {<br>        int j, temp;  </p>
+<pre><code>    temp = a[i];  
+    j = 2 * i + 1;  
+    while (j &lt; n)  
+    {  
+        if (j + 1 &lt; n &amp;&amp; a[j + 1] &lt; a[j]) //在左右孩子中找最小的  
+            j++;  
+
+        if (a[j] &gt;= temp)  
+            break;  
+
+        a[i] = a[j];     //把较小的子结点往上移动,替换它的父结点  
+        i = j;  
+        j = 2 * i + 1;  
+    }  
+    a[i] = temp;  
+}  
+//在最小堆中删除数  
+void MinHeapDeleteNumber(int a[], int n)  
+{  
+    Swap(a[0], a[n - 1]);  
+    MinHeapFixdown(a, 0, n - 1);  
+}  
+</code></pre><h2 id="堆化数组"><a href="#堆化数组" class="headerlink" title="堆化数组"></a>堆化数组</h2><p>有了堆的插入和删除后，再考虑下如何对一个数据进行堆化操作。要一个一个的从数组中取出数据来建立堆吧，不用！先看一个数组，如下图：<br><img src="http://hi.csdn.net/attachment/201108/22/0_1314014725K5k6.gif" alt><br>很明显，对叶子结点来说，可以认为它已经是一个合法的堆了即20，60， 65， 4， 49都分别是一个合法的堆。只要从A=50开始向下调整就可以了。然后再取<code>A[3]</code>=30，<code>A[2]</code> = 17，<code>A[1]</code> = 12，<code>A[0]</code>= 9分别作一次向下调整操作就可以了。下图展示了这些步骤：<br><img src="http://hi.csdn.net/attachment/201108/22/0_1314014735kbBA.gif" alt><br>写出堆化数组的代码：<br>    //建立最小堆<br>    void MakeMinHeap(int a[], int n)<br>    {<br>        for (int i = n / 2 - 1; i &gt;= 0; i–)<br>            MinHeapFixdown(a, i, n);<br>    }<br>至此，堆的操作就全部完成了(注1)，再来看下如何用堆这种数据结构来进行排序。</p>
+<h2 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h2><p>首先可以看到堆建好之后堆中第0个数据是堆中最小的数据。取出这个数据再执行下堆的删除操作。这样堆中第0个数据又是堆中最小的数据，重复上述步骤直至堆中只有一个数据时就直接取出这个数据。<br>由于堆也是用数组模拟的，故堆化数组后，第一次将<code>A[0]</code>与<code>A[n - 1]</code>交换，再对<code>A[0…n-2]</code>重新恢复堆。第二次将<code>A[0]</code>与<code>A[n – 2]</code>交换，再对<code>A[0…n - 3]</code>重新恢复堆，重复这样的操作直到<code>A[0]</code>与<code>A[1]</code>交换。由于每次都是将最小的数据并入到后面的有序区间，故操作完成后整个数组就有序了。有点类似于直接选择排序。<br>    void MinheapsortTodescendarray(int a[], int n)<br>    {<br>        for (int i = n - 1; i &gt;= 1; i–)<br>        {<br>            Swap(a[i], a[0]);<br>            MinHeapFixdown(a, 0, i);<br>        }<br>    }<br>注意使用最小堆排序后是递减数组，要得到递增数组，可以使用最大堆。<br>由于每次重新恢复堆的时间复杂度为O(logN)，共N - 1次重新恢复堆操作，再加上前面建立堆时N / 2次向下调整，每次调整时间复杂度也为O(logN)。二次操作时间相加还是O(NlogN)。故堆排序的时间复杂度为O(NlogN)。</p>
+<blockquote>
+<p>注1 作为一个数据结构，最好用类将其数据和方法封装起来，这样即便于操作，也便于理解。此外，除了堆排序要使用堆，另外还有很多场合可以使用堆来方便和高效的处理数据，以后会一一介绍。</p>
+</blockquote>
+<p>转载自：<a href="http://blog.csdn.net/morewindows/article/details/6709644/" target="_blank" rel="noopener">http://blog.csdn.net/morewindows/article/details/6709644/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/09/28/Algorithm/堆与堆排序/" data-id="cjtf6o91o001v0fc58an2jfcz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/29/Algorithm/排序算法/排序算法之基数排序/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          排序算法之基数排序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/28/Algorithm/排序算法/排序算法之桶排序/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">排序算法之桶排序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

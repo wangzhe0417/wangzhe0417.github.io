@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>信息检索导论第二章－－词项词典及倒排记录表 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#信息检索导论第二章–词项词典及倒排记录表 倒排索引的构建过程：  收集待建索引的原文档(Document) 将原文档传给词条化工具(Tokenizer)进行文本词条化 将第二步得到的词条(Token)传给语言分析工具(Linguistic modules)进行语言学预处理，得到词项(Term) 将得到的词项(Term)传给索引组件(Indexer),建立倒排索引">
+<meta name="keywords" content="信息检索">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息检索导论第二章－－词项词典及倒排记录表">
+<meta property="og:url" content="http://yoursite.com/2015/10/26/信息检索/信息检索导论第二章--词项词典及倒排记录表/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#信息检索导论第二章–词项词典及倒排记录表 倒排索引的构建过程：  收集待建索引的原文档(Document) 将原文档传给词条化工具(Tokenizer)进行文本词条化 将第二步得到的词条(Token)传给语言分析工具(Linguistic modules)进行语言学预处理，得到词项(Term) 将得到的词项(Term)传给索引组件(Indexer),建立倒排索引">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%BA%8C%E7%AB%A01.png">
+<meta property="og:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%BA%8C%E7%AB%A02.png">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信息检索导论第二章－－词项词典及倒排记录表">
+<meta name="twitter:description" content="#信息检索导论第二章–词项词典及倒排记录表 倒排索引的构建过程：  收集待建索引的原文档(Document) 将原文档传给词条化工具(Tokenizer)进行文本词条化 将第二步得到的词条(Token)传给语言分析工具(Linguistic modules)进行语言学预处理，得到词项(Term) 将得到的词项(Term)传给索引组件(Indexer),建立倒排索引">
+<meta name="twitter:image" content="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%BA%8C%E7%AB%A01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-信息检索/信息检索导论第二章--词项词典及倒排记录表" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/26/信息检索/信息检索导论第二章--词项词典及倒排记录表/" class="article-date">
+  <time datetime="2015-10-26T05:33:15.000Z" itemprop="datePublished">2015-10-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/信息检索/">信息检索</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      信息检索导论第二章－－词项词典及倒排记录表
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#信息检索导论第二章–词项词典及倒排记录表</p>
+<p><strong>倒排索引的构建过程：</strong></p>
+<ol>
+<li>收集待建索引的原文档(Document)</li>
+<li>将原文档传给词条化工具(Tokenizer)进行文本词条化</li>
+<li>将第二步得到的词条(Token)传给语言分析工具(Linguistic modules)进行语言学预处理，得到词项(Term)</li>
+<li>将得到的词项(Term)传给索引组件(Indexer),建立倒排索引<a id="more"></a>
+</li>
+</ol>
+<p><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%BA%8C%E7%AB%A01.png" alt></p>
+<h2 id="一、文档分析及编码转换"><a href="#一、文档分析及编码转换" class="headerlink" title="一、文档分析及编码转换"></a>一、文档分析及编码转换</h2><p>文档分析所需要解决的问题：</p>
+<ul>
+<li>文档格式处理</li>
+<li>文档语言识别</li>
+<li>文档编码识别</li>
+</ul>
+<blockquote>
+<p>然而代所以呢文档集可能同时包括多种语言的文档，有时文档或者其部件中包含多种语言/格式</p>
+</blockquote>
+<p><strong>如何确定索引的单位：</strong><br>合理组织“索引粒度”，确定文档单位</p>
+<ul>
+<li>索引粒度太小，会造成正确率高而召回率低</li>
+<li>索引粒度太大，会造成正确率低而召回率高</li>
+</ul>
+<blockquote>
+<p>注：语言识别和编码识别，理论上都可以看成是分类问题，基于分类方法进行处理。但实际中，常采用启发式方法</p>
+</blockquote>
+<h2 id="二、词项集合的确定"><a href="#二、词项集合的确定" class="headerlink" title="二、词项集合的确定"></a>二、词项集合的确定</h2><h3 id="1、词条化"><a href="#1、词条化" class="headerlink" title="1、词条化"></a>1、词条化</h3><p>定义好文档单位之后，词条化是将给定的字符序列拆分成一系列子序列的过程，其中每个子序列称为一个<code>词条（token）</code> 。<br>词条：就是一个字符串实例，词条在经过进一步处理之后将放入倒排索引中的词典中</p>
+<p>输入: “Friends, Romans and Countrymen”<br>输出: 词条(Token)<br>Friends<br>Romans<br>Countrymen</p>
+<p><strong>问题：</strong>词条如何界定?<br>词条化最简单的方法是根据空格将字符串进行拆分并去掉标点符号。然而真实情况下的词条化处理是个复杂的过程，如上撇号 ’、连字符-、数字、复合词、不同语言种类等等问题的处理。</p>
+<blockquote>
+<p>实际检索中的分词：</p>
+<ol>
+<li>查询和文档切分采用一致的分词系统。</li>
+<li>保证分词速度，速度快</li>
+<li>一般原则，没把握的情况下细粒度优先，保证召回率</li>
+<li>多粒度并存</li>
+<li>猜想：大词典+统计分析+启发式规则</li>
+</ol>
+</blockquote>
+<h3 id="2、停用词处理"><a href="#2、停用词处理" class="headerlink" title="2、停用词处理"></a>2、停用词处理</h3><p>根据停用词表(stop list), 将那些最常见的词从词典中去掉。比如直观上可以去掉：<br>    一般不包含语义信息的词: the, a, and, to, be，汉语中的“的”、“得”、“地”等等。</p>
+<p>这些词都是高频词: 前30个词就占了约30% 的倒排记录表空间</p>
+<p>在信息检索系统不断发展的历程中，有从大停用词表（200～300 个词）到小停用词表（7～12个词）最后到不用停用词的趋势。Web 搜索引擎通常都不用停用词表。一些现代 IR系统更关注如何利用语言的统计特性来更好地处理常见词问题。</p>
+<p>现代信息检索系统中倾向于不去掉停用词:</p>
+<ol>
+<li>在保留停用词的情况下，采用良好的压缩技术后，停用词所占用的空间可以大大压缩，最终它们在整个倒排记录表中所占的空间比例很小</li>
+<li>采用良好的查询优化技术基本不会增加查询处理的开销</li>
+<li>所谓的停用词并不一定没用，比如：短语查询: “King of Denmark”、歌曲名或者台词等等: “Let it be”, “To be or not to be”、“关系型” 查询“flights to London</li>
+</ol>
+<h3 id="3、词项归一化"><a href="#3、词项归一化" class="headerlink" title="3、词项归一化"></a>3、词项归一化</h3><p>词条归一化 （token normalization） 就是将看起来不完全一致的多个词条归纳成一个等价类，以便在它们之间进行匹配的过程。</p>
+<p><strong>建立等价类的方法：</strong></p>
+<ol>
+<li>最常规的做法是隐式地建立等价类<br>删除句点、删除连字符     U.S.A.,USA    ——-&gt;USA      anti‐discriminatory, antidiscriminatory ——&gt;antidiscriminatory</li>
+<li>另一种建立等价类的方法是维护多个非归一化词条之间的关联关系</li>
+</ol>
+<p>索引阶段方法：对于包含automobile的文档，我们同时也用car来索引（同样，包含car的文档也用automobile来索引,如car‐automobile）</p>
+<p>搜索阶段方法：建立查询扩展，查询car时，合并car和automobile的倒排索引</p>
+<p>进行词条归一化处理之后在很多情况下会提高检索的效果，但有时也可能会损害检索的效果。（C.A.T —-&gt; cat）</p>
+<h3 id="4、词干还原和词形归并"><a href="#4、词干还原和词形归并" class="headerlink" title="4、词干还原和词形归并"></a>4、词干还原和词形归并</h3><p>词干还原和词形归并的目的都是为了减少屈折变化的形式，并且有时会将派生词转化为基本形式。比如： am, are, is——&gt;be  car, cars, car’s, cars’——&gt;car</p>
+<p>然而，词干还原（stemming）和词形归并（lemmatization）这两个术语所代表的意义是不同的。前者通常指的是一个很粗略的去除单词两端词缀的启发式过程，并且希望大部分时间它都能达到这个正确目的，这个过程也常常包括去除派生词缀。而词形归并通常指利用词汇表(即保存的某种字典)和词形分析来去除屈折词缀，从而返回词的原形或词典中的词的过程，返回的结果称为词元（lemma） 。 假如给定词条 saw， 词干还原过程可能仅返回 s， 而词形归并过程将返回 see或者 saw，当然具体返回哪个词取决于在当前上下文中 saw 到底是动词还是名词。这两个过程的区别还在于：词干还原在一般情况下会将多个派生相关词合并在一起，而词形归并通常只将同一词元的不同屈折形式进行合并。词干还原或词形归并往往通过在索引过程中增加插件程序的方式来实现，这类插件程序有很多，其中既有商业软件也有开源软件。 </p>
+<p><strong>词干还原及其它归一化工作对检索的帮助</strong><br>英语：结果要一分为二，对某些查询来说提高了召回率，但是对另外一些查询来说降低了正确率<br>对西班牙语、德语、芬兰语等语言非常有用，其中对于芬兰语有30% 的性能提高!</p>
+<p>常用词干还原算法：Porter、Snowball(Porter算法的改进版)、Lovins</p>
+<h2 id="三、基于跳表的倒排记录表快速合并算法"><a href="#三、基于跳表的倒排记录表快速合并算法" class="headerlink" title="三、基于跳表的倒排记录表快速合并算法"></a>三、基于跳表的倒排记录表快速合并算法</h2><p>跳表 (kip list) : 时间复杂度O(m+n)的基本合并算法的优化<br><img src="http://oawztil0a.bkt.clouddn.com/Blog/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2/%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E7%AC%AC%E4%BA%8C%E7%AB%A02.png" alt></p>
+<p><strong>问题：</strong>在什么位置上放置跳表指针？<br>这里存在一个指针个数和比较次数之间的折中问题。跳表指针越多意味着跳跃的步长越短，那么在合并过程中跳跃的可能性也更大，但同时这也意味着需要更多的指针比较次数和更多的存储空间。跳表指针越少意味着更少的指针比较次数，但同时也意味着更长的跳跃步长，也就是说意味着更少的跳跃机会。</p>
+<p>简单的启发式策略：对于长度为P的倒排记录表，每 $\sqrt{P}$处放一个跳表指针，即均匀放置，均匀放置方法忽略了查询词项的分布情况</p>
+<p>如果索引相对固定的话，均匀方式方法是一种很简便的方法。但是如果倒排记录表由于经常更新而发生变化，那么跳表指针的建立就比较困难。恶意的删除策略可能会使跳表完全失效。</p>
+<p><strong>其他快速合并倒排表算法：</strong><br>对长度为N 和M 的有序数组，一般来说，在做归并的时候，其时间复杂度为O(M+N)。在理想情况下（如M 和N 都很大时），O(M+N)应该是一个很小的复杂度。但搜索引擎的情况往往并不是这样，很多时候都会遇到一个很小的有序数组（比如，由其他很多条件计算而来）和一个很大的有序数组之间的AND 运算。在这种情况下， O(M+N)的时间可能比<code>O(M*logN)</code>的时间要大（假设N&gt;&gt;M）</p>
+<ol>
+<li>二分法<br>即采用二分查找的办法比较元素。其时间复杂度为<code>O(M*logN)</code>。本方法仅适合纯内存的2 个有序数组。当2 个数组长度差距很大的时候，本方法很适合，因为简单方便。</li>
+<li>跳跃和二分法结合<br>在跳跃失败的时候，使用二分查找。其时间复杂度最差为<code>O(M+N/k+M*logk)</code>。本方法能够改善跳跃法的最差时间复杂度。</li>
+<li>Hash法<br>预先构建每个有序数组的快速hash 表，然后通过hash 查找的方式判断值是否存在。其时间复杂度为<code>O(M*s)</code>，这里s 表示查询一次hash 的耗时。在内存足够，以及数组长度差距很大的时候，本方法比二分法效率更高。但本方法消耗的额外内存一般会超过1 倍数组大小，而构建时间消耗更加严重。为了减少额外空间占用，有人采用bloom filter 的策略，这样稍微牺牲一些精度，而减少大量的内存占用。</li>
+<li>分治法<br>把第一个数组划分为2 个部分M1 和M2，把第二个数组划分为2 个部分N1 和N2，划分原则是：第一个数组对半分，第二个数组根据第一个数组的中值进行切分。然后比<br>较M1 和N1，比较M2 和N2。不断的递归下去。时间复杂度，最好为<code>O(M*log(N/M))</code>，最坏为<code>O(M*logN)</code>。分治法只适合存内存数组。此方法的效果优于二分法，但程序比较复杂。</li>
+<li>bitmap法<br>Bitmap 和hash 法策略差不多。它是用bitmap 来保存元素，在查询的时候直接用bitmap 定位到位，判断元素是否存在。Bitmap 的麻烦之处在于它内存占用。在一个单<br>程序千万级数据的环境中，一个bitmap 的大小需要10M/8=1.25M 大小。所以bitmap 并不像hash 表那样预先计算，而是在数组合并的时候计算。其时间复杂度为O(M+N)，<br>如果预先计算bitmap，其时间复杂度为O(M)。虽然表面上看起来本方法和基本的归并方式效率一样，但实际上因为bitmap 的低常数值（即每次比较耗时很小）、能够同时轻松支持AND 和OR 操作、在多个数组合并的时候效果更好（因为bitmap 相当于预先计算）以及bitmap 可以被cache 等，故很多时候bitmap 的效果要比普通归并好。</li>
+</ol>
+<h2 id="四、含位置信息的倒排记录表及短语查询"><a href="#四、含位置信息的倒排记录表及短语查询" class="headerlink" title="四、含位置信息的倒排记录表及短语查询"></a>四、含位置信息的倒排记录表及短语查询</h2><p>对于短语查询，仅仅保存term +docIDs的倒排索引已不足以满足要求。</p>
+<p><strong>支持短语查询的方法：</strong></p>
+<p>方法一：简单的对短语查询的支持方法：双词(Biword)索引 （二元词索引）<br>文本 Friends, Romans, Countrymen 会产生如下的二元接续词对（biword） ： friends romans    romans countrymen<br>索引构建时，将每个词对看成一个词项放到词典中<br>查询 stanford university palo alto分成如下的布尔查询： “stanford university” AND “university palo” AND “palo alto”</p>
+<p>扩展的双词（Extended Biword）<br>对待索引文档进行词性标注，将词项进行组块，每个组块包含名词(N) 和冠词/介词(X)，称具有NX*N形式的词项序列为扩展双词(extended biword)，将这样扩展词对作为词项放入词典中<br>例子: catcher in the rye (书名： 麦田守望者)N X X N，将查询也分析成N和X序列，将查询切分成扩展双词，在索引中查找catcher rye</p>
+<p><strong>二元词索引的问题：</strong></p>
+<ul>
+<li>如果不检查文档，无法确认满足查询表达式（如 stanford university palo alto）的文档是否真正满足上述短语查询。很难避免伪正例的出现！</li>
+<li>由于词典中词项数目剧增，导致索引空间也激增</li>
+<li>双词索引方法并不是一个标准的做法(即倒排索引中一般不会全部采用双词索引方法)，但是可以和其他方法混合使用</li>
+</ul>
+<p>方法二：第二种对短语查询的支持方法：带位置信息的词项(Term)索引    docId tf(position1,position2…….)</p>
+<p>在合并操作中，同样可以采用前面提到的各种技术来实现，但是这里不只是简单地判断两个词项是否出现在同一文档中，而且还需要检查它们出现的位置关系和查询短语的一致性。这就需要计算出词之间的偏移距离。很明显，位置索引可以处理邻近式查询，而双词索引却不能。</p>
+<p>采用位置索引会大大增加倒排记录表的存储空间，即使对位置值或偏移值采用合适的压缩方法也会明显大于无位置信息的索引。实际上，采用位置索引会加深倒排记录表合并操作的渐进复杂性，这是因为需要检查的项的个数不再受限于文档数目而是文档集中出现的所有的词条的个数 T。也就是说，布尔查询的复杂度为O(T)而不是O(N)。然而，由于用户往往期望能够进行短语搜索(显式和隐式)和邻近搜索，所以实际中的大部分应用并没有其他选择而不得不采用这种做法。 </p>
+<p><strong>混合索引机制（二元词索引和位置索引这两种策略可以进行有效的合并）</strong></p>
+<p>假如用户通常只查询特定的短语，如Michael Jackson，那么基于位置索引的倒排记录表合并方式效率很低。一个混合策略是：对某些查询使用短语索引或只使用二元词索引，而对其他短语查询则采用位置索引。短语索引所收录的那些较好的查询可以根据用户最近的访问行为日志统计得到，也就是说，它们往往是那些高频常见的查询。当然，这并不是唯一的准则。处理开销最大的短语查询往往是这样一些短语，它们中的每个词都非常常见，但是组合起来却相对很少见。将查询Britney Spears 加入短语索引可能仅仅对该查询提供一个大概 3 倍的加速效果，这是因为很多提到其中一个单词的文档都是相关文档。 而如果将The Who加入短语索引那么会对这个查询有 1000 的加速效果。 因此，实现中更期望将后者加入到短语索引中，尽管相对前者，其出现的频率较低（也就是说这些短语都是非常见查询） 。 </p>
+<p>Williams等人 (2004) 评估了一个更复杂的混合索引机制，其中除了包含上面两种形式的索引外，还在它们之间引入了一个部分后续词索引（next word index） ，即对每个词项，有个后续词索引记录了它在文档中的下一个词项。论文的结论是，虽然比仅仅使用位置索引增加了 26%的空间，但是面对典型的 Web 短语混合查询，其完成时间大概是只使用位置索引的 1/4。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/10/26/信息检索/信息检索导论第二章--词项词典及倒排记录表/" data-id="cjtf6o95000al0fc5dpw9tyz4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信息检索/">信息检索</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/29/Geek/华科校园网通过极路由实现wifi共享/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          通过极路由实现华科校园网wifi共享
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/17/信息检索/信息检索导论第一章--布尔检索/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">信息检索导论第一章－－布尔检索</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>面经--阿里 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#面经–阿里 阿里一面—基础，语言无关1.介绍项目搜索引擎项目（Nutch+Lucene） 2.Nutch（加强细节）优化实现细节缓存存储结构如何实现 3.Lucene（需要加强） 什么是索引数据库索引，是数据库管理系统中一个排序的数据结构，以协助快速查询、更新数据库表中数据。索引的实现通常使用B树及其变种B+树。 如何实现索引  Lucene索引结构    倒排索引一种索引方法，被用来存储在全文">
+<meta name="keywords" content="面经">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面经--阿里">
+<meta property="og:url" content="http://yoursite.com/2017/03/18/Job/面经/面经--阿里/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#面经–阿里 阿里一面—基础，语言无关1.介绍项目搜索引擎项目（Nutch+Lucene） 2.Nutch（加强细节）优化实现细节缓存存储结构如何实现 3.Lucene（需要加强） 什么是索引数据库索引，是数据库管理系统中一个排序的数据结构，以协助快速查询、更新数据库表中数据。索引的实现通常使用B树及其变种B+树。 如何实现索引  Lucene索引结构    倒排索引一种索引方法，被用来存储在全文">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面经--阿里">
+<meta name="twitter:description" content="#面经–阿里 阿里一面—基础，语言无关1.介绍项目搜索引擎项目（Nutch+Lucene） 2.Nutch（加强细节）优化实现细节缓存存储结构如何实现 3.Lucene（需要加强） 什么是索引数据库索引，是数据库管理系统中一个排序的数据结构，以协助快速查询、更新数据库表中数据。索引的实现通常使用B树及其变种B+树。 如何实现索引  Lucene索引结构    倒排索引一种索引方法，被用来存储在全文">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Job/面经/面经--阿里" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/03/18/Job/面经/面经--阿里/" class="article-date">
+  <time datetime="2017-03-18T08:06:13.000Z" itemprop="datePublished">2017-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Job/">Job</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      面经--阿里
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#面经–阿里</p>
+<h2 id="阿里一面—基础，语言无关"><a href="#阿里一面—基础，语言无关" class="headerlink" title="阿里一面—基础，语言无关"></a>阿里一面—基础，语言无关</h2><h3 id="1-介绍项目"><a href="#1-介绍项目" class="headerlink" title="1.介绍项目"></a>1.介绍项目</h3><p>搜索引擎项目（Nutch+Lucene）</p>
+<h3 id="2-Nutch（加强细节）"><a href="#2-Nutch（加强细节）" class="headerlink" title="2.Nutch（加强细节）"></a>2.Nutch（加强细节）</h3><p>优化实现细节<br>缓存存储结构如何实现</p>
+<h3 id="3-Lucene（需要加强）"><a href="#3-Lucene（需要加强）" class="headerlink" title="3.Lucene（需要加强）"></a>3.Lucene（需要加强）</h3><ul>
+<li>什么是索引<br>数据库索引，是数据库管理系统中一个排序的数据结构，以协助快速查询、更新数据库表中数据。索引的实现通常使用B树及其变种B+树。</li>
+<li><p>如何实现索引</p>
+</li>
+<li><p>Lucene索引结构</p>
+</li>
+</ul>
+<ul>
+<li>倒排索引<br>一种索引方法，被用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射。它是文档检索系统中最常用的数据结构。通过倒排索引，可以根据单词快速获取包含这个单词的文档列表。倒排索引主要由两个部分组成：“单词词典”和“倒排文件”。</li>
+</ul>
+<a id="more"></a>
+<h3 id="4-算法"><a href="#4-算法" class="headerlink" title="4.算法"></a>4.算法</h3><ul>
+<li><p>题目一：乱序数组，求出其中最小的 k 个值<br>小顶堆 时间复杂度O(nlogk)</p>
+</li>
+<li><p>题目二：有N个长度不一样的数组，所有数组中的元素都是从小到大有序排列的，请从大到小打印这N个数组整体的前K个数。<br>TOP-K问题</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">package Test;</span><br><span class="line">  </span><br><span class="line">import java.util.Arrays;  </span><br><span class="line">  </span><br><span class="line">public class PrintMaxTopKInMatrix &#123;  </span><br><span class="line">    public static class HeapNode &#123;</span><br><span class="line">        public int value;</span><br><span class="line">        public int arrNum;</span><br><span class="line">        public int index;</span><br><span class="line">    </span><br><span class="line">        public HeapNode(int value, int arrNum, int index) &#123;  </span><br><span class="line">            this.value = value;  </span><br><span class="line">            this.arrNum = arrNum;  </span><br><span class="line">            this.index = index;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    public static void printTopK(int[][] matrix, int topK) &#123;  </span><br><span class="line">        int heapSize = matrix.length;  </span><br><span class="line">        HeapNode[] heap = new HeapNode[heapSize];  </span><br><span class="line">        for (int i = 0; i != heapSize; i++) &#123;  </span><br><span class="line">            int index = matrix[i].length - 1;  </span><br><span class="line">            heap[i] = new</span><br><span class="line">            HeapNode(matrix[i][index], i, index);  </span><br><span class="line">            heapInsert(heap, i);  </span><br><span class="line">        &#125;  </span><br><span class="line">        System.out.println(&quot;TOP &quot; + topK + &quot; : &quot;);  </span><br><span class="line">  </span><br><span class="line">        for (int i = 0; i != topK; i++) &#123;  </span><br><span class="line">            if (heapSize == 0) &#123;  </span><br><span class="line">                break;  </span><br><span class="line">            &#125;  </span><br><span class="line">        System.out.print(heap[0].value + &quot; &quot;);  </span><br><span class="line">        if (heap[0].index != 0) &#123;  </span><br><span class="line">            heap[0].value =</span><br><span class="line">            matrix[heap[0].arrNum][--heap[0].index];  </span><br><span class="line">        &#125; else &#123;  </span><br><span class="line">            swap(heap, 0, --heapSize);  </span><br><span class="line">        &#125;  </span><br><span class="line">        heapify(heap, 0, heapSize);  </span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    public static void heapInsert(HeapNode[] heap, int index) &#123;  </span><br><span class="line">        while (index != 0) &#123;  </span><br><span class="line">            int parent = (index - 1) / 2;  </span><br><span class="line">            if (heap[parent].value &lt; heap[index].value) &#123;  </span><br><span class="line">                swap(heap, parent, index);  </span><br><span class="line">                index = parent;  </span><br><span class="line">            &#125; else &#123;  </span><br><span class="line">                break;  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    public static void heapify(HeapNode[] heap, int index, int heapSize) &#123;  </span><br><span class="line">        int left = index * 2 + 1;  </span><br><span class="line">        int right = index * 2 + 2;  </span><br><span class="line">        int largest = index;  </span><br><span class="line">        while (left &lt; heapSize) &#123;  </span><br><span class="line">            if (heap[left].value &gt; heap[index].value) &#123;  </span><br><span class="line">                largest = left;  </span><br><span class="line">            &#125;  </span><br><span class="line">            if (right &lt; heapSize &amp;&amp; heap[right].value &gt; heap[largest].value) &#123;  </span><br><span class="line">                largest = right;  </span><br><span class="line">            &#125;  </span><br><span class="line">            if (largest != index) &#123;  </span><br><span class="line">                swap(heap, largest, index);  </span><br><span class="line">            &#125; else &#123;  </span><br><span class="line">                break;  </span><br><span class="line">            &#125;  </span><br><span class="line">            index = largest;  </span><br><span class="line">            left = index * 2 + 1;  </span><br><span class="line">            right = index * 2 + 2;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public static void swap(HeapNode[] heap, int index1, int index2) &#123;</span><br><span class="line">        HeapNode tmp = heap[index1];  </span><br><span class="line">        heap[index1] = heap[index2];  </span><br><span class="line">        heap[index2] = tmp;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public static int[][] generateRandomMatrix(int maxRow, int maxCol, int maxValue) &#123;  </span><br><span class="line">        if (maxRow &lt; 0 || maxCol &lt; 0) &#123;  </span><br><span class="line">            return null;</span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        int[][] matrix = newint[(int)(Math.random() * maxRow) + 1][];  </span><br><span class="line">        for (int i = 0; i != matrix.length; i++) &#123;  </span><br><span class="line">            matrix[i] = new</span><br><span class="line">            int[(int)(Math.random() * maxCol) + 1];  </span><br><span class="line">  </span><br><span class="line">            for (int j = 0; j != matrix[i].length; j++) &#123;  </span><br><span class="line">                matrix[i][j] = (int)(Math.random() * maxValue);  </span><br><span class="line">            &#125;  </span><br><span class="line">            Arrays.sort(matrix[i]);  </span><br><span class="line">        &#125;  </span><br><span class="line">        return matrix;  </span><br><span class="line">    &#125;  </span><br><span class="line">    </span><br><span class="line">    public static void printMatrix(int[][] matrix) &#123;  </span><br><span class="line">        for (int i = 0; i != matrix.length; i++) &#123;  </span><br><span class="line">            for (int j = 0; j != matrix[i].length; j++) &#123;  </span><br><span class="line">                System.out.print(matrix[i][j] + &quot; &quot;);  </span><br><span class="line">            &#125;  </span><br><span class="line">        System.out.println();  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">    public static void main(String[] args) &#123;  </span><br><span class="line">        int[][] matrix = generateRandomMatrix(5, 10, 1000);  </span><br><span class="line">        printMatrix(matrix);  </span><br><span class="line">        System.out.println(&quot;===========================&quot;);</span><br><span class="line">        printTopK(matrix, 100);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="阿里二面—基础，语言"><a href="#阿里二面—基础，语言" class="headerlink" title="阿里二面—基础，语言"></a>阿里二面—基础，语言</h2><h3 id="使用java集合类设计一种缓存机制实现LRU替换机制"><a href="#使用java集合类设计一种缓存机制实现LRU替换机制" class="headerlink" title="使用java集合类设计一种缓存机制实现LRU替换机制"></a>使用java集合类设计一种缓存机制实现LRU替换机制</h3><p>LinkedHashMap</p>
+<h3 id="缓存淘汰算法"><a href="#缓存淘汰算法" class="headerlink" title="缓存淘汰算法"></a>缓存淘汰算法</h3><p>FIFO：First In First Out，先进先出。判断被存储的时间，离目前最远的数据优先被淘汰。<br>LRU：Least Recently Used，最近最少使用。判断最近被使用的时间，目前最远的数据优先被淘汰。<br>LFU：Least Frequently Used，最不经常使用。在一段时间内，数据被使用次数最少的，优先被淘汰。</p>
+<h3 id="选用Redis的原因"><a href="#选用Redis的原因" class="headerlink" title="选用Redis的原因"></a>选用Redis的原因</h3><h3 id="concurrentHashMap底层实现"><a href="#concurrentHashMap底层实现" class="headerlink" title="concurrentHashMap底层实现"></a>concurrentHashMap底层实现</h3><h3 id="MySQL的乐观锁和悲观锁如何实现"><a href="#MySQL的乐观锁和悲观锁如何实现" class="headerlink" title="MySQL的乐观锁和悲观锁如何实现"></a>MySQL的乐观锁和悲观锁如何实现</h3><p>　　乐观锁（ Optimistic Locking ）假设认为数据一般情况下不会造成冲突，所以在数据进行提交更新的时候，才会正式对数据的冲突与否进行检测，如果发现冲突了，则让返回用户错误的信息，让用户决定如何去做。<br>　　实现数据版本有两种方式，第一种是使用版本号，第二种是使用时间戳。<br>　　悲观锁，假设认为数据每次访问都会发生冲突，所以在访问数据前先加锁</p>
+<h3 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h3><h3 id="Hash冲突及解决方法"><a href="#Hash冲突及解决方法" class="headerlink" title="Hash冲突及解决方法"></a>Hash冲突及解决方法</h3><p>开放定址法<br>按照形成探查序列的方法不同，可将开放定址法区分为线性探查法、线性补偿探测法、随机探测等。<br>拉链法</p>
+<h3 id="B树和B-树的区别"><a href="#B树和B-树的区别" class="headerlink" title="B树和B+树的区别"></a>B树和B+树的区别</h3><p>B树：多路搜索树，每个结点存储M/2到M个关键字，非叶子结点存储指向关键字范围的子结点；所有关键字在整颗树中出现，且只出现一次，非叶子结点可以命中；<br>B+树：在B-树基础上，为叶子结点增加链表指针，所有关键字都在叶子结点中出现，非叶子结点作为叶子结点的索引；B+树总是到叶子结点才命中；<br>B*树：在B+树基础上，为非叶子结点也增加链表指针，将结点的最低利用率从1/2提高到2/3；</p>
+<h3 id="HashMap底层实现"><a href="#HashMap底层实现" class="headerlink" title="HashMap底层实现"></a>HashMap底层实现</h3><h3 id="HashSet底层实现及如何实现去重"><a href="#HashSet底层实现及如何实现去重" class="headerlink" title="HashSet底层实现及如何实现去重"></a>HashSet底层实现及如何实现去重</h3><p>基于HashMap实现，在加入数据时比较去重</p>
+<h3 id="Linux命令"><a href="#Linux命令" class="headerlink" title="Linux命令"></a>Linux命令</h3><ul>
+<li>top命令中表示cpu状态的us和sy的区别<ul>
+<li>us — 用户空间占用CPU的百分比</li>
+<li>sy — 内核空间占用CPU的百分比</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程池如何保证完成任务线程的空闲不被kill掉"><a href="#线程池如何保证完成任务线程的空闲不被kill掉" class="headerlink" title="线程池如何保证完成任务线程的空闲不被kill掉"></a>线程池如何保证完成任务线程的空闲不被kill掉</h3><h3 id="java多线程"><a href="#java多线程" class="headerlink" title="java多线程"></a>java多线程</h3><p>写出生产者消费者模式。</p>
+<p>线程池的底层实现和工作原理（建议写一个雏形简版源码实现）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/03/18/Job/面经/面经--阿里/" data-id="cjtf6o96f00do0fc5scephq56" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/面经/">面经</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/20/Java/多线程与并发/正确理解ThreadLocal/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          正确理解ThreadLocal
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/17/Python/Pyspider Bug总结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Pyspider Bug总结</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

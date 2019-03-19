@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>kafka0.8升级0.10测试计划 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="kafka0.8升级0.10测试计划升级测试 10.0.41.135~10.0.41.137 kafka集群测试机 一、升级主流程1、拷贝0.8版本配置文件，修改添加0.10版本配置123456789#修改项log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs#添加项 auto.create.">
+<meta name="keywords" content="kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kafka0.8升级0.10测试计划">
+<meta property="og:url" content="http://yoursite.com/2017/04/20/kafka/kafka0.8升级0.10测试计划/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="kafka0.8升级0.10测试计划升级测试 10.0.41.135~10.0.41.137 kafka集群测试机 一、升级主流程1、拷贝0.8版本配置文件，修改添加0.10版本配置123456789#修改项log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs#添加项 auto.create.">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2017-05-24T08:37:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="kafka0.8升级0.10测试计划">
+<meta name="twitter:description" content="kafka0.8升级0.10测试计划升级测试 10.0.41.135~10.0.41.137 kafka集群测试机 一、升级主流程1、拷贝0.8版本配置文件，修改添加0.10版本配置123456789#修改项log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs#添加项 auto.create.">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kafka/kafka0.8升级0.10测试计划" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/04/20/kafka/kafka0.8升级0.10测试计划/" class="article-date">
+  <time datetime="2017-04-20T03:13:00.000Z" itemprop="datePublished">2017-04-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/kafka/">kafka</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      kafka0.8升级0.10测试计划
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="kafka0-8升级0-10测试计划"><a href="#kafka0-8升级0-10测试计划" class="headerlink" title="kafka0.8升级0.10测试计划"></a>kafka0.8升级0.10测试计划</h1><p>升级测试 10.0.41.135~10.0.41.137 kafka集群测试机</p>
+<h2 id="一、升级主流程"><a href="#一、升级主流程" class="headerlink" title="一、升级主流程"></a>一、升级主流程</h2><h3 id="1、拷贝0-8版本配置文件，修改添加0-10版本配置"><a href="#1、拷贝0-8版本配置文件，修改添加0-10版本配置" class="headerlink" title="1、拷贝0.8版本配置文件，修改添加0.10版本配置"></a>1、拷贝0.8版本配置文件，修改添加0.10版本配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#修改项</span><br><span class="line">log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs</span><br><span class="line"></span><br><span class="line">#添加项 </span><br><span class="line">auto.create.topics.enable=false</span><br><span class="line">num.replica.fetchers=3</span><br><span class="line">unclean.leader.election.enable=false</span><br><span class="line">inter.broker.protocol.version=0.8.2.0</span><br><span class="line">log.message.format.version=0.8.2.0</span><br></pre></td></tr></table></figure>
+<h3 id="2、逐一停止0-8版本kafka，启动0-10版本kafka"><a href="#2、逐一停止0-8版本kafka，启动0-10版本kafka" class="headerlink" title="2、逐一停止0.8版本kafka，启动0.10版本kafka"></a>2、逐一停止0.8版本kafka，启动0.10版本kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#停止该服务器上所有0.8kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill –SIGTERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#可选命令</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181（可选）</span><br></pre></td></tr></table></figure>
+<h3 id="3、修改配置，并在此逐一启动kafka"><a href="#3、修改配置，并在此逐一启动kafka" class="headerlink" title="3、修改配置，并在此逐一启动kafka"></a>3、修改配置，并在此逐一启动kafka</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#修改0.10配置</span><br><span class="line">inter.broker.protocol.version=0.10.1.0</span><br><span class="line"></span><br><span class="line">#停止该服务器上所有0.10kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -s TERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line">	</span><br><span class="line">#可选命令</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181（可选）</span><br></pre></td></tr></table></figure>
+<h2 id="二、测试"><a href="#二、测试" class="headerlink" title="二、测试"></a>二、测试</h2><h3 id="topic准备"><a href="#topic准备" class="headerlink" title="topic准备"></a>topic准备</h3><ul>
+<li>wangzhe：用于测试升级过程自动leader均衡和手动leader均衡</li>
+<li>wangzhe_long_running ：测试升级过程中topic生产消费是否出问题</li>
+</ul>
+<h4 id="wangzhe"><a href="#wangzhe" class="headerlink" title="wangzhe"></a>wangzhe</h4><p>测试0.8和0.10版本客户端对0.10版本kafka集群的生产消费许可状况</p>
+<p>分别测试未均衡前、自动均衡后和手动均衡后的leader、replicas和lsr</p>
+<blockquote>
+<p>自动均衡时间过久（大概要一天），只测试手动均衡和未均衡之前的状态</p>
+</blockquote>
+<h4 id="wangzhe-long-running"><a href="#wangzhe-long-running" class="headerlink" title="wangzhe_long_running"></a>wangzhe_long_running</h4><p>在测试开始前执行持续开启写入命令和持续开启消费命令，在测试过程中查看是否报错</p>
+<h3 id="测试过程"><a href="#测试过程" class="headerlink" title="测试过程"></a>测试过程</h3><h4 id="1、准备测试初试环境"><a href="#1、准备测试初试环境" class="headerlink" title="1、准备测试初试环境"></a>1、准备测试初试环境</h4><p>之前测试已经将0.10的kafka升级完成，将0.8和0.10配置均恢复为未升级前，将kafka集群停止，恢复到0.8kafka集群</p>
+<h4 id="2、创建新topic"><a href="#2、创建新topic" class="headerlink" title="2、创建新topic"></a>2、创建新topic</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe_long_running</span><br></pre></td></tr></table></figure>
+<h4 id="3、预置topic数据"><a href="#3、预置topic数据" class="headerlink" title="3、预置topic数据"></a>3、预置topic数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line">kafka_08_1</span><br><span class="line">kafka_08_2</span><br><span class="line">kafka_08_3</span><br><span class="line">kafka_08_4</span><br><span class="line">kafka_08_5</span><br><span class="line">kafka_08_6</span><br><span class="line">kafka_08_7</span><br><span class="line">kafka_08_8</span><br><span class="line">kafka_08_9</span><br></pre></td></tr></table></figure>
+<h4 id="4、拷贝0-8版本配置并添加修改"><a href="#4、拷贝0-8版本配置并添加修改" class="headerlink" title="4、拷贝0.8版本配置并添加修改"></a>4、拷贝0.8版本配置并添加修改</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server.properties</span><br><span class="line">#修改项</span><br><span class="line">log.dirs=/opt/kafka_2.10-0.8.2.1/kafka-logs,/opt/kafka_2.10-0.10.1.0/kafka-logs</span><br><span class="line"></span><br><span class="line">#添加项 </span><br><span class="line">auto.create.topics.enable=false</span><br><span class="line">num.replica.fetchers=3</span><br><span class="line">unclean.leader.election.enable=false</span><br><span class="line">inter.broker.protocol.version=0.8.2.0</span><br><span class="line">log.message.format.version=0.8.2.0</span><br></pre></td></tr></table></figure>
+<h4 id="5、开启持续写入-消费"><a href="#5、开启持续写入-消费" class="headerlink" title="5、开启持续写入/消费"></a>5、开启持续写入/消费</h4><p>在10.0.41.132测试机上开启持续写入和持续消费，测试wangzhe_long_running</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#开启持续写入</span><br><span class="line">bin/kafka-producer-perf-test.sh --messages 1000000000 --message-size 5 --batch-size 10 --topics wangzhe_long_running --threads 1 --broker-list slave135:9092,slave136:9092,slave137:9092</span><br><span class="line"></span><br><span class="line">#开启持续消费</span><br><span class="line">bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe_long_running</span><br></pre></td></tr></table></figure>
+<h4 id="6、逐一停止0-8kafka节点并对应的启动0-10节点"><a href="#6、逐一停止0-8kafka节点并对应的启动0-10节点" class="headerlink" title="6、逐一停止0.8kafka节点并对应的启动0.10节点"></a>6、逐一停止0.8kafka节点并对应的启动0.10节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#停止0.8节点</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -SIGTERM</span><br><span class="line"></span><br><span class="line">#启动0.10节点</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#查看topic状态</span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#第二遍测试手动均衡前后topic状态</span><br><span class="line">#手动均衡</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br></pre></td></tr></table></figure>
+<h4 id="7、修改配置，并再次逐一重启"><a href="#7、修改配置，并再次逐一重启" class="headerlink" title="7、修改配置，并再次逐一重启"></a>7、修改配置，并再次逐一重启</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#修改0.10配置</span><br><span class="line">inter.broker.protocol.version=0.10.1.0</span><br><span class="line"></span><br><span class="line">#停止该服务器上所有0.10kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -s TERM</span><br><span class="line">#启动0.10kafka</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line">	</span><br><span class="line">#第二遍测试手动均衡前后topic状态</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-preferred-replica-election.sh --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br></pre></td></tr></table></figure>
+<h4 id="9、测试0-8和0-10客户端生产消费0-10版本kafka集群"><a href="#9、测试0-8和0-10客户端生产消费0-10版本kafka集群" class="headerlink" title="9、测试0.8和0.10客户端生产消费0.10版本kafka集群"></a>9、测试0.8和0.10客户端生产消费0.10版本kafka集群</h4><p>测试0.8和0.10客户端生产消费0.10版本kafka集群<br>生产者和消费者为10.0.41.132测试机，位于kafka集群之外</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#0.8的生产者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#0.8的消费者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的消费者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的生产者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#0.8的消费者</span><br><span class="line">/opt/kafka_2.10-0.8.2.1/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br><span class="line"></span><br><span class="line">#0.10的消费者</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe --from-beginning</span><br></pre></td></tr></table></figure>
+<p>至此，测试流程完成</p>
+<h2 id="命令参考"><a href="#命令参考" class="headerlink" title="命令参考"></a>命令参考</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">#启动kafka</span><br><span class="line">bin/kafka-server-start.sh config/server.properties</span><br><span class="line">/opt/kafka_2.10-0.10.1.0/start</span><br><span class="line"></span><br><span class="line">#创建topic</span><br><span class="line">bin/kafka-topics.sh --create --zookeeper 10.0.41.135:2181 --replication-factor 3 --partitions 3 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#删除topic</span><br><span class="line">bin/kafka-topics.sh --delete --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#查看所有topic</span><br><span class="line">bin/kafka-topics.sh --list --zookeeper 10.0.41.135:2181</span><br><span class="line"></span><br><span class="line">#查看topic状态</span><br><span class="line">bin/kafka-topics.sh --describe --zookeeper 10.0.41.135:2181 --topic wangzhe</span><br><span class="line"></span><br><span class="line">#启动生产者（启动成功进入命令行阻塞状态，可以输入数据，回车发送）</span><br><span class="line">bin/kafka-console-producer.sh --broker-list 10.0.41.135:9092 --topic wangzhe_long_running</span><br><span class="line"></span><br><span class="line">#启动消费者(启动后命令行处于阻塞状态，生产者发布的消息会在此显示)</span><br><span class="line">bin/kafka-console-consumer.sh –zookeeper localhost:2181 –topic test –wangzhe_long_running</span><br><span class="line"></span><br><span class="line">#终止节点所有kafka进程</span><br><span class="line">netstat -anp | grep :9092 | grep LISTEN | grep -v 2.200 | awk &apos;&#123;print $7&#125;&apos; | awk -F&apos;/&apos; &apos;&#123;print $1&#125;&apos; | xargs kill -SIGTERM</span><br><span class="line"></span><br><span class="line">#持续开启写入</span><br><span class="line">bin/kafka-producer-perf-test.sh --messages 1000000000 --message-size 5 --batch-size 10 --topics wangzhe_long_running --threads 1 --broker-list slave135:9092,slave136:9092,slave137:9092</span><br><span class="line"></span><br><span class="line">#持续开启消费</span><br><span class="line">bin/kafka-console-consumer.sh --zookeeper 10.0.41.135:2181 --topic wangzhe_long_running --from-beginning</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/04/20/kafka/kafka0.8升级0.10测试计划/" data-id="cjtf6o92q00470fc5bppmmhpx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kafka/">kafka</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/20/kafka/kafka-manager同时支持从zk和从内部topic" __consumer_offsets"中读取offset信息 " id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          kafka-manager同时支持从zk和从内部topic&#34;__consumer_offsets&#34;中读取offset信息
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/18/kafka/2017-04-18/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">kafka学习记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Algorithm/">Algorithm</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FreeMarker/">FreeMarker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Geek/">Geek</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/">Java</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Job/">Job</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Lucene/">Lucene</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/MapReduce/">MapReduce</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nutch/">Nutch</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Project/">Project</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scala/">Scala</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Scheme/">Scheme</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/kafka/">kafka</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息检索/">信息检索</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/健身/">健身</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/操作系统/">操作系统</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构/">数据结构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/王道学习记录/">王道学习记录</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FreeMarker/">FreeMarker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Geek/">Geek</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lucene/">Lucene</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MapReduce/">MapReduce</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Maven/">Maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nutch/">Nutch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Project/">Project</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scala/">Scala</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Scheme/">Scheme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kafka/">kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信息检索/">信息检索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/健身/">健身</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/排序算法/">排序算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据库/">数据库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/框架/">框架</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/王道学习记录/">王道学习记录</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/编程题/">编程题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面经/">面经</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/面试笔记/">面试笔记</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Algorithm/" style="font-size: 17px;">Algorithm</a> <a href="/tags/FreeMarker/" style="font-size: 11px;">FreeMarker</a> <a href="/tags/Geek/" style="font-size: 15px;">Geek</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/Lucene/" style="font-size: 11px;">Lucene</a> <a href="/tags/MapReduce/" style="font-size: 14px;">MapReduce</a> <a href="/tags/Maven/" style="font-size: 10px;">Maven</a> <a href="/tags/NIO/" style="font-size: 11px;">NIO</a> <a href="/tags/Nutch/" style="font-size: 19px;">Nutch</a> <a href="/tags/Project/" style="font-size: 11px;">Project</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Scala/" style="font-size: 11px;">Scala</a> <a href="/tags/Scheme/" style="font-size: 10px;">Scheme</a> <a href="/tags/kafka/" style="font-size: 15px;">kafka</a> <a href="/tags/信息检索/" style="font-size: 14px;">信息检索</a> <a href="/tags/健身/" style="font-size: 10px;">健身</a> <a href="/tags/多线程/" style="font-size: 18px;">多线程</a> <a href="/tags/排序算法/" style="font-size: 19px;">排序算法</a> <a href="/tags/操作系统/" style="font-size: 13px;">操作系统</a> <a href="/tags/数据库/" style="font-size: 18px;">数据库</a> <a href="/tags/数据结构/" style="font-size: 13px;">数据结构</a> <a href="/tags/框架/" style="font-size: 10px;">框架</a> <a href="/tags/王道学习记录/" style="font-size: 13px;">王道学习记录</a> <a href="/tags/编程题/" style="font-size: 16px;">编程题</a> <a href="/tags/网络/" style="font-size: 11px;">网络</a> <a href="/tags/面经/" style="font-size: 14px;">面经</a> <a href="/tags/面试笔记/" style="font-size: 19px;">面试笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/22/kafka/kafka详解--性能/">kafka详解--性能</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/22/kafka/Kafka设计解析（一）--Kafka背景及架构介绍/">Kafka设计解析（一）--Kafka背景及架构介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/2017-04-28/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/26/FreeMarker/Freemarker/">Freemarker入门</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/20/Scala/2017-04-24/">Scala学习笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
